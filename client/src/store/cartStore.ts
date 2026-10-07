@@ -95,6 +95,18 @@ function saveToStorage(items: CartItem[]): CartSummary {
   return summary;
 }
 
+function getValidToken(): string | null {
+  try {
+    const token = localStorage.getItem('medicare_token');
+    if (!token || token === 'undefined' || token === 'null' || token.trim() === '') {
+      return null;
+    }
+    return token;
+  } catch {
+    return null;
+  }
+}
+
 const initialData = loadFromStorage();
 
 export const useCartStore = create<CartState>((set, get) => ({
@@ -110,7 +122,7 @@ export const useCartStore = create<CartState>((set, get) => ({
     const local = loadFromStorage();
     set({ items: local.items, summary: local.summary });
 
-    const token = localStorage.getItem('medicare_token');
+    const token = getValidToken();
     if (!token) return;
 
     try {
@@ -230,7 +242,7 @@ export const useCartStore = create<CartState>((set, get) => ({
     });
 
     // 3. Sync to backend if authenticated
-    const token = localStorage.getItem('medicare_token');
+    const token = getValidToken();
     if (token) {
       try {
         const idToSend = product?._id || product?.slug || identifier;
@@ -274,7 +286,7 @@ export const useCartStore = create<CartState>((set, get) => ({
     const updatedSummary = saveToStorage(currentItems);
     set({ items: currentItems, summary: updatedSummary });
 
-    const token = localStorage.getItem('medicare_token');
+    const token = getValidToken();
     if (token) {
       try {
         await api.patch(`/cart/items/${medicineId}`, { quantity });
@@ -294,7 +306,7 @@ export const useCartStore = create<CartState>((set, get) => ({
     const updatedSummary = saveToStorage(currentItems);
     set({ items: currentItems, summary: updatedSummary });
 
-    const token = localStorage.getItem('medicare_token');
+    const token = getValidToken();
     if (token) {
       try {
         await api.delete(`/cart/items/${medicineId}`);
@@ -312,7 +324,7 @@ export const useCartStore = create<CartState>((set, get) => ({
     }
     set({ items: [], summary: initialSummary });
 
-    const token = localStorage.getItem('medicare_token');
+    const token = getValidToken();
     if (token) {
       try {
         await api.delete('/cart');

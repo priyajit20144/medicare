@@ -6,13 +6,16 @@ import { api } from '../../api/client';
 import { Notification } from '../../types';
 import { LoadingState } from '../../components/common/LoadingState';
 import { EmptyState } from '../../components/common/EmptyState';
+import { useAuthStore } from '../../store/authStore';
 
 export const UserNotificationsPage: React.FC = () => {
   const queryClient = useQueryClient();
+  const { isAuthenticated, user } = useAuthStore();
 
   const { data: response, isLoading } = useQuery({
     queryKey: ['notifications'],
     queryFn: () => api.get<{ notifications: Notification[]; unreadCount: number }>('/notifications'),
+    enabled: !!isAuthenticated && !!user,
   });
 
   const markReadMutation = useMutation({

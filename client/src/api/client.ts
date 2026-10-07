@@ -19,6 +19,12 @@ export class ApiError extends Error {
   }
 }
 
+let onUnauthorizedCallback: (() => void) | null = null;
+
+export function registerUnauthorizedHandler(callback: () => void) {
+  onUnauthorizedCallback = callback;
+}
+
 async function request<T = any>(
   endpoint: string,
   options: RequestInit = {}
@@ -33,7 +39,7 @@ async function request<T = any>(
     (headers as Record<string, string>)['Content-Type'] = 'application/json';
   }
 
-  if (token) {
+  if (token && token !== 'undefined' && token !== 'null' && token.trim() !== '') {
     (headers as Record<string, string>)['Authorization'] = `Bearer ${token}`;
   }
 
@@ -48,6 +54,21 @@ async function request<T = any>(
   const data = await response.json().catch(() => null);
 
   if (!response.ok) {
+    if (response.status === 401) {
+      const isAuthExempt =
+        normalizedEndpoint.startsWith('/auth/login') ||
+        normalizedEndpoint.startsWith('/auth/register') ||
+        normalizedEndpoint.startsWith('/auth/forgot-password') ||
+        normalizedEndpoint.startsWith('/auth/reset-password');
+
+      if (!isAuthExempt && token) {
+        localStorage.removeItem('medicare_token');
+        if (onUnauthorizedCallback) {
+          onUnauthorizedCallback();
+        }
+      }
+    }
+
     let errorMsg = data?.message || `Request failed with status ${response.status}`;
     if (data?.errors && Array.isArray(data.errors) && data.errors.length > 0) {
       const detailedErrors = data.errors.map((e: any) => e.message || e).filter(Boolean);

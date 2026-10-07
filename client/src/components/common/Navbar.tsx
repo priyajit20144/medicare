@@ -37,7 +37,7 @@ export const Navbar: React.FC = () => {
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [unreadCount, setUnreadCount] = useState(3);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   const userMenuRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -87,19 +87,24 @@ export const Navbar: React.FC = () => {
 
   // Fetch unread notifications
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && user) {
       api.get('/notifications')
         .then((res) => {
           if (res && res.unreadCount !== undefined) {
             setUnreadCount(res.unreadCount);
           }
         })
-        .catch(() => {});
+        .catch(() => {
+          setUnreadCount(0);
+        });
+    } else {
+      setUnreadCount(0);
     }
-  }, [isAuthenticated, location.pathname]);
+  }, [isAuthenticated, user, location.pathname]);
 
   const handleLogout = () => {
     logout();
+    setUnreadCount(0);
     setUserMenuOpen(false);
     navigate('/');
   };
@@ -263,7 +268,7 @@ export const Navbar: React.FC = () => {
               aria-label="Notifications"
             >
               <Bell className="w-5 h-5 text-slate-700 hover:text-[#0d9488]" />
-              {unreadCount > 0 && (
+              {isAuthenticated && unreadCount > 0 && (
                 <span className="absolute top-1 right-1 w-4 h-4 bg-[#ef4444] text-white text-[9px] font-bold rounded-full flex items-center justify-center ring-2 ring-white">
                   {unreadCount}
                 </span>

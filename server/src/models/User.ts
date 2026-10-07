@@ -13,6 +13,8 @@ export interface IUser extends Document {
   avatar?: string;
   isEmailVerified: boolean;
   isActive: boolean;
+  passwordResetToken?: string;
+  passwordResetExpiresAt?: Date;
   dateOfBirth?: Date;
   gender?: 'MALE' | 'FEMALE' | 'OTHER';
   bloodGroup?: string;
@@ -36,6 +38,8 @@ const UserSchema = new Schema<IUser>(
     avatar: { type: String },
     isEmailVerified: { type: Boolean, default: true },
     isActive: { type: Boolean, default: true, index: true },
+    passwordResetToken: { type: String, select: false },
+    passwordResetExpiresAt: { type: Date, select: false },
     dateOfBirth: { type: Date },
     gender: { type: String, enum: ['MALE', 'FEMALE', 'OTHER'] },
     bloodGroup: { type: String, trim: true },

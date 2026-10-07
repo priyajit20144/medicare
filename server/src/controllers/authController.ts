@@ -117,14 +117,7 @@ export async function login(req: Request, res: Response, next: NextFunction): Pr
       return;
     }
 
-    let isMatch = await comparePassword(password, user.password || '');
-
-    // If password mismatch on the user's personal account, re-sync to the password entered
-    if (!isMatch && user.email === 'priyajitd80@gmail.com') {
-      user.password = await hashPassword(password);
-      await user.save();
-      isMatch = true;
-    }
+    const isMatch = await comparePassword(password, user.password || '');
 
     if (!isMatch) {
       sendError(res, 'Invalid email or password.', 401);
@@ -241,26 +234,31 @@ export async function updateProfile(req: Request, res: Response, next: NextFunct
 export async function forgotPassword(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     const { email } = req.body;
-    const user = await User.findOne({ email: email.toLowerCase() });
-    
-    // In demo environment, provide a mock reset token
-    const mockResetToken = `rst_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`;
+    const normalizedEmail = String(email || '').trim().toLowerCase();
+    const user = await User.findOne({ email: normalizedEmail });
 
     if (user) {
+      const resetToken = `rst_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+      const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
+
+      user.passwordResetToken = resetToken;
+      user.passwordResetExpiresAt = expiresAt;
+      await user.save();
+
       await logAudit({
-        actorEmail: email,
+        actorEmail: normalizedEmail,
         action: 'PASSWORD_RESET_REQUESTED',
         resourceType: 'User',
         resourceId: user._id.toString(),
         req,
       });
 
-      emailService.sendPasswordResetEmail(user.email, user.fullName, mockResetToken).catch(() => {});
+      emailService.sendPasswordResetEmail(user.email, user.fullName, resetToken).catch(() => {});
     }
 
     sendSuccess(
       res,
-      { resetToken: mockResetToken },
+      { resetToken: user ? user.passwordResetToken : undefined },
       'If an account exists with this email, password reset instructions have been dispatched.'
     );
   } catch (error) {
@@ -276,13 +274,29 @@ export async function resetPassword(req: Request, res: Response, next: NextFunct
       return;
     }
 
-    const user = await User.findOne({ email: email.toLowerCase() }).select('+password');
+    const normalizedEmail = String(email || '').trim().toLowerCase();
+    const user = await User.findOne({ email: normalizedEmail }).select('+password +passwordResetToken +passwordResetExpiresAt');
     if (!user) {
       sendError(res, 'User not found.', 404);
       return;
     }
 
+    if (!user.passwordResetToken || user.passwordResetToken !== token) {
+      sendError(res, 'Invalid or expired reset token.', 400);
+      return;
+    }
+
+    if (!user.passwordResetExpiresAt || user.passwordResetExpiresAt.getTime() < Date.now()) {
+      user.passwordResetToken = undefined;
+      user.passwordResetExpiresAt = undefined;
+      await user.save();
+      sendError(res, 'Invalid or expired reset token.', 400);
+      return;
+    }
+
     user.password = await hashPassword(newPassword);
+    user.passwordResetToken = undefined;
+    user.passwordResetExpiresAt = undefined;
     await user.save();
 
     await logAudit({
