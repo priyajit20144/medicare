@@ -29,13 +29,11 @@ import {
   ThermometerSnowflake,
   UserCheck,
   Truck,
-  Play,
 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../api/client';
 import { Medicine, Doctor, HealthCheckupPackage } from '../types';
 import { useCartStore } from '../store/cartStore';
-import { useIntroStore } from '../store/introStore';
 import { HealthcareDisclaimer } from '../components/common/HealthcareDisclaimer';
 import { MedicineSection } from '../components/medicines/MedicineSection';
 import { GRID_MEDICINES, TRENDING_PRODUCTS } from '../components/medicines/medicineData';
@@ -267,7 +265,6 @@ export const HomePage: React.FC = () => {
 
   const navigate = useNavigate();
   const { addToCart } = useCartStore();
-  const { playIntro, autoPlayOnVisit, toggleAutoPlayOnVisit } = useIntroStore();
 
   // Fetch featured medicines with static fallback
   const { data: medicinesData } = useQuery({
@@ -493,7 +490,7 @@ export const HomePage: React.FC = () => {
             {/* Left Column: Headline, Description & Tabbed Search Hub */}
             <div className="lg:col-span-7 space-y-5 sm:space-y-7">
               
-              {/* Trust Badge & Watch Intro Action */}
+              {/* Trust Badge */}
               <div className="flex flex-wrap items-center gap-2">
                 <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-100/90 border border-emerald-300/70 text-emerald-900 text-xs font-bold shadow-sm backdrop-blur-sm">
                   <span className="flex h-2 w-2 relative">
@@ -502,17 +499,6 @@ export const HomePage: React.FC = () => {
                   </span>
                   <span className="tracking-wide">HIPAA & FDA Compliant Healthcare Ecosystem</span>
                 </div>
-
-                <button
-                  type="button"
-                  id="home-badge-watch-intro"
-                  onClick={playIntro}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-900 hover:bg-[#0d9488] text-white text-xs font-bold shadow-sm transition group"
-                  title="Watch Medicare Platform Intro Animation"
-                >
-                  <Play className="w-3 h-3 fill-current text-emerald-400 group-hover:scale-110 transition-transform" />
-                  <span>Watch Intro ▶</span>
-                </button>
               </div>
 
               {/* Main Headline */}
@@ -706,16 +692,6 @@ export const HomePage: React.FC = () => {
                   <span>Upload Rx</span>
                 </Link>
 
-                <button
-                  type="button"
-                  id="home-cta-intro-btn"
-                  onClick={playIntro}
-                  className="min-h-[44px] px-5 sm:px-6 py-3 bg-slate-900 hover:bg-[#0d9488] text-white font-extrabold text-xs sm:text-sm rounded-xl sm:rounded-2xl transition shadow-md flex items-center justify-center gap-2 group flex-1 sm:flex-initial"
-                  title="Watch Platform Intro Animation"
-                >
-                  <Sparkles className="w-4 h-4 text-emerald-400 animate-pulse" />
-                  <span>Platform Intro</span>
-                </button>
               </div>
             </div>
 
@@ -1263,68 +1239,7 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* 12. INTERACTIVE PLATFORM INTRO & NEXT VISIT TOUR CARD */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full" id="intro">
-        <ScrollReveal effect="fade-up">
-          <div className="bg-gradient-to-br from-slate-900 via-slate-950 to-teal-950 rounded-2xl sm:rounded-3xl p-6 sm:p-10 text-white shadow-2xl border border-slate-800 relative overflow-hidden">
-            {/* Ambient Glow */}
-            <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-emerald-500/10 blur-3xl pointer-events-none" />
-
-            <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 sm:gap-8">
-              <div className="max-w-xl space-y-3">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold border border-emerald-500/30">
-                  <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>Interactive Platform Intro</span>
-                </div>
-
-                <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-                  Experience the Medicare Intro Animation
-                </h3>
-
-                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                  Watch our real-time 256-bit encrypted ECG heartbeat monitor, cold-chain formulary verification, and board-certified clinical review sequence in action.
-                </p>
-
-                {/* Next Time Preference Toggle (User Request) */}
-                <div className="pt-2">
-                  <label className="inline-flex items-center gap-3 p-3 rounded-2xl bg-white/5 border border-white/10 hover:border-emerald-400/40 cursor-pointer select-none transition group">
-                    <input
-                      type="checkbox"
-                      id="home-intro-autoplay-toggle"
-                      checked={autoPlayOnVisit}
-                      onChange={() => toggleAutoPlayOnVisit()}
-                      className="w-4 h-4 rounded text-emerald-500 bg-slate-950 border-slate-700 focus:ring-emerald-500 cursor-pointer accent-emerald-500"
-                    />
-                    <span className="text-xs font-semibold text-slate-200 group-hover:text-white">
-                      Show intro animation automatically on my next visit
-                    </span>
-                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold ml-2 ${
-                      autoPlayOnVisit ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' : 'bg-slate-800 text-slate-400'
-                    }`}>
-                      {autoPlayOnVisit ? 'Enabled ✓' : 'Disabled'}
-                    </span>
-                  </label>
-                </div>
-              </div>
-
-              {/* Action Button */}
-              <div className="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto flex-shrink-0">
-                <button
-                  type="button"
-                  id="home-play-intro-section-btn"
-                  onClick={playIntro}
-                  className="w-full sm:w-auto min-h-[48px] px-7 py-3.5 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-xs sm:text-sm rounded-2xl transition shadow-xl shadow-emerald-500/25 flex items-center justify-center gap-2.5 group"
-                >
-                  <Play className="w-4 h-4 fill-current group-hover:scale-110 transition-transform" />
-                  <span>Play Intro Animation Now</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </ScrollReveal>
-      </section>
-
-      {/* 13. FREQUENTLY ASKED QUESTIONS (ACCORDION) */}
+      {/* FREQUENTLY ASKED QUESTIONS (ACCORDION) */}
       <section id="faq-hub" className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <ScrollReveal effect="fade-up">
           <div className="text-center mb-8 sm:mb-10 space-y-1.5">

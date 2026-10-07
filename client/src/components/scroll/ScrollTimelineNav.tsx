@@ -13,7 +13,6 @@ import {
   ChevronLeft,
   Sparkles,
   FileCheck,
-  Play,
 } from 'lucide-react';
 
 export interface SectionTarget {
@@ -32,7 +31,6 @@ const DEFAULT_SECTIONS: SectionTarget[] = [
   { id: 'checkups-hub', label: 'Health Checkups', shortLabel: 'Checkups', icon: Activity },
   { id: 'premium-care', label: 'Medicare VIP Club', shortLabel: 'VIP Club', icon: Crown },
   { id: 'reviews-hub', label: 'Patient Reviews', shortLabel: 'Reviews', icon: Star },
-  { id: 'intro', label: 'Interactive Tour', shortLabel: 'Tour', icon: Play },
   { id: 'faq-hub', label: 'Questions & Answers', shortLabel: 'FAQ', icon: HelpCircle },
 ];
 
