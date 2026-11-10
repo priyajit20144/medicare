@@ -59,6 +59,7 @@ async function request<T = any>(
         normalizedEndpoint.startsWith('/auth/login') ||
         normalizedEndpoint.startsWith('/auth/register') ||
         normalizedEndpoint.startsWith('/auth/forgot-password') ||
+        normalizedEndpoint.startsWith('/auth/verify-reset-otp') ||
         normalizedEndpoint.startsWith('/auth/reset-password');
 
       if (!isAuthExempt && token) {

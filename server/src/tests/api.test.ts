@@ -387,4 +387,53 @@ describe('Medicare Backend Core Tests', () => {
     expect(res.body.data.doctors).toHaveLength(1);
     expect(res.body.data.stats.totalDoctors).toBe(1);
   });
+
+  it('POST /api/auth/forgot-password dispatches 6-digit OTP code', async () => {
+    vi.spyOn(User, 'findOne').mockResolvedValueOnce({
+      _id: '60f7b1b2f1a2b3c4d5e6f799',
+      fullName: 'John Patient',
+      email: 'john@medicare.health',
+      save: vi.fn().mockResolvedValue(true),
+    } as any);
+
+    const res = await request(app)
+      .post('/api/auth/forgot-password')
+      .send({ email: 'john@medicare.health' });
+
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe(true);
+    expect(res.body.message).toContain('verification code');
+  });
+
+  it('POST /api/auth/forgot-password fails with invalid email format', async () => {
+    const res = await request(app)
+      .post('/api/auth/forgot-password')
+      .send({ email: 'not-an-email' });
+
+    expect(res.status).toBe(400);
+    expect(res.body.success).toBe(false);
+  });
+
+  it('POST /api/auth/verify-reset-otp validates 6-digit OTP code', async () => {
+    const mockUser = {
+      _id: '60f7b1b2f1a2b3c4d5e6f799',
+      email: 'john@medicare.health',
+      passwordResetOtp: '482915',
+      passwordResetOtpExpiresAt: new Date(Date.now() + 15 * 60 * 1000),
+      passwordResetOtpAttempts: 0,
+      save: vi.fn().mockResolvedValue(true),
+    };
+
+    vi.spyOn(User, 'findOne').mockReturnValue({
+      select: vi.fn().mockResolvedValueOnce(mockUser),
+    } as any);
+
+    const res = await request(app)
+      .post('/api/auth/verify-reset-otp')
+      .send({ email: 'john@medicare.health', otp: '482915' });
+
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe(true);
+    expect(res.body.data.valid).toBe(true);
+  });
 });

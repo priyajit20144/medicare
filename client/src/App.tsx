@@ -115,10 +115,13 @@ export const App: React.FC = () => {
             />
 
             {/* Auth Routes */}
-            <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
-            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           </Route>
+
+          {/* Dedicated Full-Screen Auth Pages (Matches Brand Wireframe Layout) */}
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password" element={<ForgotPasswordPage />} />
 
           {/* User / Patient Protected Portal (DashboardLayout) */}
           <Route

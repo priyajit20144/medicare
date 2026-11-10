@@ -339,7 +339,7 @@ class EmailService {
   // ===========================================================================
   public async sendPasswordResetEmail(to: string, fullName: string, resetToken: string): Promise<any> {
     const frontendUrl = process.env.FRONTEND_URL || ENV.FRONTEND_URL;
-    const resetUrl = `${frontendUrl}/reset-password?token=${resetToken}&email=${encodeURIComponent(to)}`;
+    const resetUrl = `${frontendUrl}/forgot-password?token=${resetToken}&email=${encodeURIComponent(to)}`;
 
     const html = this.wrapTemplate(
       'Reset Your Medicare Password',
@@ -349,7 +349,7 @@ class EmailService {
         <p>We received a request to reset the password for your Medicare account. Click the button below to choose a new secure password:</p>
         <div class="card" style="text-align: center;">
           <a href="${resetUrl}" class="button">Reset My Password</a>
-          <p style="margin: 16px 0 0 0; font-size: 12px; color: #64748b;">This link is valid for 60 minutes.</p>
+          <p style="margin: 16px 0 0 0; font-size: 12px; color: #64748b;">This link is valid for 15 minutes.</p>
         </div>
         <p style="font-size: 13px; color: #64748b;">If you didn't request a password reset, you can safely ignore this email. Your current password remains unchanged.</p>
       `
@@ -359,6 +359,45 @@ class EmailService {
       to,
       subject: 'Password Reset Request — Medicare Security',
       html,
+    });
+  }
+
+  /**
+   * Send 6-Digit One-Time Password (OTP) for password recovery
+   */
+  public async sendPasswordResetOtpEmail(to: string, fullName: string, otpCode: string): Promise<any> {
+    const html = this.wrapTemplate(
+      'Password Reset Verification Code',
+      `
+        <h2>Password Reset Verification Code 🔐</h2>
+        <p>Hello <strong>${fullName || 'Patient'}</strong>,</p>
+        <p>We received a request to reset the password for your Medicare clinical account. Use the 6-digit verification code below to authorize this password change:</p>
+        
+        <div class="card" style="text-align: center; background: #f0fdf4; border: 2px dashed #0d9488; padding: 26px 20px; border-radius: 16px; margin: 24px 0;">
+          <p style="margin: 0 0 8px 0; font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; color: #0f766e; font-weight: 800;">Your One-Time Password (OTP)</p>
+          <div style="font-size: 38px; font-weight: 900; letter-spacing: 10px; color: #0d9488; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', monospace; padding: 8px 0;">
+            ${otpCode}
+          </div>
+          <p style="margin: 8px 0 0 0; font-size: 12px; color: #64748b;">⏱️ This verification code is valid for <strong>15 minutes</strong>.</p>
+        </div>
+
+        <div class="card-alert">
+          <p style="margin: 0; font-size: 13px; color: #9f1239;">
+            <strong>Security Alert:</strong> Never share this code with anyone. Medicare clinical staff will never request your OTP code or password via phone or message.
+          </p>
+        </div>
+
+        <p style="font-size: 13px; color: #64748b; margin-top: 20px;">
+          If you did not request a password reset, you can safely ignore this email. Your current password remains secure and unchanged.
+        </p>
+      `
+    );
+
+    return this.sendMail({
+      to,
+      subject: `[${otpCode}] Your Medicare Password Reset Code`,
+      html,
+      text: `Hello ${fullName || 'Patient'},\n\nYour Medicare password reset code is: ${otpCode}\nThis code is valid for 15 minutes.\n\nIf you did not request this, please ignore this email.`,
     });
   }
 

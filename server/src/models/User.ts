@@ -15,6 +15,9 @@ export interface IUser extends Document {
   isActive: boolean;
   passwordResetToken?: string;
   passwordResetExpiresAt?: Date;
+  passwordResetOtp?: string;
+  passwordResetOtpExpiresAt?: Date;
+  passwordResetOtpAttempts?: number;
   dateOfBirth?: Date;
   gender?: 'MALE' | 'FEMALE' | 'OTHER';
   bloodGroup?: string;
@@ -40,6 +43,9 @@ const UserSchema = new Schema<IUser>(
     isActive: { type: Boolean, default: true, index: true },
     passwordResetToken: { type: String, select: false },
     passwordResetExpiresAt: { type: Date, select: false },
+    passwordResetOtp: { type: String, select: false },
+    passwordResetOtpExpiresAt: { type: Date, select: false },
+    passwordResetOtpAttempts: { type: Number, default: 0, select: false },
     dateOfBirth: { type: Date },
     gender: { type: String, enum: ['MALE', 'FEMALE', 'OTHER'] },
     bloodGroup: { type: String, trim: true },

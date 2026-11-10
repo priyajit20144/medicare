@@ -37,10 +37,18 @@ export const forgotPasswordSchema = z.object({
   }),
 });
 
+export const verifyResetOtpSchema = z.object({
+  body: z.object({
+    email: z.string().email('Please enter a valid email address'),
+    otp: z.string().min(4, 'Verification code must be at least 4 digits'),
+  }),
+});
+
 export const resetPasswordSchema = z.object({
   body: z.object({
     email: z.string().email('Please enter a valid email address'),
-    token: z.string().min(1, 'Reset token is required'),
+    token: z.string().optional(),
+    otp: z.string().optional(),
     newPassword: z.string().min(6, 'Password must be at least 6 characters'),
   }),
 });

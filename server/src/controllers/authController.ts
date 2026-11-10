@@ -238,28 +238,114 @@ export async function forgotPassword(req: Request, res: Response, next: NextFunc
     const user = await User.findOne({ email: normalizedEmail });
 
     if (user) {
-      const resetToken = `rst_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
-      const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
+      // Generate a secure 6-digit numeric OTP
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+      const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes validity
 
-      user.passwordResetToken = resetToken;
+      user.passwordResetOtp = otp;
+      user.passwordResetOtpExpiresAt = expiresAt;
+      user.passwordResetOtpAttempts = 0;
+
+      // Keep token in sync for fallback compatibility
+      user.passwordResetToken = otp;
       user.passwordResetExpiresAt = expiresAt;
       await user.save();
 
       await logAudit({
         actorEmail: normalizedEmail,
-        action: 'PASSWORD_RESET_REQUESTED',
+        action: 'PASSWORD_RESET_OTP_REQUESTED',
         resourceType: 'User',
         resourceId: user._id.toString(),
         req,
       });
 
-      emailService.sendPasswordResetEmail(user.email, user.fullName, resetToken).catch(() => {});
+      // Dispatch 6-digit OTP email to user's registered valid email address via Brevo SMTP engine
+      emailService
+        .sendPasswordResetOtpEmail(user.email, user.fullName, otp)
+        .then((result) => {
+          console.log(`[Auth] Password reset OTP dispatched to ${user.email}. MessageId: ${result?.messageId || 'Queued'}`);
+        })
+        .catch((err) => {
+          console.error(`[Auth] Failed to dispatch password reset OTP:`, err.message);
+        });
     }
 
     sendSuccess(
       res,
-      { resetToken: user ? user.passwordResetToken : undefined },
-      'If an account exists with this email, password reset instructions have been dispatched.'
+      {
+        email: normalizedEmail,
+        // In development mode, provide OTP hint in payload for instantaneous developer testing
+        ...(process.env.NODE_ENV === 'development' && user ? { devOtpHint: user.passwordResetOtp } : {}),
+      },
+      'If an account exists with this email, a 6-digit verification code (OTP) has been dispatched to your inbox.'
+    );
+  } catch (error) {
+    next(error);
+  }
+}
+
+/**
+ * Validates a 6-digit OTP code before proceeding to password change
+ */
+export async function verifyResetOtp(req: Request, res: Response, next: NextFunction): Promise<void> {
+  try {
+    const { email, otp } = req.body;
+    const normalizedEmail = String(email || '').trim().toLowerCase();
+    const cleanOtp = String(otp || '').trim();
+
+    if (!cleanOtp) {
+      sendError(res, '6-digit verification code is required.', 400);
+      return;
+    }
+
+    const user = await User.findOne({ email: normalizedEmail }).select(
+      '+passwordResetOtp +passwordResetOtpExpiresAt +passwordResetOtpAttempts +passwordResetToken +passwordResetExpiresAt'
+    );
+
+    if (!user) {
+      sendError(res, 'Invalid verification code or email address.', 400);
+      return;
+    }
+
+    // Rate-limiting / brute force protection (max 5 invalid attempts per code)
+    const attempts = (user.passwordResetOtpAttempts || 0) + 1;
+    user.passwordResetOtpAttempts = attempts;
+
+    if (attempts > 5) {
+      user.passwordResetOtp = undefined;
+      user.passwordResetOtpExpiresAt = undefined;
+      user.passwordResetToken = undefined;
+      user.passwordResetExpiresAt = undefined;
+      await user.save();
+      sendError(res, 'Too many invalid attempts. Please request a fresh verification code.', 429);
+      return;
+    }
+
+    const validCode = user.passwordResetOtp || user.passwordResetToken;
+    const expiresAt = user.passwordResetOtpExpiresAt || user.passwordResetExpiresAt;
+
+    if (!validCode || validCode !== cleanOtp) {
+      await user.save();
+      sendError(res, 'Invalid verification code. Please check your inbox and try again.', 400);
+      return;
+    }
+
+    if (!expiresAt || expiresAt.getTime() < Date.now()) {
+      user.passwordResetOtp = undefined;
+      user.passwordResetOtpExpiresAt = undefined;
+      user.passwordResetToken = undefined;
+      user.passwordResetExpiresAt = undefined;
+      await user.save();
+      sendError(res, 'Verification code has expired. Please request a new code.', 400);
+      return;
+    }
+
+    await user.save();
+
+    sendSuccess(
+      res,
+      { valid: true },
+      'Verification code confirmed. You may now enter your new password.'
     );
   } catch (error) {
     next(error);
@@ -268,33 +354,52 @@ export async function forgotPassword(req: Request, res: Response, next: NextFunc
 
 export async function resetPassword(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
-    const { email, token, newPassword } = req.body;
-    if (!token) {
-      sendError(res, 'Invalid or expired reset token.', 400);
+    const { email, token, otp, newPassword } = req.body;
+    const verificationCode = String(otp || token || '').trim();
+
+    if (!verificationCode) {
+      sendError(res, 'Verification code (OTP) is required.', 400);
+      return;
+    }
+
+    if (!newPassword || newPassword.length < 6) {
+      sendError(res, 'Password must be at least 6 characters long.', 400);
       return;
     }
 
     const normalizedEmail = String(email || '').trim().toLowerCase();
-    const user = await User.findOne({ email: normalizedEmail }).select('+password +passwordResetToken +passwordResetExpiresAt');
+    const user = await User.findOne({ email: normalizedEmail }).select(
+      '+password +passwordResetToken +passwordResetExpiresAt +passwordResetOtp +passwordResetOtpExpiresAt'
+    );
+
     if (!user) {
-      sendError(res, 'User not found.', 404);
+      sendError(res, 'Account not found.', 404);
       return;
     }
 
-    if (!user.passwordResetToken || user.passwordResetToken !== token) {
-      sendError(res, 'Invalid or expired reset token.', 400);
+    const validCode = user.passwordResetOtp || user.passwordResetToken;
+    const expiresAt = user.passwordResetOtpExpiresAt || user.passwordResetExpiresAt;
+
+    if (!validCode || (validCode !== verificationCode && user.passwordResetToken !== verificationCode)) {
+      sendError(res, 'Invalid verification code. Please check your email and try again.', 400);
       return;
     }
 
-    if (!user.passwordResetExpiresAt || user.passwordResetExpiresAt.getTime() < Date.now()) {
+    if (!expiresAt || expiresAt.getTime() < Date.now()) {
+      user.passwordResetOtp = undefined;
+      user.passwordResetOtpExpiresAt = undefined;
       user.passwordResetToken = undefined;
       user.passwordResetExpiresAt = undefined;
       await user.save();
-      sendError(res, 'Invalid or expired reset token.', 400);
+      sendError(res, 'Verification code has expired. Please request a fresh OTP.', 400);
       return;
     }
 
+    // Set new hashed password & clear reset OTP fields
     user.password = await hashPassword(newPassword);
+    user.passwordResetOtp = undefined;
+    user.passwordResetOtpExpiresAt = undefined;
+    user.passwordResetOtpAttempts = 0;
     user.passwordResetToken = undefined;
     user.passwordResetExpiresAt = undefined;
     await user.save();
@@ -309,6 +414,7 @@ export async function resetPassword(req: Request, res: Response, next: NextFunct
       req,
     });
 
+    // Send confirmation email
     emailService.sendPasswordChangedEmail(user.email, user.fullName).catch(() => {});
 
     sendSuccess(res, null, 'Password has been updated successfully. Please log in with your new password.');
