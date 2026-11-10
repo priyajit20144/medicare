@@ -18,6 +18,7 @@ import { api } from '../../api/client';
 import { useAuthStore } from '../../store/authStore';
 import { StatusBadge } from '../../components/common/StatusBadge';
 import { LoadingState } from '../../components/common/LoadingState';
+import { QUICK_HEALTH_SERVICES } from '../../constants/quickServices';
 
 export const UserDashboardPage: React.FC = () => {
   const { user } = useAuthStore();
@@ -66,6 +67,35 @@ export const UserDashboardPage: React.FC = () => {
             <Calendar className="w-3.5 h-3.5" /> Book Doctor
           </Link>
         </div>
+      </div>
+
+      {/* Responsive Quick Healthcare Action Cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        {QUICK_HEALTH_SERVICES.map((service) => {
+          const ServiceIcon = service.icon;
+          return (
+            <Link
+              key={service.id}
+              to={service.route}
+              className="group p-4 bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md hover:border-emerald-500/80 hover:-translate-y-0.5 transition-all flex flex-col sm:flex-row items-center sm:items-start gap-3 text-center sm:text-left"
+            >
+              <div className="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center flex-shrink-0 group-hover:bg-emerald-600 group-hover:text-white transition-colors shadow-sm">
+                <ServiceIcon className="w-5 h-5" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="text-xs sm:text-sm font-extrabold text-slate-900 group-hover:text-emerald-700 transition-colors">
+                  {service.fullLabel}
+                </div>
+                <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-2">
+                  {service.description}
+                </p>
+                <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 mt-1.5">
+                  Open <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+                </span>
+              </div>
+            </Link>
+          );
+        })}
       </div>
 
       {/* Metric Stat Cards */}

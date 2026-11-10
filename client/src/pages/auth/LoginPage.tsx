@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import {
   HeartPulse,
@@ -8,6 +8,7 @@ import {
   Eye,
   EyeOff,
   LogIn,
+  LogOut,
   AlertCircle,
   Home,
   Pill,
@@ -17,8 +18,6 @@ import {
   Star,
   Info,
   ArrowRight,
-  ShoppingBag,
-  UserCheck,
   ShieldCheck,
   CheckCircle2,
   Headphones,
@@ -29,6 +28,13 @@ import {
 } from 'lucide-react';
 import { api } from '../../api/client';
 import { useAuthStore } from '../../store/authStore';
+import {
+  QUICK_HEALTH_SERVICES,
+  QuickHealthService,
+  getSafeReturnUrl,
+  getDefaultDashboardRoute,
+  findQuickServiceByRoute,
+} from '../../constants/quickServices';
 
 export const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -41,10 +47,16 @@ export const LoginPage: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showDemoLogins, setShowDemoLogins] = useState(false);
 
-  const { setAuth } = useAuthStore();
+  const emailInputRef = useRef<HTMLInputElement | null>(null);
+  const loginCardRef = useRef<HTMLDivElement | null>(null);
+
+  const { user, isAuthenticated, setAuth, logout } = useAuthStore();
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const returnUrl = searchParams.get('returnUrl') || '/user/dashboard';
+  const [searchParams, setSearchParams] = useSearchParams();
+  const returnUrl = getSafeReturnUrl(searchParams.get('returnUrl'));
+  const selectedService = findQuickServiceByRoute(
+    returnUrl !== '/user/dashboard' ? returnUrl : null
+  );
 
   // Load remembered email on mount
   useEffect(() => {
@@ -82,12 +94,9 @@ export const LoginPage: React.FC = () => {
 
       setAuth(res.user, res.token);
 
-      // Route according to user role if default returnUrl
+      // Route to selected quick option/returnUrl, or role-appropriate dashboard
       if (returnUrl === '/user/dashboard') {
-        if (res.user.role === 'ADMIN') navigate('/admin');
-        else if (res.user.role === 'PHARMACIST') navigate('/pharmacist');
-        else if (res.user.role === 'DOCTOR') navigate('/doctor');
-        else navigate('/user/dashboard');
+        navigate(getDefaultDashboardRoute(res.user?.role));
       } else {
         navigate(returnUrl);
       }
@@ -96,6 +105,29 @@ export const LoginPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleQuickServiceClick = (service: QuickHealthService) => {
+    if (isAuthenticated && user) {
+      navigate(service.route);
+      return;
+    }
+
+    setError('');
+    setSocialNotice(null);
+    setSearchParams({ returnUrl: service.route }, { replace: true });
+
+    // On mobile/tablet, smoothly scroll login card into view and focus email field
+    if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+      loginCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    setTimeout(() => {
+      emailInputRef.current?.focus();
+    }, 150);
+  };
+
+  const handleClearSelectedService = () => {
+    setSearchParams({}, { replace: true });
   };
 
   const handleSocialLogin = (provider: 'Google' | 'Microsoft') => {
@@ -323,29 +355,16 @@ export const LoginPage: React.FC = () => {
           </svg>
         </div>
 
-        {/* Doctor Portrait Illustration (Seamlessly centered on desktop screens) */}
-        <div className="hidden lg:block absolute left-[44%] xl:left-[45%] bottom-0 -translate-x-1/2 pointer-events-none select-none z-10 w-[300px] xl:w-[360px] max-h-[500px]">
-          <img
-            src="/images/doctor-hero.png"
-            alt="Friendly Professional Medicare Doctor"
-            className="w-full h-auto object-contain object-bottom drop-shadow-xl"
-            onError={(e) => {
-              // Graceful fallback if image is loading
-              (e.target as HTMLElement).style.display = 'none';
-            }}
-          />
-        </div>
-
-        {/* Main Content Container: Left Info & Right Login Card */}
+        {/* Main Content Container: Left Info, Center Doctor & Right Login Card */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-20">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-4 xl:gap-6 items-center">
             {/* ============================================================== */}
             {/* LEFT COLUMN: Hero Headlines, 4 Quick Features, Trust Badge      */}
             {/* ============================================================== */}
-            <div className="lg:col-span-7 xl:col-span-7 space-y-6 sm:space-y-8 max-w-xl lg:max-w-none">
+            <div className="lg:col-span-5 xl:col-span-5 space-y-5 sm:space-y-7 max-w-xl mx-auto lg:mx-0 w-full">
               {/* Headline */}
               <div>
-                <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-[1.12]">
+                <h1 className="text-3xl sm:text-4xl xl:text-[46px] font-black text-slate-900 tracking-tight leading-[1.12]">
                   Your Trusted <br />
                   <span className="text-emerald-600">Healthcare Partner</span>
                 </h1>
@@ -355,59 +374,95 @@ export const LoginPage: React.FC = () => {
                 </p>
               </div>
 
-              {/* 4 Feature Quick-Pills / Interactive Action Cards */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3.5 max-w-lg sm:max-w-xl">
-                {/* 1. Buy Medicines */}
-                <Link
-                  to="/medicines"
-                  className="bg-white/90 backdrop-blur-md rounded-2xl p-3 sm:p-3.5 border border-slate-200/80 shadow-sm hover:shadow-md hover:border-emerald-500/80 hover:-translate-y-0.5 transition-all text-center flex flex-col items-center justify-center gap-2 group cursor-pointer"
-                >
-                  <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-white transition-colors shadow-sm">
-                    <ShoppingBag className="w-5 h-5" />
-                  </div>
-                  <span className="text-xs font-bold text-slate-800 leading-tight">
-                    Buy <br className="hidden sm:block" /> Medicines
+              {/* 4 Responsive Auth-Aware Quick Healthcare Option Cards */}
+              <div className="space-y-2.5">
+                <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-wider px-0.5">
+                  <span className={isAuthenticated ? 'text-emerald-700' : 'text-slate-500'}>
+                    {isAuthenticated
+                      ? 'Instant Service Access (Unlocked)'
+                      : 'Choose a Service & Sign In'}
                   </span>
-                </Link>
+                  {!isAuthenticated && selectedService && (
+                    <button
+                      type="button"
+                      onClick={handleClearSelectedService}
+                      className="text-emerald-600 hover:text-emerald-700 font-bold normal-case tracking-normal underline"
+                    >
+                      Clear selection
+                    </button>
+                  )}
+                </div>
 
-                {/* 2. Book Doctors */}
-                <Link
-                  to="/doctors"
-                  className="bg-white/90 backdrop-blur-md rounded-2xl p-3 sm:p-3.5 border border-slate-200/80 shadow-sm hover:shadow-md hover:border-emerald-500/80 hover:-translate-y-0.5 transition-all text-center flex flex-col items-center justify-center gap-2 group cursor-pointer"
-                >
-                  <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-white transition-colors shadow-sm">
-                    <UserCheck className="w-5 h-5" />
-                  </div>
-                  <span className="text-xs font-bold text-slate-800 leading-tight">
-                    Book <br className="hidden sm:block" /> Doctors
-                  </span>
-                </Link>
+                <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4 gap-2.5 sm:gap-3">
+                  {QUICK_HEALTH_SERVICES.map((service) => {
+                    const ServiceIcon = service.icon;
+                    const isSelected = !isAuthenticated && selectedService?.id === service.id;
 
-                {/* 3. Upload Prescription */}
-                <Link
-                  to="/prescriptions/upload"
-                  className="bg-white/90 backdrop-blur-md rounded-2xl p-3 sm:p-3.5 border border-slate-200/80 shadow-sm hover:shadow-md hover:border-emerald-500/80 hover:-translate-y-0.5 transition-all text-center flex flex-col items-center justify-center gap-2 group cursor-pointer"
-                >
-                  <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-white transition-colors shadow-sm">
-                    <ShieldCheck className="w-5 h-5" />
-                  </div>
-                  <span className="text-xs font-bold text-slate-800 leading-tight">
-                    Upload <br className="hidden sm:block" /> Prescription
-                  </span>
-                </Link>
+                    return (
+                      <button
+                        key={service.id}
+                        type="button"
+                        onClick={() => handleQuickServiceClick(service)}
+                        aria-pressed={isSelected}
+                        className={`relative rounded-2xl p-3 sm:p-3.5 border transition-all text-center flex flex-col items-center justify-center gap-2 group cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
+                          isSelected
+                            ? 'bg-emerald-50/95 border-emerald-500 ring-2 ring-emerald-500/25 shadow-md -translate-y-0.5'
+                            : 'bg-white/95 backdrop-blur-md border-slate-200/80 shadow-sm hover:shadow-md hover:border-emerald-500/80 hover:-translate-y-0.5'
+                        }`}
+                      >
+                        {/* Auth Status Corner Micro-Indicator */}
+                        <span
+                          className={`absolute top-2 right-2 transition-opacity ${
+                            isAuthenticated
+                              ? 'opacity-100'
+                              : isSelected
+                                ? 'opacity-100 text-emerald-600'
+                                : 'opacity-35 group-hover:opacity-100 text-slate-400 group-hover:text-emerald-600'
+                          }`}
+                          title={
+                            isAuthenticated
+                              ? `Open ${service.fullLabel}`
+                              : `Sign in to open ${service.fullLabel}`
+                          }
+                        >
+                          {isAuthenticated ? (
+                            <span className="block w-2 h-2 rounded-full bg-emerald-500" />
+                          ) : isSelected ? (
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                          ) : (
+                            <Lock className="w-3 h-3" />
+                          )}
+                        </span>
 
-                {/* 4. Health Checkups */}
-                <Link
-                  to="/health-checkups"
-                  className="bg-white/90 backdrop-blur-md rounded-2xl p-3 sm:p-3.5 border border-slate-200/80 shadow-sm hover:shadow-md hover:border-emerald-500/80 hover:-translate-y-0.5 transition-all text-center flex flex-col items-center justify-center gap-2 group cursor-pointer"
-                >
-                  <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-white transition-colors shadow-sm">
-                    <HeartPulse className="w-5 h-5" />
-                  </div>
-                  <span className="text-xs font-bold text-slate-800 leading-tight">
-                    Health <br className="hidden sm:block" /> Checkups
-                  </span>
-                </Link>
+                        <div
+                          className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors shadow-sm ${
+                            isSelected
+                              ? 'bg-emerald-600 text-white'
+                              : 'bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white'
+                          }`}
+                        >
+                          <ServiceIcon className="w-5 h-5" />
+                        </div>
+
+                        <span className="text-xs font-bold text-slate-800 leading-tight">
+                          {service.titleLine1} <br className="hidden sm:block" /> {service.titleLine2}
+                        </span>
+
+                        <span
+                          className={`text-[10px] font-semibold leading-none transition-colors ${
+                            isAuthenticated
+                              ? 'text-emerald-600 opacity-85 group-hover:opacity-100'
+                              : isSelected
+                                ? 'text-emerald-700 font-bold'
+                                : 'text-slate-400 group-hover:text-emerald-600'
+                          }`}
+                        >
+                          {isAuthenticated ? 'Open →' : isSelected ? 'Sign in →' : 'Login required'}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
 
               {/* Safe & Secure Trust Card */}
@@ -430,7 +485,11 @@ export const LoginPage: React.FC = () => {
                 <span className="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0" />
                 <span>New to our healthcare platform?</span>
                 <Link
-                  to="/register"
+                  to={
+                    selectedService
+                      ? `/register?returnUrl=${encodeURIComponent(selectedService.route)}`
+                      : '/register'
+                  }
                   className="font-bold text-emerald-600 hover:text-emerald-700 hover:underline inline-flex items-center gap-1"
                 >
                   Sign Up here <ArrowRight className="w-3 h-3" />
@@ -439,9 +498,26 @@ export const LoginPage: React.FC = () => {
             </div>
 
             {/* ============================================================== */}
+            {/* CENTER COLUMN: Dedicated Non-Overlapping Doctor Illustration   */}
+            {/* ============================================================== */}
+            <div className="hidden lg:flex lg:col-span-2 xl:col-span-3 items-end justify-center self-end pointer-events-none select-none z-10 -mb-6 sm:-mb-10 lg:-mb-12">
+              <img
+                src="/images/doctor-hero.png"
+                alt="Friendly Professional Medicare Doctor"
+                className="w-full max-w-[230px] xl:max-w-[330px] h-auto object-contain object-bottom drop-shadow-xl"
+                onError={(e) => {
+                  (e.target as HTMLElement).style.display = 'none';
+                }}
+              />
+            </div>
+
+            {/* ============================================================== */}
             {/* RIGHT COLUMN: The Login Card                                   */}
             {/* ============================================================== */}
-            <div className="lg:col-span-5 xl:col-span-5 flex justify-center lg:justify-end">
+            <div
+              ref={loginCardRef}
+              className="lg:col-span-5 xl:col-span-4 flex justify-center lg:justify-end"
+            >
               <div className="w-full max-w-[440px] bg-white rounded-3xl shadow-2xl shadow-slate-300/40 border border-slate-100 p-6 sm:p-8 relative z-20">
                 {/* Card Header Brand Logo */}
                 <div className="flex flex-col items-center text-center">
@@ -458,9 +534,81 @@ export const LoginPage: React.FC = () => {
                     Welcome Back!
                   </h2>
                   <p className="text-xs sm:text-[13px] text-slate-500 mt-1">
-                    Sign in to access your healthcare dashboard
+                    {isAuthenticated && user
+                      ? `Signed in as ${user.fullName}`
+                      : 'Sign in to access your healthcare dashboard'}
                   </p>
                 </div>
+
+                {/* Active Logged-In Session Shortcut */}
+                {isAuthenticated && user && (
+                  <div className="mt-4 p-3.5 bg-emerald-50 border border-emerald-200 rounded-2xl space-y-3 animate-in fade-in duration-200">
+                    <div className="flex items-center gap-2.5 text-xs text-emerald-900">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                      <div className="min-w-0">
+                        <p className="font-bold truncate">Active Session: {user.email}</p>
+                        <p className="text-[11px] text-emerald-700">
+                          Click any healthcare card on the left or jump straight to your portal.
+                        </p>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          navigate(
+                            returnUrl !== '/user/dashboard'
+                              ? returnUrl
+                              : getDefaultDashboardRoute(user.role)
+                          )
+                        }
+                        className="py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm transition cursor-pointer"
+                      >
+                        <span>
+                          {selectedService ? `Open ${selectedService.titleLine2}` : 'Open Portal'}
+                        </span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={logout}
+                        className="py-2 px-3 rounded-xl bg-white hover:bg-slate-50 border border-emerald-200 text-slate-700 font-bold text-xs flex items-center justify-center gap-1.5 transition cursor-pointer"
+                      >
+                        <LogOut className="w-3.5 h-3.5 text-slate-500" />
+                        <span>Switch User</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Contextual Selected Service Redirect Notice */}
+                {!isAuthenticated && (selectedService || returnUrl !== '/user/dashboard') && (
+                  <div className="mt-4 p-3 bg-emerald-50/90 border border-emerald-200 text-emerald-900 text-xs rounded-xl flex items-center justify-between gap-2 animate-in fade-in duration-200">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0" />
+                      <div className="min-w-0">
+                        <p className="font-bold truncate">
+                          {selectedService
+                            ? `Sign in to open ${selectedService.fullLabel}`
+                            : 'Sign in required to continue'}
+                        </p>
+                        <p className="text-[10px] text-emerald-700 truncate">
+                          You will be redirected automatically after login
+                        </p>
+                      </div>
+                    </div>
+                    {selectedService && (
+                      <button
+                        type="button"
+                        onClick={handleClearSelectedService}
+                        className="p-1 text-emerald-600 hover:text-emerald-800 hover:bg-emerald-100 rounded-lg transition flex-shrink-0"
+                        aria-label="Clear selected service"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                  </div>
+                )}
 
                 {/* Feedback Alerts */}
                 {error && (
@@ -493,6 +641,7 @@ export const LoginPage: React.FC = () => {
                         <UserIcon className="w-4 h-4" />
                       </div>
                       <input
+                        ref={emailInputRef}
                         id="login-email-input"
                         type="email"
                         required
@@ -647,7 +796,11 @@ export const LoginPage: React.FC = () => {
                     </span>
                   </div>
                   <Link
-                    to="/register"
+                    to={
+                      returnUrl !== '/user/dashboard'
+                        ? `/register?returnUrl=${encodeURIComponent(returnUrl)}`
+                        : '/register'
+                    }
                     className="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-extrabold text-xs shadow-sm shadow-emerald-600/20 flex items-center gap-1 flex-shrink-0 transition-transform active:scale-95 whitespace-nowrap"
                   >
                     Sign Up <ArrowRight className="w-3 h-3" />

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { HeartPulse, Lock, Mail, User as UserIcon, Phone, AlertCircle, ArrowRight } from 'lucide-react';
 import { api } from '../../api/client';
 import { useAuthStore } from '../../store/authStore';
+import { getSafeReturnUrl, getDefaultDashboardRoute } from '../../constants/quickServices';
 
 export const RegisterPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -17,6 +18,8 @@ export const RegisterPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const { setAuth } = useAuthStore();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const returnUrl = getSafeReturnUrl(searchParams.get('returnUrl'));
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -30,7 +33,11 @@ export const RegisterPage: React.FC = () => {
     try {
       const res = await api.post<{ token: string; user: any }>('/auth/register', formData);
       setAuth(res.user, res.token);
-      navigate('/user/dashboard');
+      if (returnUrl === '/user/dashboard') {
+        navigate(getDefaultDashboardRoute(res.user?.role));
+      } else {
+        navigate(returnUrl);
+      }
     } catch (err: any) {
       setError(err.message || 'Registration failed. Please check your information.');
     } finally {
@@ -195,7 +202,14 @@ export const RegisterPage: React.FC = () => {
           <div className="text-center pt-2">
             <p className="text-xs text-slate-500">
               Already registered with Medicare?{' '}
-              <Link to="/login" className="text-emerald-600 font-bold hover:underline">
+              <Link
+                to={
+                  returnUrl !== '/user/dashboard'
+                    ? `/login?returnUrl=${encodeURIComponent(returnUrl)}`
+                    : '/login'
+                }
+                className="text-emerald-600 font-bold hover:underline"
+              >
                 Sign In
               </Link>
             </p>
