@@ -92,8 +92,9 @@ The application reads all configuration directly from the actual root `.env` fil
 NODE_ENV=development
 PORT=5000
 
-APP_URL=http://localhost:5173
-API_URL=http://localhost:5000
+# Administrator Credentials (Auto-seed on startup)
+ADMIN_EMAIL="admin@medicare.health"
+ADMIN_PASSWORD="AdminPassword123!"
 
 # MongoDB Atlas Database URI (Provided by User)
 MONGODB_URI="mongodb+srv://USERNAME:PASSWORD@YOUR_CLUSTER.mongodb.net/medicare"
@@ -102,28 +103,26 @@ MONGODB_URI="mongodb+srv://USERNAME:PASSWORD@YOUR_CLUSTER.mongodb.net/medicare"
 JWT_SECRET="REPLACE_WITH_YOUR_JWT_SECRET"
 JWT_EXPIRES_IN="7d"
 
-SESSION_SECRET="REPLACE_WITH_YOUR_SESSION_SECRET"
+# CORS & Application URLs
 CORS_ORIGIN="http://localhost:5173"
-
-STORAGE_PROVIDER="local"
-UPLOAD_DIR="./uploads"
-MAX_FILE_SIZE_MB=10
-
-PAYMENT_PROVIDER="mock"
-PAYMENT_SECRET=""
-
-EMAIL_PROVIDER=""
-EMAIL_API_KEY=""
-
 FRONTEND_URL="http://localhost:5173"
 VITE_API_URL="http://localhost:5000/api"
 
-# Auth0 API Settings (from Auth0 Dashboard)
-AUTH0_AUDIENCE="http://localhost:5000"
-AUTH0_API_ID="6abc42caa9ce5f0ef7176151"
-AUTH0_DOMAIN="YOUR_AUTH0_TENANT.us.auth0.com"
-AUTH0_ALGORITHM="RS256"
-AUTH0_TOKEN_LIFETIME=86400
+# File Upload Configuration
+UPLOAD_DIR="./uploads"
+MAX_FILE_SIZE_MB=10
+
+# Payment Provider
+PAYMENT_PROVIDER="mock"
+
+# SMTP / Email Service (Brevo SMTP Relay)
+SMTP_HOST="smtp-relay.brevo.com"
+SMTP_PORT=587
+SMTP_USER="YOUR_BREVO_LOGIN_EMAIL"
+SMTP_PASSWORD="YOUR_BREVO_SMTP_KEY"
+SMTP_FROM_EMAIL="noreply@medicare.health"
+SMTP_FROM_NAME="Medicare"
+# BREVO_API_KEY="xkeysib-..." # Optional: Only needed if using Brevo REST API instead of SMTP relay
 ```
 
 > **Security Mandate:** Never commit real credentials or live MongoDB Atlas connection strings to source control. Only server-side code has access to `MONGODB_URI` and `JWT_SECRET`.

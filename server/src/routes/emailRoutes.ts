@@ -23,7 +23,7 @@ router.get('/status', async (_req: Request, res: Response) => {
   const pass = process.env.SMTP_PASSWORD || ENV.SMTP_PASSWORD;
   const fromEmail = process.env.SMTP_FROM_EMAIL || ENV.SMTP_FROM_EMAIL;
   const fromName = process.env.SMTP_FROM_NAME || ENV.SMTP_FROM_NAME;
-  const mailoflyKey = process.env.MAILOFLY_API_KEY || ENV.MAILOFLY_API_KEY;
+  const brevoKey = process.env.BREVO_API_KEY || ENV.BREVO_API_KEY;
 
   const isPlaceholder =
     !host ||
@@ -31,12 +31,12 @@ router.get('/status', async (_req: Request, res: Response) => {
     !user ||
     user === 'your-smtp-username';
 
-  const isMailofly = host.includes('mailofly');
+  const isBrevo = host.includes('brevo') || host.includes('sendinblue');
 
   res.json({
     success: true,
     service: 'Medicare SMTP & Email API Service',
-    provider: isMailofly ? 'Mailofly' : (host ? 'Custom SMTP' : 'None'),
+    provider: isBrevo ? 'Brevo (Sendinblue)' : (host ? 'Custom SMTP' : 'None'),
     configured: !isPlaceholder,
     details: {
       host: host || 'Not configured',
@@ -46,7 +46,7 @@ router.get('/status', async (_req: Request, res: Response) => {
       fromName,
       username: user ? `${user.slice(0, 8)}...` : 'None',
       hasPassword: Boolean(pass && pass !== 'your-smtp-password'),
-      hasMailoflyApiKey: Boolean(mailoflyKey && mailoflyKey.startsWith('mf_live_')),
+      hasBrevoApiKey: Boolean(brevoKey && brevoKey.startsWith('xkeysib-')),
     },
   });
 });

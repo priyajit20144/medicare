@@ -83,33 +83,32 @@ class EmailService {
   }
 
   /**
-   * Verify SMTP / Mailofly connection with server
+   * Verify Brevo SMTP / API connection with server
    */
-  public async verifyConnection(): Promise<{ success: boolean; message: string; identities?: any[] }> {
-    const mailoflyKey = process.env.MAILOFLY_API_KEY || ENV.MAILOFLY_API_KEY;
-    if (mailoflyKey && mailoflyKey.startsWith('mf_live_')) {
+  public async verifyConnection(): Promise<{ success: boolean; message: string; account?: any }> {
+    const brevoKey = process.env.BREVO_API_KEY || ENV.BREVO_API_KEY;
+    if (brevoKey && brevoKey.startsWith('xkeysib-')) {
       try {
-        const idRes = await fetch('https://api.mailofly.com/identities', {
-          headers: { Authorization: `Bearer ${mailoflyKey}` },
+        const accRes = await fetch('https://api.brevo.com/v3/account', {
+          headers: { 'api-key': brevoKey, 'accept': 'application/json' },
         });
-        if (idRes.ok) {
-          const idData: any = await idRes.json().catch(() => ({ data: [] }));
-          const identities = idData.data || [];
+        if (accRes.ok) {
+          const accData: any = await accRes.json().catch(() => ({}));
           return {
             success: true,
-            message: `Mailofly REST API key authenticated successfully! (${identities.length} active identities configured)`,
-            identities,
+            message: `Brevo REST API authenticated successfully! (Account: ${accData.email || 'Active'})`,
+            account: accData,
           };
         } else {
           return {
             success: false,
-            message: `Mailofly API authentication error: HTTP ${idRes.status}`,
+            message: `Brevo API authentication error: HTTP ${accRes.status}`,
           };
         }
       } catch (err: any) {
         return {
           success: false,
-          message: `Mailofly API connection error: ${err.message}`,
+          message: `Brevo API connection error: ${err.message}`,
         };
       }
     }
@@ -118,7 +117,7 @@ class EmailService {
     if (!this.transporter || !this.isConfigured) {
       return {
         success: false,
-        message: 'SMTP is not configured with active credentials. Using development mock logger.',
+        message: 'Brevo SMTP is not configured with active credentials. Please check SMTP_HOST, SMTP_PORT, SMTP_USER, and SMTP_PASSWORD.',
       };
     }
 
@@ -126,18 +125,18 @@ class EmailService {
       await this.transporter.verify();
       return {
         success: true,
-        message: `SMTP connection established successfully to ${process.env.SMTP_HOST || ENV.SMTP_HOST}:${process.env.SMTP_PORT || ENV.SMTP_PORT}`,
+        message: `Brevo SMTP connection established successfully to ${process.env.SMTP_HOST || ENV.SMTP_HOST}:${process.env.SMTP_PORT || ENV.SMTP_PORT}`,
       };
     } catch (error: any) {
       return {
         success: false,
-        message: `SMTP verification failed: ${error.message || error}`,
+        message: `Brevo SMTP verification failed: ${error.message || error}`,
       };
     }
   }
 
   /**
-   * Send an email via Mailofly REST API or SMTP (with accurate delivery reporting)
+   * Send an email via Brevo REST API or Brevo SMTP Relay
    */
   public async sendMail(options: SendMailOptions): Promise<{ success: boolean; delivered: boolean; messageId?: string; error?: string; provider?: string }> {
     const fromEmail = process.env.SMTP_FROM_EMAIL || ENV.SMTP_FROM_EMAIL;
@@ -146,40 +145,43 @@ class EmailService {
 
     let lastError = '';
 
-    // 1. Attempt dispatch via Mailofly REST API if Key is present
-    const mailoflyKey = process.env.MAILOFLY_API_KEY || ENV.MAILOFLY_API_KEY;
-    if (mailoflyKey && mailoflyKey.startsWith('mf_live_')) {
+    // 1. Attempt dispatch via Brevo REST API if API Key is present (xkeysib-)
+    const brevoKey = process.env.BREVO_API_KEY || ENV.BREVO_API_KEY;
+    if (brevoKey && (brevoKey.startsWith('xkeysib-') || (!brevoKey.startsWith('xsmtpsib-') && brevoKey.length > 20))) {
       try {
-        const response = await fetch('https://api.mailofly.com/emails', {
+        const recipients = (Array.isArray(options.to) ? options.to : [options.to]).map((email) => ({ email }));
+        const response = await fetch('https://api.brevo.com/v3/smtp/email', {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${mailoflyKey}`,
+            'api-key': brevoKey,
             'Content-Type': 'application/json',
+            'accept': 'application/json',
           },
           body: JSON.stringify({
-            from: fromAddress,
-            to: Array.isArray(options.to) ? options.to : [options.to],
+            sender: { name: fromName, email: fromEmail },
+            to: recipients,
             subject: options.subject,
-            html: options.html,
-            text: options.text || options.html.replace(/<[^>]*>?/gm, ''),
+            htmlContent: options.html,
+            textContent: options.text || options.html.replace(/<[^>]*>?/gm, ''),
+            ...(options.replyTo ? { replyTo: { email: options.replyTo } } : {}),
           }),
         });
 
         const data: any = await response.json().catch(() => ({}));
         if (response.ok) {
-          console.log(`[EmailService] Dispatched via Mailofly REST API to ${options.to}. ID: ${data.id || data.messageId}`);
-          return { success: true, delivered: true, provider: 'Mailofly REST API', messageId: data.id || data.messageId };
+          console.log(`[EmailService] Dispatched via Brevo REST API to ${options.to}. ID: ${data.messageId}`);
+          return { success: true, delivered: true, provider: 'Brevo REST API', messageId: data.messageId };
         } else {
-          lastError = data.message || data.error || `HTTP ${response.status}`;
-          console.warn(`[EmailService] Mailofly REST API notice (${response.status}):`, lastError);
+          lastError = data.message || `HTTP ${response.status}`;
+          console.warn(`[EmailService] Brevo REST API notice (${response.status}):`, lastError);
         }
       } catch (err: any) {
         lastError = err.message;
-        console.warn(`[EmailService] Mailofly REST API network error:`, err.message);
+        console.warn(`[EmailService] Brevo REST API network error:`, err.message);
       }
     }
 
-    // 2. Dispatch via SMTP Transporter if configured
+    // 2. Dispatch via Brevo SMTP Transporter (relay)
     this.initTransporter();
     if (this.transporter && this.isConfigured) {
       try {
@@ -192,18 +194,18 @@ class EmailService {
           replyTo: options.replyTo || fromEmail,
         });
 
-        console.log(`[EmailService] Email sent successfully via SMTP to ${options.to}. MessageId: ${info.messageId}`);
-        return { success: true, delivered: true, provider: 'SMTP', messageId: info.messageId };
+        console.log(`[EmailService] Email sent successfully via Brevo SMTP to ${options.to}. MessageId: ${info.messageId}`);
+        return { success: true, delivered: true, provider: 'Brevo SMTP', messageId: info.messageId };
       } catch (error: any) {
         lastError = error.message;
-        console.error('[EmailService] SMTP send error:', error.message);
+        console.error('[EmailService] Brevo SMTP send error:', error.message);
       }
     }
 
-    // 3. If real dispatch could not be completed, clearly report the exact blocker
+    // 3. If real dispatch could not be completed, report the exact blocker
     const failureExplanation = lastError
-      ? `Email could not be delivered to original Gmail inbox yet. Provider response: "${lastError}".`
-      : 'Neither Mailofly API nor active SMTP credentials could establish a live mail connection.';
+      ? `Email could not be delivered yet. Provider response: "${lastError}".`
+      : 'Neither Brevo API nor active Brevo SMTP credentials could establish a live mail connection.';
 
     console.log(`\n⚠️ [EMAIL DISPATCH BLOCKED]`);
     console.log(`To:      ${Array.isArray(options.to) ? options.to.join(', ') : options.to}`);

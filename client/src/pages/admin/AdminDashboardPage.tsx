@@ -168,7 +168,7 @@ export const AdminDashboardPage: React.FC = () => {
               <h3 className="text-xs sm:text-sm font-bold text-white uppercase tracking-wider flex flex-wrap items-center gap-2">
                 Automated Email Notification Engine
                 <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                  Mailofly API Active
+                  Brevo SMTP Active
                 </span>
               </h3>
               <p className="text-[11px] sm:text-xs text-slate-400">
