@@ -73,7 +73,7 @@ export const ForgotPasswordPage: React.FC = () => {
 
   // Resend OTP countdown timer
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let timer: ReturnType<typeof setInterval> | undefined;
     if (step === 2 && countdown > 0) {
       timer = setInterval(() => {
         setCountdown((prev) => {
@@ -85,12 +85,14 @@ export const ForgotPasswordPage: React.FC = () => {
         });
       }, 1000);
     }
-    return () => clearInterval(timer);
+    return () => {
+      if (timer) clearInterval(timer);
+    };
   }, [step, countdown]);
 
   // Auto-redirect timer on success screen
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let timer: ReturnType<typeof setInterval> | undefined;
     if (step === 3 && autoRedirectTimer > 0) {
       timer = setInterval(() => {
         setAutoRedirectTimer((prev) => {
@@ -102,7 +104,9 @@ export const ForgotPasswordPage: React.FC = () => {
         });
       }, 1000);
     }
-    return () => clearInterval(timer);
+    return () => {
+      if (timer) clearInterval(timer);
+    };
   }, [step, autoRedirectTimer, navigate]);
 
   // ===========================================================================

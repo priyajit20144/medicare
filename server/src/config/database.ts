@@ -2,12 +2,14 @@ import mongoose from 'mongoose';
 import { ENV, isDev } from './env';
 
 let isConnected = false;
+let isDisconnecting = false;
 
 export async function connectDatabase(): Promise<typeof mongoose> {
   if (isConnected && mongoose.connection.readyState === 1) {
     return mongoose;
   }
 
+  isDisconnecting = false;
   const uri = ENV.MONGODB_URI;
 
   if (!uri || uri.includes('USERNAME:PASSWORD') || uri.includes('YOUR_CLUSTER')) {
@@ -40,7 +42,9 @@ export async function connectDatabase(): Promise<typeof mongoose> {
 
     mongoose.connection.on('disconnected', () => {
       isConnected = false;
-      console.warn('[MongoDB] Connection lost. Attempting reconnection...');
+      if (!isDisconnecting) {
+        console.warn('[MongoDB] Connection lost. Attempting reconnection...');
+      }
     });
 
     return conn;
@@ -58,6 +62,7 @@ export async function connectDatabase(): Promise<typeof mongoose> {
 
 export async function disconnectDatabase(): Promise<void> {
   if (isConnected) {
+    isDisconnecting = true;
     await mongoose.disconnect();
     isConnected = false;
     console.log('[MongoDB] Disconnected gracefully');

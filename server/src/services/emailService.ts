@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 import type { Transporter } from 'nodemailer';
-import { ENV, isDev } from '../config/env';
+import { ENV } from '../config/env';
 
 export interface SendMailOptions {
   to: string | string[];

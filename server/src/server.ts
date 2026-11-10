@@ -25,7 +25,11 @@ async function startServer() {
     process.exit(1);
   });
 
+  let isShuttingDown = false;
   const handleShutdown = async (signal: string) => {
+    if (isShuttingDown) return;
+    isShuttingDown = true;
+
     console.log(`\n[Server] Received ${signal}. Starting graceful shutdown...`);
     server.close(async () => {
       console.log('[Server] HTTP server closed.');
@@ -37,7 +41,7 @@ async function startServer() {
     setTimeout(() => {
       console.error('[Server] Could not close connections in time, forcefully shutting down');
       process.exit(1);
-    }, 10000);
+    }, 10000).unref();
   };
 
   process.on('SIGINT', () => handleShutdown('SIGINT'));
