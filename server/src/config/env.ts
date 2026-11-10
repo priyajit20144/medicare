@@ -1,10 +1,10 @@
 import dotenv from 'dotenv';
 import path from 'path';
 
-// Load .env from workspace root or current directory
-dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
-dotenv.config({ path: path.resolve(__dirname, '../../.env') });
-dotenv.config();
+// Load .env from workspace root or current directory with override support
+dotenv.config({ path: path.resolve(__dirname, '../../../.env'), override: true });
+dotenv.config({ path: path.resolve(__dirname, '../../.env'), override: true });
+dotenv.config({ override: true });
 
 export const ENV = {
   NODE_ENV: process.env.NODE_ENV || 'development',

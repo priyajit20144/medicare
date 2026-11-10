@@ -237,47 +237,59 @@ export async function forgotPassword(req: Request, res: Response, next: NextFunc
     const normalizedEmail = String(email || '').trim().toLowerCase();
     const user = await User.findOne({ email: normalizedEmail });
 
-    if (user) {
-      // Generate a secure 6-digit numeric OTP
-      const otp = Math.floor(100000 + Math.random() * 900000).toString();
-      const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes validity
-
-      user.passwordResetOtp = otp;
-      user.passwordResetOtpExpiresAt = expiresAt;
-      user.passwordResetOtpAttempts = 0;
-
-      // Keep token in sync for fallback compatibility
-      user.passwordResetToken = otp;
-      user.passwordResetExpiresAt = expiresAt;
-      await user.save();
-
-      await logAudit({
-        actorEmail: normalizedEmail,
-        action: 'PASSWORD_RESET_OTP_REQUESTED',
-        resourceType: 'User',
-        resourceId: user._id.toString(),
-        req,
-      });
-
-      // Dispatch 6-digit OTP email to user's registered valid email address via Brevo SMTP engine
-      emailService
-        .sendPasswordResetOtpEmail(user.email, user.fullName, otp)
-        .then((result) => {
-          console.log(`[Auth] Password reset OTP dispatched to ${user.email}. MessageId: ${result?.messageId || 'Queued'}`);
-        })
-        .catch((err) => {
-          console.error(`[Auth] Failed to dispatch password reset OTP:`, err.message);
-        });
+    if (!user) {
+      sendError(
+        res,
+        'No Medicare account was found with this email address. Please check your spelling or register a new account.',
+        404
+      );
+      return;
     }
+
+    // Generate a secure 6-digit numeric OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes validity
+
+    user.passwordResetOtp = otp;
+    user.passwordResetOtpExpiresAt = expiresAt;
+    user.passwordResetOtpAttempts = 0;
+
+    // Keep token in sync for fallback compatibility
+    user.passwordResetToken = otp;
+    user.passwordResetExpiresAt = expiresAt;
+    await user.save();
+
+    await logAudit({
+      actorEmail: normalizedEmail,
+      action: 'PASSWORD_RESET_OTP_REQUESTED',
+      resourceType: 'User',
+      resourceId: user._id.toString(),
+      req,
+    });
+
+    // Dispatch 6-digit OTP email to user's registered valid email address via Brevo API / SMTP
+    const emailResult = await emailService.sendPasswordResetOtpEmail(user.email, user.fullName, otp);
+
+    if (!emailResult?.success && !emailResult?.delivered) {
+      console.error(`[Auth] Failed to dispatch password reset OTP to ${user.email}:`, emailResult?.error);
+      sendError(
+        res,
+        `Unable to deliver OTP email: ${emailResult?.error || 'Email service error'}. Please try again shortly.`,
+        500
+      );
+      return;
+    }
+
+    console.log(`[Auth] Password reset OTP dispatched successfully to ${user.email}. MessageId: ${emailResult?.messageId || 'Delivered'}`);
 
     sendSuccess(
       res,
       {
         email: normalizedEmail,
         // In development mode, provide OTP hint in payload for instantaneous developer testing
-        ...(process.env.NODE_ENV === 'development' && user ? { devOtpHint: user.passwordResetOtp } : {}),
+        ...(process.env.NODE_ENV === 'development' ? { devOtpHint: user.passwordResetOtp } : {}),
       },
-      'If an account exists with this email, a 6-digit verification code (OTP) has been dispatched to your inbox.'
+      `A 6-digit verification code has been dispatched to ${user.email}. Please check your inbox and spam folder.`
     );
   } catch (error) {
     next(error);

@@ -122,11 +122,14 @@ export const ForgotPasswordPage: React.FC = () => {
     setLoading(true);
 
     try {
-      const res = await api.post<{ email: string; devOtpHint?: string }>('/auth/forgot-password', {
+      const res: any = await api.post('/auth/forgot-password', {
         email: cleanEmail,
       });
 
-      setSuccessNotice('A 6-digit verification code has been dispatched to your email.');
+      const message =
+        res?.message ||
+        `A 6-digit verification code has been dispatched to ${cleanEmail}. Please check your inbox and spam folder.`;
+      setSuccessNotice(message);
       setStep(2);
       setCountdown(60);
       setCanResend(false);
@@ -136,9 +139,10 @@ export const ForgotPasswordPage: React.FC = () => {
         otpInputRefs.current[0]?.focus();
       }, 150);
 
-      // In dev mode, if server provides devOtpHint, pre-populate for developer convenience
-      if (res.data?.devOtpHint && res.data.devOtpHint.length === 6) {
-        console.log(`[Medicare Security] Development OTP Code: ${res.data.devOtpHint}`);
+      // In dev mode, if server provides devOtpHint, log for convenient developer inspection
+      const devOtp = res?.devOtpHint || res?.data?.devOtpHint;
+      if (devOtp && String(devOtp).length === 6) {
+        console.log(`[Medicare Security] Development OTP Code: ${devOtp}`);
       }
     } catch (err: any) {
       setError(err.message || 'Unable to request verification code. Please try again.');
@@ -193,8 +197,11 @@ export const ForgotPasswordPage: React.FC = () => {
     setLoading(true);
 
     try {
-      await api.post('/auth/forgot-password', { email: email.trim() });
-      setSuccessNotice('A fresh 6-digit code has been dispatched to your email.');
+      const res: any = await api.post('/auth/forgot-password', { email: email.trim() });
+      const message =
+        res?.message ||
+        `A fresh 6-digit code has been dispatched to ${email.trim()}. Please check your inbox.`;
+      setSuccessNotice(message);
       setCountdown(60);
       setCanResend(false);
       setOtp(['', '', '', '', '', '']);
@@ -524,6 +531,13 @@ export const ForgotPasswordPage: React.FC = () => {
                   Testing with demo accounts?
                 </span>
                 <div className="flex flex-wrap items-center justify-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => setEmail('priyajitd80@gmail.com')}
+                    className="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100 text-[11px] font-mono transition"
+                  >
+                    priyajitd80@gmail.com
+                  </button>
                   <button
                     type="button"
                     onClick={() => setEmail('kayaroy345@gmail.com')}
