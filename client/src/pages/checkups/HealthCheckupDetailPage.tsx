@@ -245,20 +245,22 @@ export const HealthCheckupDetailPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setSampleCollectionType('AT_CENTER')}
-                  className={`p-2.5 rounded-xl border text-center font-bold transition flex items-center justify-center gap-1.5 ${sampleCollectionType === 'AT_CENTER'
+                  className={`p-2.5 rounded-xl border text-center font-bold transition flex items-center justify-center gap-1.5 ${
+                    sampleCollectionType === 'AT_CENTER'
                       ? 'border-emerald-600 bg-emerald-50 text-emerald-800 ring-1 ring-emerald-500'
                       : 'border-slate-200 text-slate-600'
-                    }`}
+                  }`}
                 >
                   <Building2 className="w-3.5 h-3.5" /> At Diagnostic Center
                 </button>
                 <button
                   type="button"
                   onClick={() => setSampleCollectionType('HOME_COLLECTION')}
-                  className={`p-2.5 rounded-xl border text-center font-bold transition flex items-center justify-center gap-1.5 ${sampleCollectionType === 'HOME_COLLECTION'
+                  className={`p-2.5 rounded-xl border text-center font-bold transition flex items-center justify-center gap-1.5 ${
+                    sampleCollectionType === 'HOME_COLLECTION'
                       ? 'border-emerald-600 bg-emerald-50 text-emerald-800 ring-1 ring-emerald-500'
                       : 'border-slate-200 text-slate-600'
-                    }`}
+                  }`}
                 >
                   <Home className="w-3.5 h-3.5" /> Home Phlebotomy
                 </button>

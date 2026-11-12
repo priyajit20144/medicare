@@ -52,15 +52,15 @@ export const MedicineQuickViewModal: React.FC<QuickViewModalProps> = ({
   const clinicalIndication = isBento
     ? (product as PromoBentoItem).categoryTag
     : (product as any).clinicalIndication ||
-    (typeof (product as Medicine).category === 'object' && (product as Medicine).category !== null
-      ? ((product as Medicine).category as any).name
-      : (product as Medicine).category) ||
-    'Healthcare Formulation';
+      (typeof (product as Medicine).category === 'object' && (product as Medicine).category !== null
+        ? ((product as Medicine).category as any).name
+        : (product as Medicine).category) ||
+      'Healthcare Formulation';
   const rating = isBento ? 4.8 : (product as Medicine).rating || 4.5;
   const purchasedCount = isBento
     ? '5k Purchased'
     : (product as any).purchasedCount ||
-    `${Math.max(1, Math.round(((product as Medicine).reviewCount || 10) * 14))} Purchased`;
+      `${Math.max(1, Math.round(((product as Medicine).reviewCount || 10) * 14))} Purchased`;
   const requiresPrescription = product.requiresPrescription;
   const ingredients = !isBento ? (product as Medicine).ingredients : undefined;
 
@@ -119,8 +119,9 @@ export const MedicineQuickViewModal: React.FC<QuickViewModalProps> = ({
                   className="absolute top-3 right-3 p-2 rounded-full bg-white/90 shadow-sm hover:bg-white text-slate-400 hover:text-rose-500 transition-colors"
                 >
                   <Heart
-                    className={`w-4 h-4 transition-colors ${isWishlisted ? 'fill-rose-500 text-rose-500' : 'text-slate-400'
-                      }`}
+                    className={`w-4 h-4 transition-colors ${
+                      isWishlisted ? 'fill-rose-500 text-rose-500' : 'text-slate-400'
+                    }`}
                   />
                 </button>
 
@@ -247,10 +248,11 @@ export const MedicineQuickViewModal: React.FC<QuickViewModalProps> = ({
                       type="button"
                       onClick={handleAdd}
                       disabled={isAdding}
-                      className={`flex-1 py-2.5 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ${justAdded
+                      className={`flex-1 py-2.5 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ${
+                        justAdded
                           ? 'bg-emerald-600 text-white'
                           : 'bg-[#1a4d46] hover:bg-[#133c36] text-white active:scale-95'
-                        }`}
+                      }`}
                     >
                       {justAdded ? (
                         <>

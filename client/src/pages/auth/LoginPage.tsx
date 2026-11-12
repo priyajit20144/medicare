@@ -418,19 +418,21 @@ export const LoginPage: React.FC = () => {
                         type="button"
                         onClick={() => handleQuickServiceClick(service)}
                         aria-pressed={isSelected}
-                        className={`relative rounded-2xl p-3 sm:p-3.5 border transition-all text-center flex flex-col items-center justify-center gap-2 group cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500 ${isSelected
+                        className={`relative rounded-2xl p-3 sm:p-3.5 border transition-all text-center flex flex-col items-center justify-center gap-2 group cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
+                          isSelected
                             ? 'bg-emerald-50/95 border-emerald-500 ring-2 ring-emerald-500/25 shadow-md -translate-y-0.5'
                             : 'bg-white/95 backdrop-blur-md border-slate-200/80 shadow-sm hover:shadow-md hover:border-emerald-500/80 hover:-translate-y-0.5'
-                          }`}
+                        }`}
                       >
                         {/* Auth Status Corner Micro-Indicator */}
                         <span
-                          className={`absolute top-2 right-2 transition-opacity ${isAuthenticated
+                          className={`absolute top-2 right-2 transition-opacity ${
+                            isAuthenticated
                               ? 'opacity-100'
                               : isSelected
                                 ? 'opacity-100 text-emerald-600'
                                 : 'opacity-35 group-hover:opacity-100 text-slate-400 group-hover:text-emerald-600'
-                            }`}
+                          }`}
                           title={
                             isAuthenticated
                               ? `Open ${service.fullLabel}`
@@ -447,10 +449,11 @@ export const LoginPage: React.FC = () => {
                         </span>
 
                         <div
-                          className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors shadow-sm ${isSelected
+                          className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors shadow-sm ${
+                            isSelected
                               ? 'bg-emerald-600 text-white'
                               : 'bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white'
-                            }`}
+                          }`}
                         >
                           <ServiceIcon className="w-5 h-5" />
                         </div>
@@ -460,12 +463,13 @@ export const LoginPage: React.FC = () => {
                         </span>
 
                         <span
-                          className={`text-[10px] font-semibold leading-none transition-colors ${isAuthenticated
+                          className={`text-[10px] font-semibold leading-none transition-colors ${
+                            isAuthenticated
                               ? 'text-emerald-600 opacity-85 group-hover:opacity-100'
                               : isSelected
                                 ? 'text-emerald-700 font-bold'
                                 : 'text-slate-400 group-hover:text-emerald-600'
-                            }`}
+                          }`}
                         >
                           {isAuthenticated ? 'Open →' : isSelected ? 'Sign in →' : 'Login required'}
                         </span>

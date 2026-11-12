@@ -441,14 +441,15 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
             <div
               className="bg-emerald-500 h-full rounded-full transition-all"
               style={{
-                width: `${stats?.checkupBenefits?.totalAllocated
+                width: `${
+                  stats?.checkupBenefits?.totalAllocated
                     ? (
-                      ((stats.checkupBenefits.totalClaimed || 0) /
-                        stats.checkupBenefits.totalAllocated) *
-                      100
-                    ).toFixed(0)
+                        ((stats.checkupBenefits.totalClaimed || 0) /
+                          stats.checkupBenefits.totalAllocated) *
+                        100
+                      ).toFixed(0)
                     : 0
-                  }%`,
+                }%`,
               }}
             />
           </div>
@@ -498,10 +499,11 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
       <div className="flex flex-wrap items-center gap-2 border-b border-slate-800 pb-3">
         <button
           onClick={() => setActiveTab('members')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs transition ${activeTab === 'members'
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs transition ${
+            activeTab === 'members'
               ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20'
               : 'text-slate-400 hover:text-white hover:bg-slate-800'
-            }`}
+          }`}
         >
           <Crown className="w-4 h-4" />
           <span>VIP Members & Checkup Quotas ({memberships?.length || 0})</span>
@@ -509,10 +511,11 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
 
         <button
           onClick={() => setActiveTab('bookings')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs transition ${activeTab === 'bookings'
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs transition ${
+            activeTab === 'bookings'
               ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/20'
               : 'text-slate-400 hover:text-white hover:bg-slate-800'
-            }`}
+          }`}
         >
           <Activity className="w-4 h-4" />
           <span>Health Checkup Bookings & Phlebotomy ({bookings?.length || 0})</span>
@@ -520,10 +523,11 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
 
         <button
           onClick={() => setActiveTab('plans')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs transition ${activeTab === 'plans'
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs transition ${
+            activeTab === 'plans'
               ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20'
               : 'text-slate-400 hover:text-white hover:bg-slate-800'
-            }`}
+          }`}
         >
           <FileText className="w-4 h-4" />
           <span>Membership Plan & Benefit Rules</span>
@@ -689,18 +693,20 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
                                   {used} of {max} Claimed
                                 </span>
                                 <span
-                                  className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold ${!isClaimed
+                                  className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold ${
+                                    !isClaimed
                                       ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
                                       : 'bg-purple-500/10 text-purple-400 border border-purple-500/30'
-                                    }`}
+                                  }`}
                                 >
                                   {!isClaimed ? `${remaining} Available` : 'Redeemed'}
                                 </span>
                               </div>
                               <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
                                 <div
-                                  className={`h-full rounded-full transition-all ${isClaimed ? 'bg-purple-400' : 'bg-emerald-400'
-                                    }`}
+                                  className={`h-full rounded-full transition-all ${
+                                    isClaimed ? 'bg-purple-400' : 'bg-emerald-400'
+                                  }`}
                                   style={{
                                     width: `${Math.min(100, (used / max) * 100)}%`,
                                   }}
@@ -721,8 +727,9 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
                                 Valid to: <strong className="text-white">{new Date(m.endDate).toLocaleDateString()}</strong>
                               </span>
                               <span
-                                className={`text-[10px] font-semibold ${isExpired ? 'text-rose-400' : 'text-slate-400'
-                                  }`}
+                                className={`text-[10px] font-semibold ${
+                                  isExpired ? 'text-rose-400' : 'text-slate-400'
+                                }`}
                               >
                                 {isExpired ? 'Coverage Expired' : `${daysRemaining} days active`}
                               </span>
@@ -732,12 +739,13 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
                           {/* Status Badge */}
                           <td className="p-4 text-center">
                             <span
-                              className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${m.status === 'ACTIVE' && !isExpired
+                              className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${
+                                m.status === 'ACTIVE' && !isExpired
                                   ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
                                   : m.status === 'SUSPENDED'
-                                    ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30'
-                                    : 'bg-rose-500/10 text-rose-400 border border-rose-500/30'
-                                }`}
+                                  ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30'
+                                  : 'bg-rose-500/10 text-rose-400 border border-rose-500/30'
+                              }`}
                             >
                               {isExpired && m.status === 'ACTIVE' ? 'EXPIRED' : m.status}
                             </span>
@@ -854,10 +862,11 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
                                 <Calendar className="w-3 h-3 text-slate-400" /> {b.bookingDate} ({b.timeSlot})
                               </span>
                               <span
-                                className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-md ${b.sampleCollectionType === 'HOME_COLLECTION'
+                                className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-md ${
+                                  b.sampleCollectionType === 'HOME_COLLECTION'
                                     ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20'
                                     : 'bg-slate-800 text-slate-300'
-                                  }`}
+                                }`}
                               >
                                 {b.sampleCollectionType === 'HOME_COLLECTION' ? (
                                   <>
@@ -881,14 +890,15 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
                           <td className="p-4">
                             <div className="space-y-1">
                               <span
-                                className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${b.sampleStatus === 'COMPLETED'
+                                className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
+                                  b.sampleStatus === 'COMPLETED'
                                     ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
                                     : b.sampleStatus === 'SAMPLE_COLLECTED'
-                                      ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20'
-                                      : b.sampleStatus === 'IN_LAB_ANALYSIS'
-                                        ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20'
-                                        : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
-                                  }`}
+                                    ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20'
+                                    : b.sampleStatus === 'IN_LAB_ANALYSIS'
+                                    ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20'
+                                    : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
+                                }`}
                               >
                                 {b.sampleStatus?.replace(/_/g, ' ') || 'PENDING COLLECTION'}
                               </span>
@@ -903,14 +913,15 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
                           {/* Booking Status */}
                           <td className="p-4 text-center">
                             <span
-                              className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${b.status === 'COMPLETED'
+                              className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${
+                                b.status === 'COMPLETED'
                                   ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
                                   : b.status === 'CONFIRMED'
-                                    ? 'bg-blue-500/10 text-blue-400 border border-blue-500/30'
-                                    : b.status === 'CANCELLED'
-                                      ? 'bg-rose-500/10 text-rose-400 border border-rose-500/30'
-                                      : 'bg-amber-500/10 text-amber-400 border border-amber-500/30'
-                                }`}
+                                  ? 'bg-blue-500/10 text-blue-400 border border-blue-500/30'
+                                  : b.status === 'CANCELLED'
+                                  ? 'bg-rose-500/10 text-rose-400 border border-rose-500/30'
+                                  : 'bg-amber-500/10 text-amber-400 border border-amber-500/30'
+                              }`}
                             >
                               {b.status}
                             </span>

@@ -176,10 +176,11 @@ const DoctorLayoutInner: React.FC = () => {
                   key={item.id}
                   type="button"
                   onClick={() => handleNavClick(item.id)}
-                  className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs sm:text-sm font-semibold transition-all duration-200 text-left ${isActive
+                  className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs sm:text-sm font-semibold transition-all duration-200 text-left ${
+                    isActive
                       ? 'bg-[#0d9488] text-white shadow-lg shadow-teal-900/50'
                       : 'text-teal-100/70 hover:text-white hover:bg-white/10'
-                    }`}
+                  }`}
                 >
                   <div className="flex items-center gap-3">
                     <Icon className={`w-4 h-4 flex-shrink-0 ${isActive ? 'text-white' : 'text-teal-300/70'}`} />
@@ -284,10 +285,11 @@ const DoctorLayoutInner: React.FC = () => {
                         key={item.id}
                         type="button"
                         onClick={() => handleNavClick(item.id)}
-                        className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-semibold text-left ${isActive
+                        className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-semibold text-left ${
+                          isActive
                             ? 'bg-[#0d9488] text-white shadow-md'
                             : 'text-teal-100/70 hover:text-white hover:bg-white/10'
-                          }`}
+                        }`}
                       >
                         <div className="flex items-center gap-3">
                           <Icon className="w-4 h-4" />
@@ -315,10 +317,11 @@ const DoctorLayoutInner: React.FC = () => {
                         key={statusOption}
                         type="button"
                         onClick={() => setDoctorStatus(statusOption)}
-                        className={`px-2 py-1.5 rounded-lg border text-center truncate transition ${doctorStatus === statusOption
+                        className={`px-2 py-1.5 rounded-lg border text-center truncate transition ${
+                          doctorStatus === statusOption
                             ? 'bg-emerald-500/25 border-emerald-400 text-white'
                             : 'bg-white/5 border-white/10 text-teal-200/70 hover:text-white'
-                          }`}
+                        }`}
                       >
                         {statusOption === 'In Consultation' ? 'Busy' : statusOption}
                       </button>
@@ -431,18 +434,20 @@ const DoctorLayoutInner: React.FC = () => {
                         <div
                           key={n.id}
                           onClick={() => markNotificationAsRead(n.id)}
-                          className={`p-3.5 hover:bg-slate-50 transition cursor-pointer flex items-start gap-3 ${n.unread ? 'bg-teal-50/40' : ''
-                            }`}
+                          className={`p-3.5 hover:bg-slate-50 transition cursor-pointer flex items-start gap-3 ${
+                            n.unread ? 'bg-teal-50/40' : ''
+                          }`}
                         >
                           <div
-                            className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 text-white font-bold text-xs ${n.type === 'message'
+                            className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 text-white font-bold text-xs ${
+                              n.type === 'message'
                                 ? 'bg-blue-500'
                                 : n.type === 'prescription'
-                                  ? 'bg-rose-500'
-                                  : n.type === 'reminder'
-                                    ? 'bg-teal-500'
-                                    : 'bg-emerald-500'
-                              }`}
+                                ? 'bg-rose-500'
+                                : n.type === 'reminder'
+                                ? 'bg-teal-500'
+                                : 'bg-emerald-500'
+                            }`}
                           >
                             {n.type === 'message' ? (
                               <MessageSquare className="w-4 h-4" />

@@ -347,8 +347,9 @@ export const AdminMedicinesPage: React.FC = () => {
                     <td className="p-4 font-black text-white">{formatINR(m.price)}</td>
                     <td className="p-4">
                       <span
-                        className={`font-bold ${m.stock < 10 ? 'text-rose-400' : 'text-emerald-400'
-                          }`}
+                        className={`font-bold ${
+                          m.stock < 10 ? 'text-rose-400' : 'text-emerald-400'
+                        }`}
                       >
                         {m.stock} units
                       </span>
@@ -540,10 +541,11 @@ export const AdminMedicinesPage: React.FC = () => {
                         setImageInputMode('upload');
                         setUploadError(null);
                       }}
-                      className={`px-2.5 py-1 rounded-md transition font-medium flex items-center gap-1 ${imageInputMode === 'upload'
+                      className={`px-2.5 py-1 rounded-md transition font-medium flex items-center gap-1 ${
+                        imageInputMode === 'upload'
                           ? 'bg-emerald-600 text-white font-bold shadow-xs'
                           : 'text-slate-400 hover:text-white'
-                        }`}
+                      }`}
                     >
                       <CloudUpload className="w-3 h-3" /> Upload File
                     </button>
@@ -553,10 +555,11 @@ export const AdminMedicinesPage: React.FC = () => {
                         setImageInputMode('url');
                         setUploadError(null);
                       }}
-                      className={`px-2.5 py-1 rounded-md transition font-medium flex items-center gap-1 ${imageInputMode === 'url'
+                      className={`px-2.5 py-1 rounded-md transition font-medium flex items-center gap-1 ${
+                        imageInputMode === 'url'
                           ? 'bg-emerald-600 text-white font-bold shadow-xs'
                           : 'text-slate-400 hover:text-white'
-                        }`}
+                      }`}
                     >
                       <Link2 className="w-3 h-3" /> Image URL
                     </button>
@@ -578,10 +581,11 @@ export const AdminMedicinesPage: React.FC = () => {
                         onDragLeave={handleDragLeave}
                         onDrop={handleDrop}
                         onClick={() => fileInputRef.current?.click()}
-                        className={`border-2 border-dashed rounded-2xl p-5 text-center transition cursor-pointer flex flex-col items-center justify-center gap-2 group ${isDragging
+                        className={`border-2 border-dashed rounded-2xl p-5 text-center transition cursor-pointer flex flex-col items-center justify-center gap-2 group ${
+                          isDragging
                             ? 'border-emerald-400 bg-emerald-500/10 scale-[0.99]'
                             : 'border-slate-800 bg-slate-950/80 hover:border-emerald-500/60 hover:bg-slate-950'
-                          }`}
+                        }`}
                       >
                         <input
                           ref={fileInputRef}

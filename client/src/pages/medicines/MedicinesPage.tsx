@@ -319,10 +319,11 @@ export const MedicinesPage: React.FC = () => {
                     type="button"
                     onClick={(e) => handleBentoAdd(e, promo)}
                     disabled={isAdding}
-                    className={`px-3.5 sm:px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 shadow-xs transition-all duration-200 active:scale-95 ${justAdded
+                    className={`px-3.5 sm:px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 shadow-xs transition-all duration-200 active:scale-95 ${
+                      justAdded
                         ? 'bg-emerald-600 text-white'
                         : 'bg-[#1c534c] hover:bg-[#123934] text-white'
-                      }`}
+                    }`}
                   >
                     {justAdded ? (
                       <>
@@ -392,10 +393,11 @@ export const MedicinesPage: React.FC = () => {
                         type="button"
                         onClick={(e) => handleBentoAdd(e, promo)}
                         disabled={isAdding}
-                        className={`px-3 py-1.5 rounded-lg text-[11px] font-bold flex items-center gap-1.5 shadow-2xs transition-all ${justAdded
+                        className={`px-3 py-1.5 rounded-lg text-[11px] font-bold flex items-center gap-1.5 shadow-2xs transition-all ${
+                          justAdded
                             ? 'bg-emerald-600 text-white'
                             : 'bg-indigo-950 hover:bg-indigo-900 text-white active:scale-95'
-                          }`}
+                        }`}
                       >
                         {justAdded ? <Check className="w-3 h-3" /> : <ShoppingBag className="w-3 h-3" />}
                         <span>{justAdded ? 'Added' : 'Add to cart'}</span>
@@ -448,10 +450,11 @@ export const MedicinesPage: React.FC = () => {
                         type="button"
                         onClick={(e) => handleBentoAdd(e, promo)}
                         disabled={isAdding}
-                        className={`px-3 py-1.5 rounded-lg text-[11px] font-bold flex items-center gap-1.5 shadow-2xs transition-all ${justAdded
+                        className={`px-3 py-1.5 rounded-lg text-[11px] font-bold flex items-center gap-1.5 shadow-2xs transition-all ${
+                          justAdded
                             ? 'bg-emerald-600 text-white'
                             : 'bg-amber-950 hover:bg-amber-900 text-white active:scale-95'
-                          }`}
+                        }`}
                       >
                         {justAdded ? <Check className="w-3 h-3" /> : <ShoppingBag className="w-3 h-3" />}
                         <span>{justAdded ? 'Added' : 'Add to cart'}</span>
@@ -506,24 +509,28 @@ export const MedicinesPage: React.FC = () => {
                     style={{ width: '84px' }}
                   >
                     <div
-                      className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center transition-all duration-300 relative ${cat.bgColor
-                        } ${isActive
+                      className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center transition-all duration-300 relative ${
+                        cat.bgColor
+                      } ${
+                        isActive
                           ? 'ring-3 ring-[#1c534c] ring-offset-2 scale-105 shadow-md'
                           : 'shadow-2xs group-hover:scale-105 group-hover:shadow-sm'
-                        }`}
+                      }`}
                     >
                       <CategoryIcon
                         iconName={cat.iconName}
-                        className={`w-6 h-6 sm:w-7 sm:h-7 transition-colors ${isActive ? 'text-[#1c534c]' : cat.iconColor
-                          }`}
+                        className={`w-6 h-6 sm:w-7 sm:h-7 transition-colors ${
+                          isActive ? 'text-[#1c534c]' : cat.iconColor
+                        }`}
                       />
                     </div>
 
                     <span
-                      className={`text-[11px] sm:text-xs text-center mt-2 font-medium leading-tight line-clamp-2 transition-colors ${isActive
+                      className={`text-[11px] sm:text-xs text-center mt-2 font-medium leading-tight line-clamp-2 transition-colors ${
+                        isActive
                           ? 'text-[#112d26] font-extrabold'
                           : 'text-slate-600 group-hover:text-slate-900'
-                        }`}
+                      }`}
                     >
                       {cat.name}
                     </span>
@@ -566,30 +573,33 @@ export const MedicinesPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => updateParam('requiresPrescription', null)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${!requiresPrescription
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+                  !requiresPrescription
                     ? 'bg-white text-slate-900 shadow-2xs'
                     : 'text-slate-600 hover:text-slate-900'
-                  }`}
+                }`}
               >
                 All
               </button>
               <button
                 type="button"
                 onClick={() => updateParam('requiresPrescription', 'false')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${requiresPrescription === 'false'
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+                  requiresPrescription === 'false'
                     ? 'bg-white text-emerald-800 shadow-2xs'
                     : 'text-slate-600 hover:text-slate-900'
-                  }`}
+                }`}
               >
                 OTC (No Rx)
               </button>
               <button
                 type="button"
                 onClick={() => updateParam('requiresPrescription', 'true')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${requiresPrescription === 'true'
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+                  requiresPrescription === 'true'
                     ? 'bg-white text-amber-800 shadow-2xs'
                     : 'text-slate-600 hover:text-slate-900'
-                  }`}
+                }`}
               >
                 Rx Required
               </button>

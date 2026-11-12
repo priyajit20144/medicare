@@ -215,10 +215,11 @@ export const DoctorDetailPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setConsultationType('VIDEO')}
-                  className={`p-3.5 rounded-2xl border text-xs font-semibold flex items-center justify-center gap-2 transition ${consultationType === 'VIDEO'
+                  className={`p-3.5 rounded-2xl border text-xs font-semibold flex items-center justify-center gap-2 transition ${
+                    consultationType === 'VIDEO'
                       ? 'border-emerald-500 bg-emerald-50/70 text-emerald-800 ring-1 ring-emerald-500'
                       : 'border-slate-200 hover:bg-slate-50 text-slate-700'
-                    }`}
+                  }`}
                 >
                   <Video className="w-4 h-4 text-emerald-600" />
                   <span>Video Telehealth</span>
@@ -226,10 +227,11 @@ export const DoctorDetailPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setConsultationType('IN_PERSON')}
-                  className={`p-3.5 rounded-2xl border text-xs font-semibold flex items-center justify-center gap-2 transition ${consultationType === 'IN_PERSON'
+                  className={`p-3.5 rounded-2xl border text-xs font-semibold flex items-center justify-center gap-2 transition ${
+                    consultationType === 'IN_PERSON'
                       ? 'border-emerald-500 bg-emerald-50/70 text-emerald-800 ring-1 ring-emerald-500'
                       : 'border-slate-200 hover:bg-slate-50 text-slate-700'
-                    }`}
+                  }`}
                 >
                   <MapPin className="w-4 h-4 text-emerald-600" />
                   <span>In-Person Visit</span>
@@ -249,10 +251,11 @@ export const DoctorDetailPage: React.FC = () => {
                       setSelectedDate(d.dateStr);
                       setSelectedSlot('');
                     }}
-                    className={`p-2.5 rounded-2xl border text-center transition ${selectedDate === d.dateStr
+                    className={`p-2.5 rounded-2xl border text-center transition ${
+                      selectedDate === d.dateStr
                         ? 'border-emerald-600 bg-emerald-600 text-white shadow-sm'
                         : 'border-slate-200 hover:bg-slate-50 text-slate-700'
-                      }`}
+                    }`}
                   >
                     <span className="block text-[10px] uppercase font-bold">{d.dayName}</span>
                     <span className="block text-base font-black my-0.5">{d.dayNumber}</span>
@@ -282,12 +285,13 @@ export const DoctorDetailPage: React.FC = () => {
                       type="button"
                       disabled={s.isBooked}
                       onClick={() => setSelectedSlot(s.slot)}
-                      className={`p-2.5 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-1.5 ${s.isBooked
+                      className={`p-2.5 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-1.5 ${
+                        s.isBooked
                           ? 'border-slate-100 bg-slate-100 text-slate-400 cursor-not-allowed line-through'
                           : selectedSlot === s.slot
-                            ? 'border-emerald-600 bg-emerald-600 text-white shadow-sm'
-                            : 'border-slate-200 hover:bg-emerald-50 text-slate-800'
-                        }`}
+                          ? 'border-emerald-600 bg-emerald-600 text-white shadow-sm'
+                          : 'border-slate-200 hover:bg-emerald-50 text-slate-800'
+                      }`}
                     >
                       <Clock className="w-3.5 h-3.5" />
                       <span>{s.slot}</span>

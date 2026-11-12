@@ -370,19 +370,21 @@ export const AdminPackagesPage: React.FC = () => {
         <div className="flex gap-2">
           <button
             onClick={() => setActiveTab('packages')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${activeTab === 'packages'
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
+              activeTab === 'packages'
                 ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-950/40'
                 : 'bg-slate-900 text-slate-400 hover:text-white'
-              }`}
+            }`}
           >
             <Package className="w-4 h-4" /> Checkup Packages ({packageList.length})
           </button>
           <button
             onClick={() => setActiveTab('tests')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${activeTab === 'tests'
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
+              activeTab === 'tests'
                 ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-950/40'
                 : 'bg-slate-900 text-slate-400 hover:text-white'
-              }`}
+            }`}
           >
             <FlaskConical className="w-4 h-4" /> Laboratory Tests ({testList.length})
           </button>
@@ -585,10 +587,11 @@ export const AdminPackagesPage: React.FC = () => {
                   setModalMode('package');
                   setModalError(null);
                 }}
-                className={`flex-1 py-2 rounded-lg transition flex items-center justify-center gap-2 ${modalMode === 'package'
+                className={`flex-1 py-2 rounded-lg transition flex items-center justify-center gap-2 ${
+                  modalMode === 'package'
                     ? 'bg-emerald-600 text-white shadow-sm'
                     : 'text-slate-400 hover:text-white'
-                  }`}
+                }`}
               >
                 <Package className="w-3.5 h-3.5" /> Checkup Package Bundle
               </button>
@@ -601,10 +604,11 @@ export const AdminPackagesPage: React.FC = () => {
                     setTestCode(`LAB-${Math.random().toString(36).substring(2, 7).toUpperCase()}`);
                   }
                 }}
-                className={`flex-1 py-2 rounded-lg transition flex items-center justify-center gap-2 ${modalMode === 'test'
+                className={`flex-1 py-2 rounded-lg transition flex items-center justify-center gap-2 ${
+                  modalMode === 'test'
                     ? 'bg-indigo-600 text-white shadow-sm'
                     : 'text-slate-400 hover:text-white'
-                  }`}
+                }`}
               >
                 <FlaskConical className="w-3.5 h-3.5" /> Laboratory Biomarker Test
               </button>
@@ -711,20 +715,22 @@ export const AdminPackagesPage: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => setPkgImageMode('upload')}
-                        className={`px-2.5 py-1 rounded-md transition font-medium ${pkgImageMode === 'upload'
+                        className={`px-2.5 py-1 rounded-md transition font-medium ${
+                          pkgImageMode === 'upload'
                             ? 'bg-emerald-600 text-white font-bold'
                             : 'text-slate-400 hover:text-white'
-                          }`}
+                        }`}
                       >
                         Upload File
                       </button>
                       <button
                         type="button"
                         onClick={() => setPkgImageMode('url')}
-                        className={`px-2.5 py-1 rounded-md transition font-medium ${pkgImageMode === 'url'
+                        className={`px-2.5 py-1 rounded-md transition font-medium ${
+                          pkgImageMode === 'url'
                             ? 'bg-emerald-600 text-white font-bold'
                             : 'text-slate-400 hover:text-white'
-                          }`}
+                        }`}
                       >
                         Image URL
                       </button>
@@ -747,10 +753,11 @@ export const AdminPackagesPage: React.FC = () => {
                             if (file) handlePackageFileProcess(file);
                           }}
                           onClick={() => fileInputRef.current?.click()}
-                          className={`border-2 border-dashed rounded-2xl p-4 text-center cursor-pointer flex flex-col items-center justify-center gap-1.5 transition ${isDraggingImage
+                          className={`border-2 border-dashed rounded-2xl p-4 text-center cursor-pointer flex flex-col items-center justify-center gap-1.5 transition ${
+                            isDraggingImage
                               ? 'border-emerald-400 bg-emerald-500/10'
                               : 'border-slate-800 bg-slate-950/70 hover:border-emerald-500/50 hover:bg-slate-950'
-                            }`}
+                          }`}
                         >
                           <input
                             ref={fileInputRef}
@@ -920,17 +927,19 @@ export const AdminPackagesPage: React.FC = () => {
                           <div
                             key={t._id}
                             onClick={() => toggleTestSelection(t._id)}
-                            className={`flex items-center justify-between p-2 rounded-xl border text-xs cursor-pointer transition select-none ${isSelected
+                            className={`flex items-center justify-between p-2 rounded-xl border text-xs cursor-pointer transition select-none ${
+                              isSelected
                                 ? 'bg-emerald-950/40 border-emerald-500/60 text-white'
                                 : 'bg-slate-900/60 border-slate-800 text-slate-300 hover:border-slate-700'
-                              }`}
+                            }`}
                           >
                             <div className="flex items-center gap-2 min-w-0">
                               <div
-                                className={`w-4 h-4 rounded flex items-center justify-center border flex-shrink-0 ${isSelected
+                                className={`w-4 h-4 rounded flex items-center justify-center border flex-shrink-0 ${
+                                  isSelected
                                     ? 'bg-emerald-600 border-emerald-500 text-white'
                                     : 'border-slate-700'
-                                  }`}
+                                }`}
                               >
                                 {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
                               </div>

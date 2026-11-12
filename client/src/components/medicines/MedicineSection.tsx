@@ -162,7 +162,7 @@ export const MedicineSection: React.FC = () => {
   return (
     <section id="medicines-store" className="w-full bg-[#f8faf9]/50 py-10 sm:py-16 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-16">
-
+        
         {/* ========================================================= */}
         {/* 1. TOP HEADER & TRENDING PRODUCTS (MATCHING SCREENSHOT)   */}
         {/* ========================================================= */}
@@ -237,10 +237,11 @@ export const MedicineSection: React.FC = () => {
                     type="button"
                     onClick={(e) => handleBentoAdd(e, promo)}
                     disabled={isAdding}
-                    className={`px-3.5 sm:px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 shadow-xs transition-all duration-200 active:scale-95 ${justAdded
+                    className={`px-3.5 sm:px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 shadow-xs transition-all duration-200 active:scale-95 ${
+                      justAdded
                         ? 'bg-emerald-600 text-white'
                         : 'bg-[#1c534c] hover:bg-[#123934] text-white'
-                      }`}
+                    }`}
                   >
                     {justAdded ? (
                       <>
@@ -311,10 +312,11 @@ export const MedicineSection: React.FC = () => {
                         type="button"
                         onClick={(e) => handleBentoAdd(e, promo)}
                         disabled={isAdding}
-                        className={`px-3 py-1.5 rounded-lg text-[11px] font-bold flex items-center gap-1.5 shadow-2xs transition-all ${justAdded
+                        className={`px-3 py-1.5 rounded-lg text-[11px] font-bold flex items-center gap-1.5 shadow-2xs transition-all ${
+                          justAdded
                             ? 'bg-emerald-600 text-white'
                             : 'bg-indigo-950 hover:bg-indigo-900 text-white active:scale-95'
-                          }`}
+                        }`}
                       >
                         {justAdded ? <Check className="w-3 h-3" /> : <ShoppingBag className="w-3 h-3" />}
                         <span>{justAdded ? 'Added' : 'Add to cart'}</span>
@@ -368,10 +370,11 @@ export const MedicineSection: React.FC = () => {
                         type="button"
                         onClick={(e) => handleBentoAdd(e, promo)}
                         disabled={isAdding}
-                        className={`px-3 py-1.5 rounded-lg text-[11px] font-bold flex items-center gap-1.5 shadow-2xs transition-all ${justAdded
+                        className={`px-3 py-1.5 rounded-lg text-[11px] font-bold flex items-center gap-1.5 shadow-2xs transition-all ${
+                          justAdded
                             ? 'bg-emerald-600 text-white'
                             : 'bg-amber-950 hover:bg-amber-900 text-white active:scale-95'
-                          }`}
+                        }`}
                       >
                         {justAdded ? <Check className="w-3 h-3" /> : <ShoppingBag className="w-3 h-3" />}
                         <span>{justAdded ? 'Added' : 'Add to cart'}</span>
@@ -429,25 +432,29 @@ export const MedicineSection: React.FC = () => {
                   >
                     {/* Circle Icon Badge */}
                     <div
-                      className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center transition-all duration-300 relative ${cat.bgColor
-                        } ${isActive
+                      className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center transition-all duration-300 relative ${
+                        cat.bgColor
+                      } ${
+                        isActive
                           ? 'ring-3 ring-[#1c534c] ring-offset-2 scale-105 shadow-md'
                           : 'shadow-2xs group-hover:scale-105 group-hover:shadow-sm'
-                        }`}
+                      }`}
                     >
                       <CategoryIcon
                         iconName={cat.iconName}
-                        className={`w-6 h-6 sm:w-7 sm:h-7 transition-colors ${isActive ? 'text-[#1c534c]' : cat.iconColor
-                          }`}
+                        className={`w-6 h-6 sm:w-7 sm:h-7 transition-colors ${
+                          isActive ? 'text-[#1c534c]' : cat.iconColor
+                        }`}
                       />
                     </div>
 
                     {/* Category Label */}
                     <span
-                      className={`text-[11px] sm:text-xs text-center mt-2 font-medium leading-tight line-clamp-2 transition-colors ${isActive
+                      className={`text-[11px] sm:text-xs text-center mt-2 font-medium leading-tight line-clamp-2 transition-colors ${
+                        isActive
                           ? 'text-[#112d26] font-extrabold'
                           : 'text-slate-600 group-hover:text-slate-900'
-                        }`}
+                      }`}
                     >
                       {cat.name}
                     </span>

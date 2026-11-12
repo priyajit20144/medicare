@@ -84,8 +84,9 @@ export const DashboardLayout: React.FC = () => {
               >
                 <span className="max-w-[96px] truncate">{activeNav.label}</span>
                 <ChevronDown
-                  className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${mobileNavOpen ? 'rotate-180' : ''
-                    }`}
+                  className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${
+                    mobileNavOpen ? 'rotate-180' : ''
+                  }`}
                 />
               </button>
             </div>
@@ -100,9 +101,10 @@ export const DashboardLayout: React.FC = () => {
                     to={item.href}
                     end={item.href === '/user/dashboard'}
                     className={({ isActive }) =>
-                      `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition ${isActive
-                        ? 'bg-emerald-600 text-white shadow-sm shadow-emerald-600/20'
-                        : item.highlight
+                      `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition ${
+                        isActive
+                          ? 'bg-emerald-600 text-white shadow-sm shadow-emerald-600/20'
+                          : item.highlight
                           ? 'text-amber-700 hover:bg-amber-50'
                           : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                       }`

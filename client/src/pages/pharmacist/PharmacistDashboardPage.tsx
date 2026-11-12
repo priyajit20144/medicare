@@ -150,10 +150,11 @@ export const PharmacistDashboardPage: React.FC = () => {
             <button
               key={tab.value}
               onClick={() => setStatusFilter(tab.value)}
-              className={`px-3 py-1.5 rounded-xl font-bold transition whitespace-nowrap ${statusFilter === tab.value
+              className={`px-3 py-1.5 rounded-xl font-bold transition whitespace-nowrap ${
+                statusFilter === tab.value
                   ? 'bg-emerald-600 text-white shadow-sm'
                   : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200'
-                }`}
+              }`}
             >
               {tab.label}
             </button>
@@ -279,30 +280,33 @@ export const PharmacistDashboardPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setReviewStatus('APPROVED')}
-                    className={`p-3 rounded-xl border text-center font-bold transition ${reviewStatus === 'APPROVED'
+                    className={`p-3 rounded-xl border text-center font-bold transition ${
+                      reviewStatus === 'APPROVED'
                         ? 'border-emerald-600 bg-emerald-50 text-emerald-800 ring-1 ring-emerald-600'
                         : 'border-slate-200 text-slate-600'
-                      }`}
+                    }`}
                   >
                     ✓ Approve
                   </button>
                   <button
                     type="button"
                     onClick={() => setReviewStatus('CLARIFICATION_REQUIRED')}
-                    className={`p-3 rounded-xl border text-center font-bold transition ${reviewStatus === 'CLARIFICATION_REQUIRED'
+                    className={`p-3 rounded-xl border text-center font-bold transition ${
+                      reviewStatus === 'CLARIFICATION_REQUIRED'
                         ? 'border-purple-600 bg-purple-50 text-purple-800 ring-1 ring-purple-600'
                         : 'border-slate-200 text-slate-600'
-                      }`}
+                    }`}
                   >
                     ? Request Clarification
                   </button>
                   <button
                     type="button"
                     onClick={() => setReviewStatus('REJECTED')}
-                    className={`p-3 rounded-xl border text-center font-bold transition ${reviewStatus === 'REJECTED'
+                    className={`p-3 rounded-xl border text-center font-bold transition ${
+                      reviewStatus === 'REJECTED'
                         ? 'border-rose-600 bg-rose-50 text-rose-800 ring-1 ring-rose-600'
                         : 'border-slate-200 text-slate-600'
-                      }`}
+                    }`}
                   >
                     ✕ Reject
                   </button>

@@ -172,11 +172,11 @@ export const Navbar: React.FC = () => {
 
   return (
     <header className="w-full bg-white text-slate-800 border-b border-slate-200/90 shadow-sm z-40 sticky top-0 font-sans select-none">
-
+      
       {/* MAIN HEADER (Logo, Search Bar, Quick Actions & User Profile) */}
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2.5 sm:py-3.5">
         <div className="flex items-center justify-between gap-2 sm:gap-4 md:gap-6">
-
+          
           {/* Brand Logo */}
           <Link to="/" className="flex items-center gap-2 sm:gap-3 group focus:outline-none min-w-0 flex-shrink-0">
             {/* Custom SVG Heart with ECG Line */}
@@ -196,7 +196,7 @@ export const Navbar: React.FC = () => {
                 />
               </svg>
             </div>
-
+            
             <div className="flex flex-col min-w-0">
               <span className="text-lg sm:text-2xl font-black tracking-tight text-[#0f2d42] leading-tight font-sans">
                 Medicare
@@ -232,7 +232,7 @@ export const Navbar: React.FC = () => {
 
           {/* Right Action Icons & User Profile */}
           <div className="flex items-center gap-1 sm:gap-3 lg:gap-5 flex-shrink-0">
-
+            
             {/* Upload Prescription */}
             <Link
               to="/prescriptions/upload"
@@ -502,7 +502,7 @@ export const Navbar: React.FC = () => {
           </div>
         </div>
 
-        {/* Mobile Search Bar (Only visible on small devices) */}
+            {/* Mobile Search Bar (Only visible on small devices) */}
         <div className="mt-2.5 md:hidden">
           <form
             onSubmit={handleSearchSubmit}
@@ -556,10 +556,11 @@ export const Navbar: React.FC = () => {
                     <Link
                       to={item.href}
                       onClick={() => setActiveDropdown(null)}
-                      className={`flex items-center gap-1.5 text-xs xl:text-sm font-semibold transition-colors duration-150 h-full relative whitespace-nowrap ${active
+                      className={`flex items-center gap-1.5 text-xs xl:text-sm font-semibold transition-colors duration-150 h-full relative whitespace-nowrap ${
+                        active
                           ? 'text-[#0d9488] font-bold'
                           : 'text-slate-700 hover:text-[#0d9488]'
-                        }`}
+                      }`}
                     >
                       <Icon className={`w-4 h-4 ${active ? 'text-[#0d9488]' : 'text-slate-500 group-hover:text-[#0d9488]'}`} />
                       <span>{item.label}</span>
@@ -574,8 +575,9 @@ export const Navbar: React.FC = () => {
                         className="p-1 -mr-1 rounded-md text-slate-400 hover:text-[#0d9488] focus:outline-none focus:ring-2 focus:ring-[#0d9488]/30 transition-colors"
                       >
                         <ChevronDown
-                          className={`w-3.5 h-3.5 transition-transform duration-200 ${activeDropdown === item.key ? 'rotate-180 text-[#0d9488]' : 'group-hover:rotate-180 group-hover:text-[#0d9488]'
-                            }`}
+                          className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                            activeDropdown === item.key ? 'rotate-180 text-[#0d9488]' : 'group-hover:rotate-180 group-hover:text-[#0d9488]'
+                          }`}
                         />
                       </button>
                     )}
@@ -593,8 +595,9 @@ export const Navbar: React.FC = () => {
                   {/* Dropdown Menu on Hover / Tap / Focus */}
                   {item.hasDropdown && item.items && (
                     <div
-                      className={`absolute top-full left-0 w-64 max-w-[calc(100vw-2rem)] bg-white border border-slate-100 rounded-2xl shadow-xl py-2 z-50 transition-all duration-200 ${activeDropdown === item.key ? 'opacity-100 visible translate-y-0 pointer-events-auto' : 'opacity-0 invisible pointer-events-none translate-y-1'
-                        }`}
+                      className={`absolute top-full left-0 w-64 max-w-[calc(100vw-2rem)] bg-white border border-slate-100 rounded-2xl shadow-xl py-2 z-50 transition-all duration-200 ${
+                        activeDropdown === item.key ? 'opacity-100 visible translate-y-0 pointer-events-auto' : 'opacity-0 invisible pointer-events-none translate-y-1'
+                      }`}
                     >
                       {item.items.map((sub) => (
                         <Link
@@ -695,10 +698,11 @@ export const Navbar: React.FC = () => {
                           <Link
                             to={item.href}
                             onClick={() => setMobileMenuOpen(false)}
-                            className={`flex-1 flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition min-h-[40px] ${active
+                            className={`flex-1 flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition min-h-[40px] ${
+                              active
                                 ? 'bg-teal-50 text-[#0d9488]'
                                 : 'text-slate-700 hover:bg-slate-50'
-                              }`}
+                            }`}
                           >
                             <Icon className={`w-4 h-4 flex-shrink-0 ${active ? 'text-[#0d9488]' : 'text-slate-500'}`} />
                             <span>{item.label}</span>
@@ -714,8 +718,9 @@ export const Navbar: React.FC = () => {
                               className="p-2.5 rounded-xl text-slate-400 hover:text-[#0d9488] hover:bg-slate-50 transition"
                             >
                               <ChevronDown
-                                className={`w-4 h-4 transition-transform duration-200 ${isExpanded ? 'rotate-180 text-[#0d9488]' : ''
-                                  }`}
+                                className={`w-4 h-4 transition-transform duration-200 ${
+                                  isExpanded ? 'rotate-180 text-[#0d9488]' : ''
+                                }`}
                               />
                             </button>
                           )}

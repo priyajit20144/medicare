@@ -417,8 +417,9 @@ export const ForgotPasswordPage: React.FC = () => {
           <div className="flex items-center justify-between mb-5 sm:mb-6 pb-3 sm:pb-4 border-b border-slate-100 gap-1">
             <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
               <div
-                className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[11px] sm:text-xs font-black transition-colors ${step === 1 ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30' : 'bg-emerald-100 text-emerald-800'
-                  }`}
+                className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[11px] sm:text-xs font-black transition-colors ${
+                  step === 1 ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30' : 'bg-emerald-100 text-emerald-800'
+                }`}
               >
                 1
               </div>
@@ -436,8 +437,9 @@ export const ForgotPasswordPage: React.FC = () => {
 
             <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
               <div
-                className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[11px] sm:text-xs font-black transition-colors ${step === 2 ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30' : step === 3 ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-400'
-                  }`}
+                className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[11px] sm:text-xs font-black transition-colors ${
+                  step === 2 ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30' : step === 3 ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-400'
+                }`}
               >
                 2
               </div>
@@ -455,8 +457,9 @@ export const ForgotPasswordPage: React.FC = () => {
 
             <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
               <div
-                className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[11px] sm:text-xs font-black transition-colors ${step === 3 ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30' : 'bg-slate-100 text-slate-400'
-                  }`}
+                className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[11px] sm:text-xs font-black transition-colors ${
+                  step === 3 ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30' : 'bg-slate-100 text-slate-400'
+                }`}
               >
                 3
               </div>

@@ -60,8 +60,9 @@ export const AdminLayout: React.FC = () => {
 
       {/* Sidebar (Responsive Slide-over Drawer on Mobile / Persistent on Desktop) */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-[82vw] max-w-72 bg-slate-950 border-r border-slate-800 p-5 flex flex-col justify-between overflow-y-auto transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 lg:w-64 lg:flex-shrink-0 lg:flex ${mobileMenuOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full lg:translate-x-0'
-          }`}
+        className={`fixed inset-y-0 left-0 z-50 w-[82vw] max-w-72 bg-slate-950 border-r border-slate-800 p-5 flex flex-col justify-between overflow-y-auto transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 lg:w-64 lg:flex-shrink-0 lg:flex ${
+          mobileMenuOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full lg:translate-x-0'
+        }`}
       >
         <div className="space-y-6">
           {/* Brand & Mobile Close Button */}
@@ -102,9 +103,10 @@ export const AdminLayout: React.FC = () => {
                   to={item.href}
                   end={item.href === '/admin'}
                   className={({ isActive }) =>
-                    `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition ${isActive
-                      ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30 font-bold'
-                      : 'text-slate-400 hover:text-white hover:bg-slate-900'
+                    `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition ${
+                      isActive
+                        ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30 font-bold'
+                        : 'text-slate-400 hover:text-white hover:bg-slate-900'
                     }`
                   }
                 >
