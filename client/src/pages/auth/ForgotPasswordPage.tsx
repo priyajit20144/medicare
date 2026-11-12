@@ -540,35 +540,7 @@ export const ForgotPasswordPage: React.FC = () => {
                 </button>
               </form>
 
-              {/* Quick Demo Helper */}
-              <div className="pt-3 border-t border-slate-100 text-center">
-                <span className="text-[11px] font-semibold text-slate-400 block mb-2">
-                  Testing with demo accounts?
-                </span>
-                <div className="flex flex-wrap items-center justify-center gap-1.5">
-                  <button
-                    type="button"
-                    onClick={() => setEmail('priyajitd80@gmail.com')}
-                    className="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100 text-[11px] font-mono transition"
-                  >
-                    priyajitd80@gmail.com
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setEmail('kayaroy345@gmail.com')}
-                    className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-emerald-50 hover:text-emerald-700 text-slate-600 text-[11px] font-mono transition"
-                  >
-                    kayaroy345@gmail.com
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setEmail('doctor@medicare.demo')}
-                    className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-emerald-50 hover:text-emerald-700 text-slate-600 text-[11px] font-mono transition"
-                  >
-                    doctor@medicare.demo
-                  </button>
-                </div>
-              </div>
+
 
               <div className="text-center pt-1">
                 <Link

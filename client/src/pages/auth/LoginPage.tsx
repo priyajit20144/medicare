@@ -45,7 +45,6 @@ export const LoginPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [socialNotice, setSocialNotice] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [showDemoLogins, setShowDemoLogins] = useState(false);
 
   const emailInputRef = useRef<HTMLInputElement | null>(null);
   const loginCardRef = useRef<HTMLDivElement | null>(null);
@@ -132,14 +131,8 @@ export const LoginPage: React.FC = () => {
 
   const handleSocialLogin = (provider: 'Google' | 'Microsoft') => {
     setSocialNotice(
-      `Redirecting to ${provider} Single Sign-On. You can also log in directly using our verified credentials below.`
+      `Redirecting to ${provider} Single Sign-On. You can also log in directly using your email and password below.`
     );
-  };
-
-  const handleDemoFill = (demoEmail: string, demoPass: string) => {
-    setEmail(demoEmail);
-    setPassword(demoPass);
-    setError('');
   };
 
   return (
@@ -805,59 +798,7 @@ export const LoginPage: React.FC = () => {
                   </Link>
                 </div>
 
-                {/* Developer / Demo Quick Access Pill */}
-                <div className="mt-4 pt-3 border-t border-slate-100">
-                  <button
-                    type="button"
-                    onClick={() => setShowDemoLogins(!showDemoLogins)}
-                    className="w-full flex items-center justify-between text-[11px] font-bold text-slate-400 hover:text-emerald-600 transition-colors uppercase tracking-wider"
-                  >
-                    <span>Quick Demo Credentials</span>
-                    <span className="text-[10px] text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full font-bold">
-                      {showDemoLogins ? 'Hide' : 'Auto-Fill'}
-                    </span>
-                  </button>
 
-                  {showDemoLogins && (
-                    <div className="grid grid-cols-2 gap-1.5 mt-2.5 animate-in fade-in duration-150">
-                      <button
-                        type="button"
-                        onClick={() => handleDemoFill('kayaroy345@gmail.com', 'Admin123!')}
-                        className="p-2 rounded-xl border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/50 text-left transition flex flex-col"
-                      >
-                        <span className="text-[11px] font-bold text-slate-800">👑 Admin</span>
-                        <span className="text-[9px] text-slate-500 truncate">kayaroy345@gmail.com</span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => handleDemoFill('doctor@medicare.demo', 'Admin123!')}
-                        className="p-2 rounded-xl border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/50 text-left transition flex flex-col"
-                      >
-                        <span className="text-[11px] font-bold text-slate-800">🩺 Doctor</span>
-                        <span className="text-[9px] text-slate-500 truncate">doctor@medicare.demo</span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => handleDemoFill('pharmacist@medicare.demo', 'Admin123!')}
-                        className="p-2 rounded-xl border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/50 text-left transition flex flex-col"
-                      >
-                        <span className="text-[11px] font-bold text-slate-800">💊 Pharmacist</span>
-                        <span className="text-[9px] text-slate-500 truncate">pharmacist@medicare.demo</span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => handleDemoFill('patient@medicare.demo', 'Admin123!')}
-                        className="p-2 rounded-xl border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/50 text-left transition flex flex-col"
-                      >
-                        <span className="text-[11px] font-bold text-slate-800">👤 Patient</span>
-                        <span className="text-[9px] text-slate-500 truncate">patient@medicare.demo</span>
-                      </button>
-                    </div>
-                  )}
-                </div>
               </div>
             </div>
           </div>
