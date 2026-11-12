@@ -4,6 +4,7 @@ import { Cart } from '../models/Cart';
 import { Medicine } from '../models/Medicine';
 import { IUser } from '../models/User';
 import { sendSuccess, sendError } from '../utils/response';
+import { calculateOrderBreakdownINR } from '../utils/pricing';
 
 export async function getCart(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
@@ -39,19 +40,13 @@ export async function getCart(req: Request, res: Response, next: NextFunction): 
       }
     });
 
-    const deliveryFee = subtotal > 50 || subtotal === 0 ? 0 : 5.99;
-    const estimatedTax = Number(((subtotal - totalDiscount) * 0.05).toFixed(2));
-    const total = Number(((subtotal - totalDiscount) + deliveryFee + estimatedTax).toFixed(2));
+    const breakdown = calculateOrderBreakdownINR(subtotal, totalDiscount);
 
     sendSuccess(res, {
       cart,
       summary: {
         itemCount: validItems.reduce((acc, item) => acc + item.quantity, 0),
-        subtotal: Number(subtotal.toFixed(2)),
-        discount: Number(totalDiscount.toFixed(2)),
-        deliveryFee,
-        tax: estimatedTax,
-        total,
+        ...breakdown,
         hasPrescriptionRequiredItems,
       },
     });

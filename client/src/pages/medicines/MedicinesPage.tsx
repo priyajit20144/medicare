@@ -37,6 +37,7 @@ import {
 } from '../../components/medicines/medicineData';
 import { MedicineCard } from '../../components/medicines/MedicineCard';
 import { MedicineQuickViewModal } from '../../components/medicines/MedicineQuickViewModal';
+import { formatINR } from '../../utils/currency';
 
 const CategoryIcon: React.FC<{ iconName: string; className?: string }> = ({
   iconName,
@@ -294,18 +295,18 @@ export const MedicinesPage: React.FC = () => {
               <motion.div
                 whileHover={{ y: -3 }}
                 transition={{ duration: 0.3 }}
-                className={`lg:col-span-7 ${promo.bgGradient} rounded-3xl sm:rounded-[32px] border ${promo.borderClass} p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden shadow-xs hover:shadow-lg transition-all duration-300 min-h-[300px] sm:min-h-[340px]`}
+                className={`lg:col-span-7 ${promo.bgGradient} rounded-3xl sm:rounded-[32px] border ${promo.borderClass} p-5 sm:p-8 flex flex-col justify-between relative overflow-hidden shadow-xs hover:shadow-lg transition-all duration-300 min-h-[270px] sm:min-h-[340px]`}
               >
-                <div className="relative z-10 max-w-sm space-y-2">
+                <div className="relative z-10 max-w-[64%] sm:max-w-sm space-y-2">
                   <span className="inline-block px-3 py-1 bg-white/90 backdrop-blur-xs text-slate-800 font-extrabold text-[11px] rounded-full shadow-xs">
                     {promo.discountText}
                   </span>
-                  <h3 className="text-2xl sm:text-3xl font-black text-[#112d26] tracking-tight">
+                  <h3 className="text-xl sm:text-3xl font-black text-[#112d26] tracking-tight">
                     {promo.title}
                   </h3>
-                  <div className="flex items-baseline gap-1.5 pt-1">
-                    <span className="text-2xl sm:text-3xl font-black text-slate-900">
-                      ${promo.price.toFixed(2)}
+                  <div className="flex flex-wrap items-baseline gap-1.5 pt-1">
+                    <span className="text-xl sm:text-3xl font-black text-slate-900">
+                      {formatINR(promo.price)}
                     </span>
                     <span className="text-xs text-slate-500 font-medium">
                       {promo.subtitle}
@@ -313,16 +314,15 @@ export const MedicinesPage: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="relative z-10 pt-6 flex items-center gap-3">
+                <div className="relative z-10 pt-5 sm:pt-6 flex flex-wrap items-center gap-2 sm:gap-3 max-w-[62%] sm:max-w-full">
                   <button
                     type="button"
                     onClick={(e) => handleBentoAdd(e, promo)}
                     disabled={isAdding}
-                    className={`px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 shadow-xs transition-all duration-200 active:scale-95 ${
-                      justAdded
+                    className={`px-3.5 sm:px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 shadow-xs transition-all duration-200 active:scale-95 ${justAdded
                         ? 'bg-emerald-600 text-white'
                         : 'bg-[#1c534c] hover:bg-[#123934] text-white'
-                    }`}
+                      }`}
                   >
                     {justAdded ? (
                       <>
@@ -345,7 +345,7 @@ export const MedicinesPage: React.FC = () => {
                   </button>
                 </div>
 
-                <div className="absolute right-2 sm:right-4 bottom-2 sm:bottom-4 w-[50%] sm:w-[48%] max-w-[280px] pointer-events-none select-none flex items-end justify-end">
+                <div className="absolute right-2 sm:right-4 bottom-2 sm:bottom-4 w-[38%] xs:w-[44%] sm:w-[48%] max-w-[280px] pointer-events-none select-none flex items-end justify-end">
                   <img
                     src={promo.image}
                     alt={promo.title}
@@ -371,16 +371,16 @@ export const MedicinesPage: React.FC = () => {
                   transition={{ duration: 0.3 }}
                   className={`flex-1 ${promo.bgGradient} rounded-3xl sm:rounded-[28px] border ${promo.borderClass} p-5 sm:p-6 flex flex-col justify-between relative overflow-hidden shadow-xs hover:shadow-lg transition-all duration-300 min-h-[160px] sm:min-h-[170px]`}
                 >
-                  <div className="relative z-10 max-w-[60%] space-y-1.5">
+                  <div className="relative z-10 max-w-[62%] sm:max-w-[60%] pr-2 space-y-1.5">
                     <span className="inline-block px-2.5 py-0.5 bg-white/90 backdrop-blur-xs text-slate-800 font-extrabold text-[10px] rounded-full shadow-xs">
                       {promo.discountText}
                     </span>
                     <h4 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">
                       {promo.title}
                     </h4>
-                    <div className="flex items-baseline gap-1">
+                    <div className="flex flex-wrap items-baseline gap-1">
                       <span className="text-lg sm:text-xl font-black text-slate-900">
-                        ${promo.price.toFixed(2)}
+                        {formatINR(promo.price)}
                       </span>
                       <span className="text-[11px] text-slate-500 font-medium">
                         {promo.subtitle}
@@ -392,11 +392,10 @@ export const MedicinesPage: React.FC = () => {
                         type="button"
                         onClick={(e) => handleBentoAdd(e, promo)}
                         disabled={isAdding}
-                        className={`px-3 py-1.5 rounded-lg text-[11px] font-bold flex items-center gap-1.5 shadow-2xs transition-all ${
-                          justAdded
+                        className={`px-3 py-1.5 rounded-lg text-[11px] font-bold flex items-center gap-1.5 shadow-2xs transition-all ${justAdded
                             ? 'bg-emerald-600 text-white'
                             : 'bg-indigo-950 hover:bg-indigo-900 text-white active:scale-95'
-                        }`}
+                          }`}
                       >
                         {justAdded ? <Check className="w-3 h-3" /> : <ShoppingBag className="w-3 h-3" />}
                         <span>{justAdded ? 'Added' : 'Add to cart'}</span>
@@ -404,7 +403,7 @@ export const MedicinesPage: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="absolute right-2 sm:right-4 bottom-2 top-2 w-[42%] max-w-[150px] pointer-events-none select-none flex items-center justify-end">
+                  <div className="absolute right-2 sm:right-4 bottom-2 top-2 w-[36%] sm:w-[42%] max-w-[150px] pointer-events-none select-none flex items-center justify-end">
                     <img
                       src={promo.image}
                       alt={promo.title}
@@ -428,16 +427,16 @@ export const MedicinesPage: React.FC = () => {
                   transition={{ duration: 0.3 }}
                   className={`flex-1 ${promo.bgGradient} rounded-3xl sm:rounded-[28px] border ${promo.borderClass} p-5 sm:p-6 flex flex-col justify-between relative overflow-hidden shadow-xs hover:shadow-lg transition-all duration-300 min-h-[160px] sm:min-h-[170px]`}
                 >
-                  <div className="relative z-10 max-w-[60%] space-y-1.5">
+                  <div className="relative z-10 max-w-[62%] sm:max-w-[60%] pr-2 space-y-1.5">
                     <span className="inline-block px-2.5 py-0.5 bg-white/90 backdrop-blur-xs text-slate-800 font-extrabold text-[10px] rounded-full shadow-xs">
                       {promo.discountText}
                     </span>
                     <h4 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">
                       {promo.title}
                     </h4>
-                    <div className="flex items-baseline gap-1">
+                    <div className="flex flex-wrap items-baseline gap-1">
                       <span className="text-lg sm:text-xl font-black text-slate-900">
-                        ${promo.price.toFixed(2)}
+                        {formatINR(promo.price)}
                       </span>
                       <span className="text-[11px] text-slate-500 font-medium">
                         {promo.subtitle}
@@ -449,11 +448,10 @@ export const MedicinesPage: React.FC = () => {
                         type="button"
                         onClick={(e) => handleBentoAdd(e, promo)}
                         disabled={isAdding}
-                        className={`px-3 py-1.5 rounded-lg text-[11px] font-bold flex items-center gap-1.5 shadow-2xs transition-all ${
-                          justAdded
+                        className={`px-3 py-1.5 rounded-lg text-[11px] font-bold flex items-center gap-1.5 shadow-2xs transition-all ${justAdded
                             ? 'bg-emerald-600 text-white'
                             : 'bg-amber-950 hover:bg-amber-900 text-white active:scale-95'
-                        }`}
+                          }`}
                       >
                         {justAdded ? <Check className="w-3 h-3" /> : <ShoppingBag className="w-3 h-3" />}
                         <span>{justAdded ? 'Added' : 'Add to cart'}</span>
@@ -461,7 +459,7 @@ export const MedicinesPage: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="absolute right-2 sm:right-4 bottom-2 top-2 w-[42%] max-w-[150px] pointer-events-none select-none flex items-center justify-end">
+                  <div className="absolute right-2 sm:right-4 bottom-2 top-2 w-[36%] sm:w-[42%] max-w-[150px] pointer-events-none select-none flex items-center justify-end">
                     <img
                       src={promo.image}
                       alt={promo.title}
@@ -508,28 +506,24 @@ export const MedicinesPage: React.FC = () => {
                     style={{ width: '84px' }}
                   >
                     <div
-                      className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center transition-all duration-300 relative ${
-                        cat.bgColor
-                      } ${
-                        isActive
+                      className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center transition-all duration-300 relative ${cat.bgColor
+                        } ${isActive
                           ? 'ring-3 ring-[#1c534c] ring-offset-2 scale-105 shadow-md'
                           : 'shadow-2xs group-hover:scale-105 group-hover:shadow-sm'
-                      }`}
+                        }`}
                     >
                       <CategoryIcon
                         iconName={cat.iconName}
-                        className={`w-6 h-6 sm:w-7 sm:h-7 transition-colors ${
-                          isActive ? 'text-[#1c534c]' : cat.iconColor
-                        }`}
+                        className={`w-6 h-6 sm:w-7 sm:h-7 transition-colors ${isActive ? 'text-[#1c534c]' : cat.iconColor
+                          }`}
                       />
                     </div>
 
                     <span
-                      className={`text-[11px] sm:text-xs text-center mt-2 font-medium leading-tight line-clamp-2 transition-colors ${
-                        isActive
+                      className={`text-[11px] sm:text-xs text-center mt-2 font-medium leading-tight line-clamp-2 transition-colors ${isActive
                           ? 'text-[#112d26] font-extrabold'
                           : 'text-slate-600 group-hover:text-slate-900'
-                      }`}
+                        }`}
                     >
                       {cat.name}
                     </span>
@@ -572,33 +566,30 @@ export const MedicinesPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => updateParam('requiresPrescription', null)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
-                  !requiresPrescription
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${!requiresPrescription
                     ? 'bg-white text-slate-900 shadow-2xs'
                     : 'text-slate-600 hover:text-slate-900'
-                }`}
+                  }`}
               >
                 All
               </button>
               <button
                 type="button"
                 onClick={() => updateParam('requiresPrescription', 'false')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
-                  requiresPrescription === 'false'
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${requiresPrescription === 'false'
                     ? 'bg-white text-emerald-800 shadow-2xs'
                     : 'text-slate-600 hover:text-slate-900'
-                }`}
+                  }`}
               >
                 OTC (No Rx)
               </button>
               <button
                 type="button"
                 onClick={() => updateParam('requiresPrescription', 'true')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
-                  requiresPrescription === 'true'
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${requiresPrescription === 'true'
                     ? 'bg-white text-amber-800 shadow-2xs'
                     : 'text-slate-600 hover:text-slate-900'
-                }`}
+                  }`}
               >
                 Rx Required
               </button>
@@ -625,12 +616,12 @@ export const MedicinesPage: React.FC = () => {
         {/* 5. MAIN PRODUCT GRID (MATCHING SCREENSHOT)                */}
         {/* ========================================================= */}
         <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="flex flex-wrap items-center gap-2 min-w-0">
               <h2 className="text-xl sm:text-2xl font-black text-[#112d26] tracking-tight">
                 {activeCategoryName === 'All Products' ? 'Prescription & Daily Formularies' : activeCategoryName}
               </h2>
-              <span className="px-2.5 py-0.5 text-xs font-bold rounded-full bg-emerald-100 text-emerald-800">
+              <span className="px-2.5 py-0.5 text-xs font-bold rounded-full bg-emerald-100 text-emerald-800 whitespace-nowrap">
                 {displayItems.length} products
               </span>
             </div>
@@ -735,7 +726,7 @@ export const MedicinesPage: React.FC = () => {
             initial={{ opacity: 0, y: 30, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="fixed bottom-6 right-6 z-50 bg-slate-950/95 backdrop-blur-md text-white rounded-2xl p-4 shadow-2xl border border-white/10 flex items-center gap-3.5 max-w-md"
+            className="fixed bottom-4 left-4 right-4 sm:left-auto sm:bottom-6 sm:right-6 z-50 bg-slate-950/95 backdrop-blur-md text-white rounded-2xl p-3.5 sm:p-4 shadow-2xl border border-white/10 flex items-center gap-3.5 sm:max-w-md"
           >
             {toast.image ? (
               <img
@@ -753,7 +744,7 @@ export const MedicinesPage: React.FC = () => {
                 Added to cart
               </span>
               <p className="text-xs font-bold text-white truncate">{toast.title}</p>
-              <p className="text-[11px] text-slate-400 font-semibold">${toast.price.toFixed(2)}</p>
+              <p className="text-[11px] text-slate-400 font-semibold">{formatINR(toast.price)}</p>
             </div>
             <button
               type="button"

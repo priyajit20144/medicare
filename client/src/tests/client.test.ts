@@ -5,6 +5,14 @@ import {
   getDefaultDashboardRoute,
   findQuickServiceByRoute,
 } from '../constants/quickServices';
+import {
+  CURRENCY_CODE,
+  CURRENCY_SYMBOL,
+  FREE_DELIVERY_THRESHOLD_INR,
+  STANDARD_DELIVERY_FEE_INR,
+  formatINR,
+} from '../utils/currency';
+import { computeCartSummary } from '../store/cartStore';
 
 describe('Medicare Client Core Tests', () => {
   it('loads environment and application config defaults', () => {
@@ -84,5 +92,51 @@ describe('Medicare Client Core Tests', () => {
     expect(getDefaultDashboardRoute('DOCTOR')).toBe('/doctor');
     expect(getDefaultDashboardRoute('USER')).toBe('/user/dashboard');
     expect(getDefaultDashboardRoute()).toBe('/user/dashboard');
+  });
+
+  it('formats Indian Rupee (INR) prices with en-IN digit grouping', () => {
+    expect(CURRENCY_CODE).toBe('INR');
+    expect(CURRENCY_SYMBOL).toBe('₹');
+    expect(formatINR(1499)).toBe('₹1,499.00');
+    expect(formatINR(125000, 0)).toBe('₹1,25,000');
+    expect(formatINR(null)).toBe('₹0.00');
+  });
+
+  it('applies ₹999 free-delivery threshold and ₹49 standard delivery fee in cart summary', () => {
+    const lowCart = computeCartSummary([
+      {
+        medicineId: {
+          _id: 'med-1',
+          name: 'Paracetamol',
+          price: 500,
+          discountPrice: 400,
+          requiresPrescription: false,
+        } as any,
+        quantity: 1,
+        price: 500,
+        discountPrice: 400,
+      },
+    ]);
+    expect(lowCart.subtotal).toBe(500);
+    expect(lowCart.discount).toBe(100);
+    expect(lowCart.deliveryFee).toBe(STANDARD_DELIVERY_FEE_INR);
+    expect(lowCart.tax).toBe(20);
+    expect(lowCart.total).toBe(469);
+
+    const freeCart = computeCartSummary([
+      {
+        medicineId: {
+          _id: 'med-2',
+          name: 'Cardio Care',
+          price: FREE_DELIVERY_THRESHOLD_INR + 201,
+          requiresPrescription: false,
+        } as any,
+        quantity: 1,
+        price: FREE_DELIVERY_THRESHOLD_INR + 201,
+      },
+    ]);
+    expect(freeCart.deliveryFee).toBe(0);
+    expect(freeCart.tax).toBe(60);
+    expect(freeCart.total).toBe(1260);
   });
 });

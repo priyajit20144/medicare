@@ -16,6 +16,7 @@ import { sendSuccess, sendError } from '../utils/response';
 import { logAudit } from '../utils/audit';
 import { emailService } from '../services/emailService';
 import { ENV } from '../config/env';
+import { CURRENCY_CODE } from '../utils/pricing';
 
 export async function getCheckupPackages(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
@@ -129,6 +130,7 @@ export async function bookCheckup(req: Request, res: Response, next: NextFunctio
     } else {
       paymentResult = await paymentService.createPayment({
         amount: finalAmount,
+        currency: CURRENCY_CODE,
         description: `Health Checkup: ${pkg.name} (${bookingNumber})`,
         customer: {
           name: patientName,

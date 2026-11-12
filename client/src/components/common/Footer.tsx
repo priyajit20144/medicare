@@ -109,6 +109,12 @@ export const Footer: React.FC = () => {
               <li>
                 <Link to="/admin" className="hover:text-emerald-400 transition">Admin Portal</Link>
               </li>
+              <li>
+                <Link to="/about" className="hover:text-emerald-400 transition">About Medicare</Link>
+              </li>
+              <li>
+                <Link to="/contact" className="hover:text-emerald-400 transition">Contact Support</Link>
+              </li>
               <li className="pt-2 text-slate-500">
                 <span>Helpline: </span>
                 <span className="text-emerald-400 font-semibold">+1 (800) 555-CARE</span>

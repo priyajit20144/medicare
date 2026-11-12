@@ -16,6 +16,7 @@ import { api } from '../../api/client';
 import { Order } from '../../types';
 import { StatusBadge } from '../../components/common/StatusBadge';
 import { LoadingState } from '../../components/common/LoadingState';
+import { formatINR } from '../../utils/currency';
 
 export const UserOrderDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -151,15 +152,15 @@ export const UserOrderDetailPage: React.FC = () => {
 
           <div className="space-y-3 divide-y divide-slate-100">
             {order.items?.map((item, idx) => (
-              <div key={idx} className="pt-3 first:pt-0 flex items-center justify-between text-xs">
-                <div>
-                  <h4 className="font-bold text-slate-800">{item.name}</h4>
-                  <span className="text-[11px] text-slate-400">
+              <div key={idx} className="pt-3 first:pt-0 flex items-center justify-between gap-3 text-xs">
+                <div className="min-w-0 flex-1">
+                  <h4 className="font-bold text-slate-800 truncate">{item.name}</h4>
+                  <span className="text-[11px] text-slate-400 block truncate">
                     SKU: {item.sku} • Qty: {item.quantity}
                   </span>
                 </div>
-                <span className="font-bold text-slate-900">
-                  ${((item.discountPrice || item.price) * item.quantity).toFixed(2)}
+                <span className="font-bold text-slate-900 flex-shrink-0">
+                  {formatINR((item.discountPrice || item.price) * item.quantity)}
                 </span>
               </div>
             ))}
@@ -168,7 +169,7 @@ export const UserOrderDetailPage: React.FC = () => {
 
         {/* Delivery Address & Invoicing */}
         <div className="space-y-6">
-          <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4 text-xs">
+          <div className="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4 text-xs">
             <h3 className="font-bold text-slate-900 flex items-center gap-1.5 pb-2 border-b border-slate-100">
               <MapPin className="w-4 h-4 text-emerald-600" /> Delivery Address
             </h3>
@@ -189,25 +190,25 @@ export const UserOrderDetailPage: React.FC = () => {
             </h3>
             <div className="flex justify-between text-slate-500">
               <span>Subtotal</span>
-              <span>${order.subtotal.toFixed(2)}</span>
+              <span>{formatINR(order.subtotal)}</span>
             </div>
             {order.discount > 0 && (
               <div className="flex justify-between text-emerald-600 font-semibold">
                 <span>Discount</span>
-                <span>-${order.discount.toFixed(2)}</span>
+                <span>-{formatINR(order.discount)}</span>
               </div>
             )}
             <div className="flex justify-between text-slate-500">
               <span>Delivery Fee</span>
-              <span>{order.deliveryFee === 0 ? 'FREE' : `$${order.deliveryFee.toFixed(2)}`}</span>
+              <span>{order.deliveryFee === 0 ? 'FREE' : formatINR(order.deliveryFee)}</span>
             </div>
             <div className="flex justify-between text-slate-500">
               <span>Tax</span>
-              <span>${order.tax.toFixed(2)}</span>
+              <span>{formatINR(order.tax)}</span>
             </div>
             <div className="pt-2 border-t border-slate-200 flex justify-between font-black text-slate-900 text-sm">
               <span>Total Paid</span>
-              <span>${order.total.toFixed(2)}</span>
+              <span>{formatINR(order.total)}</span>
             </div>
 
             {/* Cancel Button if eligible */}

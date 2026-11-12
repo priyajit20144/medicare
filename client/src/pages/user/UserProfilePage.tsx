@@ -140,7 +140,7 @@ export const UserProfilePage: React.FC = () => {
           <button
             type="submit"
             disabled={saving}
-            className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition shadow-sm disabled:opacity-50"
+            className="w-full sm:w-auto px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition shadow-sm disabled:opacity-50"
           >
             {saving ? 'Saving...' : 'Save Profile Changes'}
           </button>

@@ -14,7 +14,7 @@ import {
   Phone,
   ShieldCheck,
   Award,
-  DollarSign,
+  IndianRupee,
   Building2,
   Edit,
   Trash2,
@@ -125,7 +125,7 @@ export const AdminDoctorsPage: React.FC = () => {
   const [customSpecialty, setCustomSpecialty] = useState('');
   const [qualifications, setQualifications] = useState('MBBS, MD');
   const [experienceYears, setExperienceYears] = useState<number>(8);
-  const [consultationFee, setConsultationFee] = useState<number>(100);
+  const [consultationFee, setConsultationFee] = useState<number>(8500);
   const [hospitalAffiliation, setHospitalAffiliation] = useState('Medicare Central Medical Hospital');
   const [consultationTypes, setConsultationTypes] = useState<('IN_PERSON' | 'VIDEO')[]>(['IN_PERSON', 'VIDEO']);
   const [availableDays, setAvailableDays] = useState<string[]>(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']);
@@ -199,7 +199,7 @@ export const AdminDoctorsPage: React.FC = () => {
     setCustomSpecialty('');
     setQualifications('MBBS, MD - Cardiology');
     setExperienceYears(8);
-    setConsultationFee(120);
+    setConsultationFee(10200);
     setHospitalAffiliation('Medicare Central Medical Hospital');
     setConsultationTypes(['IN_PERSON', 'VIDEO']);
     setAvailableDays(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']);
@@ -495,9 +495,8 @@ export const AdminDoctorsPage: React.FC = () => {
           {filteredDoctors.map((doc) => (
             <div
               key={doc._id}
-              className={`bg-slate-950 border rounded-3xl p-5 flex flex-col justify-between transition hover:border-slate-700 relative overflow-hidden group ${
-                doc.isActive ? 'border-slate-800/80' : 'border-rose-900/30 opacity-75'
-              }`}
+              className={`bg-slate-950 border rounded-3xl p-5 flex flex-col justify-between transition hover:border-slate-700 relative overflow-hidden group ${doc.isActive ? 'border-slate-800/80' : 'border-rose-900/30 opacity-75'
+                }`}
             >
               {/* Card Header & Avatar */}
               <div>
@@ -512,9 +511,8 @@ export const AdminDoctorsPage: React.FC = () => {
                       }}
                     />
                     <span
-                      className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-slate-950 ${
-                        doc.isActive ? 'bg-emerald-500' : 'bg-rose-500'
-                      }`}
+                      className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-slate-950 ${doc.isActive ? 'bg-emerald-500' : 'bg-rose-500'
+                        }`}
                       title={doc.isActive ? 'Active' : 'Inactive'}
                     />
                   </div>
@@ -549,8 +547,8 @@ export const AdminDoctorsPage: React.FC = () => {
                   </span>
 
                   <span className="inline-flex items-center gap-1 bg-slate-900 px-2.5 py-1 rounded-lg text-emerald-400 font-bold border border-slate-800">
-                    <DollarSign className="w-3.5 h-3.5" />
-                    <span>${doc.consultationFee.toFixed(2)}</span>
+                    <IndianRupee className="w-3.5 h-3.5" />
+                    <span>{Number(doc.consultationFee || 0).toLocaleString('en-IN')}</span>
                   </span>
 
                   <span className="inline-flex items-center gap-1 bg-slate-900 px-2 py-1 rounded-lg text-amber-300 text-[11px] font-semibold border border-slate-800">
@@ -621,11 +619,10 @@ export const AdminDoctorsPage: React.FC = () => {
                       isActive: !doc.isActive,
                     })
                   }
-                  className={`text-xs font-semibold px-3 py-1.5 rounded-xl border transition ${
-                    doc.isActive
+                  className={`text-xs font-semibold px-3 py-1.5 rounded-xl border transition ${doc.isActive
                       ? 'bg-slate-900 text-slate-300 hover:text-white border-slate-700'
                       : 'bg-rose-950/40 text-rose-300 border-rose-800/50 hover:bg-rose-900/60'
-                  }`}
+                    }`}
                 >
                   {doc.isActive ? 'Deactivate' : 'Activate'}
                 </button>
@@ -819,12 +816,12 @@ export const AdminDoctorsPage: React.FC = () => {
 
                   <div>
                     <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                      Consultation Fee ($ USD) *
+                      Consultation Fee (₹ INR) *
                     </label>
                     <input
                       type="number"
                       min={0}
-                      step={5}
+                      step={50}
                       value={consultationFee}
                       onChange={(e) => setConsultationFee(Number(e.target.value))}
                       className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
@@ -872,11 +869,10 @@ export const AdminDoctorsPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => handleToggleType('IN_PERSON')}
-                      className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold border transition ${
-                        consultationTypes.includes('IN_PERSON')
+                      className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold border transition ${consultationTypes.includes('IN_PERSON')
                           ? 'bg-emerald-950/60 border-emerald-600 text-emerald-300'
                           : 'bg-slate-950 border-slate-800 text-slate-400'
-                      }`}
+                        }`}
                     >
                       <User className="w-3.5 h-3.5" /> In-Clinic Examination
                       {consultationTypes.includes('IN_PERSON') && <Check className="w-3.5 h-3.5 ml-1" />}
@@ -885,11 +881,10 @@ export const AdminDoctorsPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => handleToggleType('VIDEO')}
-                      className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold border transition ${
-                        consultationTypes.includes('VIDEO')
+                      className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold border transition ${consultationTypes.includes('VIDEO')
                           ? 'bg-indigo-950/60 border-indigo-600 text-indigo-300'
                           : 'bg-slate-950 border-slate-800 text-slate-400'
-                      }`}
+                        }`}
                     >
                       <Video className="w-3.5 h-3.5" /> Telehealth Video Consultation
                       {consultationTypes.includes('VIDEO') && <Check className="w-3.5 h-3.5 ml-1" />}
@@ -909,11 +904,10 @@ export const AdminDoctorsPage: React.FC = () => {
                           key={day}
                           type="button"
                           onClick={() => handleToggleDay(day)}
-                          className={`text-xs font-semibold px-3 py-1.5 rounded-xl border transition ${
-                            isSelected
+                          className={`text-xs font-semibold px-3 py-1.5 rounded-xl border transition ${isSelected
                               ? 'bg-emerald-600 text-white border-emerald-500 shadow-sm'
                               : 'bg-slate-950 text-slate-400 border-slate-800 hover:text-slate-200'
-                          }`}
+                            }`}
                         >
                           {day}
                         </button>
@@ -939,11 +933,10 @@ export const AdminDoctorsPage: React.FC = () => {
                           key={slot}
                           type="button"
                           onClick={() => handleToggleSlot(slot)}
-                          className={`text-[11px] font-semibold px-2.5 py-1 rounded-lg border transition ${
-                            isSelected
+                          className={`text-[11px] font-semibold px-2.5 py-1 rounded-lg border transition ${isSelected
                               ? 'bg-emerald-950/80 text-emerald-300 border-emerald-600'
                               : 'bg-slate-900 text-slate-400 border-slate-800 hover:text-slate-200'
-                          }`}
+                            }`}
                         >
                           {slot}
                         </button>
@@ -971,11 +964,10 @@ export const AdminDoctorsPage: React.FC = () => {
                           key={preset.url}
                           type="button"
                           onClick={() => setAvatar(preset.url)}
-                          className={`flex flex-col items-center gap-1.5 p-2 rounded-2xl border transition ${
-                            isSelected
+                          className={`flex flex-col items-center gap-1.5 p-2 rounded-2xl border transition ${isSelected
                               ? 'bg-emerald-950/40 border-emerald-500 ring-2 ring-emerald-500/30'
                               : 'bg-slate-950 border-slate-800 hover:border-slate-700'
-                          }`}
+                            }`}
                         >
                           <img
                             src={preset.url}
@@ -1046,7 +1038,7 @@ export const AdminDoctorsPage: React.FC = () => {
               </div>
 
               {/* Form Action Buttons */}
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
+              <div className="flex flex-wrap items-center justify-end gap-3 pt-4 border-t border-slate-800">
                 <button
                   type="button"
                   onClick={handleCloseModal}
@@ -1063,8 +1055,8 @@ export const AdminDoctorsPage: React.FC = () => {
                   {saveDoctorMutation.isPending
                     ? 'Saving...'
                     : editingDoctor
-                    ? 'Update Physician'
-                    : 'Register Physician'}
+                      ? 'Update Physician'
+                      : 'Register Physician'}
                 </button>
               </div>
             </form>
@@ -1074,8 +1066,8 @@ export const AdminDoctorsPage: React.FC = () => {
 
       {/* Delete Confirmation Modal */}
       {deleteDoctorId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in overflow-y-auto">
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-5 sm:p-6 space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto my-auto">
             <div className="flex items-center gap-3 text-rose-400">
               <div className="p-2.5 rounded-xl bg-rose-500/10 border border-rose-500/20">
                 <Trash2 className="w-6 h-6" />

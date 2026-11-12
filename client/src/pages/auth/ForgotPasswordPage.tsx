@@ -276,22 +276,22 @@ export const ForgotPasswordPage: React.FC = () => {
   const strength = getPasswordStrength(newPassword);
 
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-slate-50 selection:bg-emerald-500 selection:text-white relative overflow-x-hidden font-sans">
+    <div className="min-h-screen flex flex-col justify-between bg-slate-50 selection:bg-emerald-500 selection:text-white relative overflow-x-clip font-sans">
       {/* ==================================================================== */}
       {/* 1. TOP NAVIGATION BAR                                                */}
       {/* ==================================================================== */}
       <header className="w-full bg-white/95 backdrop-blur-md border-b border-slate-100 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-2">
           {/* Logo Brand */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-md shadow-emerald-600/20 group-hover:scale-105 transition-transform">
-              <HeartPulse className="w-6 h-6" />
+          <Link to="/" className="flex items-center gap-2 sm:gap-3 group min-w-0">
+            <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-md shadow-emerald-600/20 group-hover:scale-105 transition-transform flex-shrink-0">
+              <HeartPulse className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
-            <div className="flex flex-col">
-              <span className="text-2xl font-black text-slate-900 tracking-tight leading-none">
+            <div className="flex flex-col min-w-0">
+              <span className="text-lg sm:text-2xl font-black text-slate-900 tracking-tight leading-none truncate">
                 Medicare
               </span>
-              <span className="text-[11px] font-semibold text-emerald-600 tracking-wide mt-1">
+              <span className="hidden sm:block text-[11px] font-semibold text-emerald-600 tracking-wide mt-1 truncate">
                 Your Health, Our Priority
               </span>
             </div>
@@ -323,20 +323,25 @@ export const ForgotPasswordPage: React.FC = () => {
               <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500/20 flex-shrink-0" />
               <span>Premium</span>
             </Link>
-            <a href="/#about" className="flex items-center gap-1.5 hover:text-emerald-600 transition-colors py-2 whitespace-nowrap">
+            <Link to="/about" className="flex items-center gap-1.5 hover:text-emerald-600 transition-colors py-2 whitespace-nowrap">
               <Info className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
               <span>About</span>
-            </a>
+            </Link>
+            <Link to="/contact" className="flex items-center gap-1.5 hover:text-emerald-600 transition-colors py-2 whitespace-nowrap">
+              <Mail className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+              <span>Contact</span>
+            </Link>
           </nav>
 
           {/* Right Header Action: Return to Login */}
-          <div className="flex items-center gap-3 flex-shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
             <Link
               to="/login"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-slate-200/90 hover:border-emerald-500 bg-white hover:bg-emerald-50/30 transition-all text-xs font-bold text-slate-700 hover:text-emerald-700 shadow-sm flex-shrink-0 whitespace-nowrap group"
+              className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full border border-slate-200/90 hover:border-emerald-500 bg-white hover:bg-emerald-50/30 transition-all text-xs font-bold text-slate-700 hover:text-emerald-700 shadow-sm flex-shrink-0 whitespace-nowrap group"
             >
               <ArrowLeft className="w-3.5 h-3.5 text-slate-400 group-hover:-translate-x-0.5 transition-transform" />
-              <span>Back to Login</span>
+              <span className="hidden xs:inline">Back to Login</span>
+              <span className="xs:hidden">Login</span>
             </Link>
 
             {/* Mobile Menu Toggle Button */}
@@ -366,6 +371,12 @@ export const ForgotPasswordPage: React.FC = () => {
               </Link>
               <Link to="/health-checkups" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-2 p-2 rounded-lg hover:bg-emerald-50">
                 <Heart className="w-4 h-4 text-emerald-600" /> Checkups
+              </Link>
+              <Link to="/about" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-2 p-2 rounded-lg hover:bg-emerald-50">
+                <Info className="w-4 h-4 text-emerald-600" /> About
+              </Link>
+              <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-2 p-2 rounded-lg hover:bg-emerald-50">
+                <Mail className="w-4 h-4 text-emerald-600" /> Contact
               </Link>
             </div>
             <div className="pt-2 border-t border-slate-100">
@@ -401,58 +412,55 @@ export const ForgotPasswordPage: React.FC = () => {
         </div>
 
         {/* Central Floating Recovery Card */}
-        <div className="w-full max-w-[480px] bg-white rounded-3xl shadow-2xl shadow-slate-300/40 border border-slate-100 p-6 sm:p-9 relative z-20">
+        <div className="w-full max-w-[480px] bg-white rounded-3xl shadow-2xl shadow-slate-300/40 border border-slate-100 p-4 sm:p-9 relative z-20">
           {/* Top Wizard Step Indicators */}
-          <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
-            <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between mb-5 sm:mb-6 pb-3 sm:pb-4 border-b border-slate-100 gap-1">
+            <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
               <div
-                className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-black transition-colors ${
-                  step === 1 ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30' : 'bg-emerald-100 text-emerald-800'
-                }`}
+                className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[11px] sm:text-xs font-black transition-colors ${step === 1 ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30' : 'bg-emerald-100 text-emerald-800'
+                  }`}
               >
                 1
               </div>
-              <span className={`text-xs font-bold ${step === 1 ? 'text-slate-900' : 'text-slate-400'}`}>
+              <span className={`text-[11px] sm:text-xs font-bold whitespace-nowrap ${step === 1 ? 'text-slate-900' : 'text-slate-400'}`}>
                 Email
               </span>
             </div>
 
-            <div className="flex-1 mx-3 h-0.5 bg-slate-100 relative">
+            <div className="flex-1 mx-1 sm:mx-3 h-0.5 bg-slate-100 relative min-w-[10px]">
               <div
                 className="h-full bg-emerald-500 transition-all duration-300"
                 style={{ width: step === 1 ? '0%' : step === 2 ? '50%' : '100%' }}
               />
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
               <div
-                className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-black transition-colors ${
-                  step === 2 ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30' : step === 3 ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-400'
-                }`}
+                className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[11px] sm:text-xs font-black transition-colors ${step === 2 ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30' : step === 3 ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-400'
+                  }`}
               >
                 2
               </div>
-              <span className={`text-xs font-bold ${step === 2 ? 'text-slate-900' : 'text-slate-400'}`}>
+              <span className={`text-[11px] sm:text-xs font-bold whitespace-nowrap ${step === 2 ? 'text-slate-900' : 'text-slate-400'}`}>
                 OTP & Reset
               </span>
             </div>
 
-            <div className="flex-1 mx-3 h-0.5 bg-slate-100 relative">
+            <div className="flex-1 mx-1 sm:mx-3 h-0.5 bg-slate-100 relative min-w-[10px]">
               <div
                 className="h-full bg-emerald-500 transition-all duration-300"
                 style={{ width: step === 3 ? '100%' : '0%' }}
               />
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
               <div
-                className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-black transition-colors ${
-                  step === 3 ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30' : 'bg-slate-100 text-slate-400'
-                }`}
+                className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[11px] sm:text-xs font-black transition-colors ${step === 3 ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30' : 'bg-slate-100 text-slate-400'
+                  }`}
               >
                 3
               </div>
-              <span className={`text-xs font-bold ${step === 3 ? 'text-slate-900' : 'text-slate-400'}`}>
+              <span className={`text-[11px] sm:text-xs font-bold whitespace-nowrap ${step === 3 ? 'text-slate-900' : 'text-slate-400'}`}>
                 Success
               </span>
             </div>

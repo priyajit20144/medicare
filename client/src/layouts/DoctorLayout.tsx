@@ -176,11 +176,10 @@ const DoctorLayoutInner: React.FC = () => {
                   key={item.id}
                   type="button"
                   onClick={() => handleNavClick(item.id)}
-                  className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs sm:text-sm font-semibold transition-all duration-200 text-left ${
-                    isActive
+                  className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs sm:text-sm font-semibold transition-all duration-200 text-left ${isActive
                       ? 'bg-[#0d9488] text-white shadow-lg shadow-teal-900/50'
                       : 'text-teal-100/70 hover:text-white hover:bg-white/10'
-                  }`}
+                    }`}
                 >
                   <div className="flex items-center gap-3">
                     <Icon className={`w-4 h-4 flex-shrink-0 ${isActive ? 'text-white' : 'text-teal-300/70'}`} />
@@ -255,7 +254,7 @@ const DoctorLayoutInner: React.FC = () => {
               animate={{ x: 0 }}
               exit={{ x: -280 }}
               transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-              className="fixed top-0 bottom-0 left-0 w-72 bg-[#0c2427] text-white flex flex-col justify-between z-50 lg:hidden p-5 shadow-2xl"
+              className="fixed top-0 bottom-0 left-0 w-[82vw] max-w-72 bg-[#0c2427] text-white flex flex-col justify-between overflow-y-auto z-50 lg:hidden p-5 shadow-2xl"
             >
               <div>
                 <div className="flex items-center justify-between pb-6 border-b border-teal-900/50">
@@ -285,11 +284,10 @@ const DoctorLayoutInner: React.FC = () => {
                         key={item.id}
                         type="button"
                         onClick={() => handleNavClick(item.id)}
-                        className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-semibold text-left ${
-                          isActive
+                        className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-semibold text-left ${isActive
                             ? 'bg-[#0d9488] text-white shadow-md'
                             : 'text-teal-100/70 hover:text-white hover:bg-white/10'
-                        }`}
+                          }`}
                       >
                         <div className="flex items-center gap-3">
                           <Icon className="w-4 h-4" />
@@ -306,17 +304,37 @@ const DoctorLayoutInner: React.FC = () => {
                 </nav>
               </div>
 
-              <div className="pt-4 border-t border-teal-900/40 space-y-2">
+              <div className="pt-4 border-t border-teal-900/40 space-y-3 mt-4">
+                <div className="space-y-1.5">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-teal-300/70 block">
+                    Clinical Status
+                  </span>
+                  <div className="grid grid-cols-3 gap-1.5 text-[10px] font-bold">
+                    {(['Online', 'In Consultation', 'Away'] as const).map((statusOption) => (
+                      <button
+                        key={statusOption}
+                        type="button"
+                        onClick={() => setDoctorStatus(statusOption)}
+                        className={`px-2 py-1.5 rounded-lg border text-center truncate transition ${doctorStatus === statusOption
+                            ? 'bg-emerald-500/25 border-emerald-400 text-white'
+                            : 'bg-white/5 border-white/10 text-teal-200/70 hover:text-white'
+                          }`}
+                      >
+                        {statusOption === 'In Consultation' ? 'Busy' : statusOption}
+                      </button>
+                    ))}
+                  </div>
+                </div>
                 <Link
                   to="/"
-                  className="flex items-center gap-2 text-xs text-teal-300 hover:text-white font-semibold py-2"
+                  className="flex items-center gap-2 text-xs text-teal-300 hover:text-white font-semibold py-1.5"
                 >
                   <Home className="w-4 h-4" />
                   <span>Return to Main Website</span>
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="w-full flex items-center gap-2 text-xs text-rose-400 hover:text-rose-300 font-semibold py-2"
+                  className="w-full flex items-center gap-2 text-xs text-rose-400 hover:text-rose-300 font-semibold py-1.5"
                 >
                   <LogOut className="w-4 h-4" />
                   <span>Log Out of Portal</span>
@@ -332,32 +350,32 @@ const DoctorLayoutInner: React.FC = () => {
       {/* ========================================================= */}
       <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
         {/* Top Header Bar */}
-        <header className="h-[72px] bg-white border-b border-slate-200/90 px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4 z-20 flex-shrink-0">
+        <header className="h-[72px] bg-white border-b border-slate-200/90 px-3 sm:px-6 lg:px-8 flex items-center justify-between gap-2 sm:gap-4 z-20 flex-shrink-0">
           {/* Left: Mobile Menu Toggle & Global Clinical Search */}
-          <div className="flex items-center gap-3 flex-1 max-w-xl">
+          <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0 max-w-xl">
             <button
               type="button"
               onClick={() => setMobileSidebarOpen(true)}
-              className="lg:hidden p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+              className="lg:hidden p-1.5 sm:p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 flex-shrink-0"
               aria-label="Open clinical navigation"
             >
               <Menu className="w-5 h-5" />
             </button>
 
             {/* Search Bar matching Image 2 */}
-            <div className="relative w-full max-w-md">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <div className="relative w-full min-w-0 max-w-md">
+              <Search className="w-4 h-4 text-slate-400 absolute left-3 sm:left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search patients, appointments, or medical records..."
-                className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200/80 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500/40 focus:border-teal-500 transition-all"
+                placeholder="Search patients, appointments..."
+                className="w-full min-w-0 pl-9 sm:pl-10 pr-7 py-2 bg-slate-50 border border-slate-200/80 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500/40 focus:border-teal-500 transition-all"
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs"
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs"
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
@@ -366,13 +384,13 @@ const DoctorLayoutInner: React.FC = () => {
           </div>
 
           {/* Right: Quick Controls, Notification Bell, Message Bubble, Online Status, Doctor Profile */}
-          <div className="flex items-center gap-2 sm:gap-3.5">
+          <div className="flex items-center gap-1 sm:gap-3 flex-shrink-0">
             {/* Notification Bell with Badge */}
             <div className="relative" ref={notifRef}>
               <button
                 type="button"
                 onClick={() => setNotificationDropdownOpen(!notificationDropdownOpen)}
-                className="relative p-2.5 rounded-xl text-slate-600 hover:text-teal-700 hover:bg-slate-100 transition"
+                className="relative p-2 sm:p-2.5 rounded-xl text-slate-600 hover:text-teal-700 hover:bg-slate-100 transition"
                 title="Notifications"
               >
                 <Bell className="w-5 h-5" />
@@ -391,7 +409,7 @@ const DoctorLayoutInner: React.FC = () => {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
                     transition={{ duration: 0.15 }}
-                    className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-3xl shadow-2xl border border-slate-200/90 py-3 z-50 text-xs overflow-hidden"
+                    className="fixed inset-x-3 top-[74px] sm:inset-x-auto sm:absolute sm:right-0 sm:top-auto sm:mt-2 sm:w-96 max-h-[calc(100vh-5.5rem)] bg-white rounded-3xl shadow-2xl border border-slate-200/90 py-3 z-50 text-xs overflow-hidden flex flex-col"
                   >
                     <div className="flex items-center justify-between px-4 pb-2.5 border-b border-slate-100">
                       <div className="flex items-center gap-2">
@@ -413,20 +431,18 @@ const DoctorLayoutInner: React.FC = () => {
                         <div
                           key={n.id}
                           onClick={() => markNotificationAsRead(n.id)}
-                          className={`p-3.5 hover:bg-slate-50 transition cursor-pointer flex items-start gap-3 ${
-                            n.unread ? 'bg-teal-50/40' : ''
-                          }`}
+                          className={`p-3.5 hover:bg-slate-50 transition cursor-pointer flex items-start gap-3 ${n.unread ? 'bg-teal-50/40' : ''
+                            }`}
                         >
                           <div
-                            className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 text-white font-bold text-xs ${
-                              n.type === 'message'
+                            className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 text-white font-bold text-xs ${n.type === 'message'
                                 ? 'bg-blue-500'
                                 : n.type === 'prescription'
-                                ? 'bg-rose-500'
-                                : n.type === 'reminder'
-                                ? 'bg-teal-500'
-                                : 'bg-emerald-500'
-                            }`}
+                                  ? 'bg-rose-500'
+                                  : n.type === 'reminder'
+                                    ? 'bg-teal-500'
+                                    : 'bg-emerald-500'
+                              }`}
                           >
                             {n.type === 'message' ? (
                               <MessageSquare className="w-4 h-4" />
@@ -563,7 +579,7 @@ const DoctorLayoutInner: React.FC = () => {
                     initial={{ opacity: 0, y: 8, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 8, scale: 0.95 }}
-                    className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50 text-xs"
+                    className="absolute right-0 mt-2 w-56 max-w-[calc(100vw-1.5rem)] max-h-[calc(100vh-5.5rem)] overflow-y-auto bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50 text-xs"
                   >
                     <div className="px-4 py-2 border-b border-slate-100">
                       <p className="font-bold text-slate-900 truncate">{doctorName}</p>

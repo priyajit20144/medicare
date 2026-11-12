@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { useCartStore } from '../../store/cartStore';
 import { useAuthStore } from '../../store/authStore';
+import { formatINR } from '../../utils/currency';
 import { EmptyState } from '../../components/common/EmptyState';
 import { LoadingState } from '../../components/common/LoadingState';
 
@@ -124,7 +125,7 @@ export const CartPage: React.FC = () => {
                       {med.strength || 'Standard'} {med.dosageForm ? `• ${med.dosageForm}` : ''} {med.packSize ? `(${med.packSize})` : ''}
                     </p>
                     <div className="text-xs font-bold text-slate-900 mt-2 sm:hidden">
-                      ${(unitPrice * item.quantity).toFixed(2)}
+                      {formatINR(unitPrice * item.quantity)}
                     </div>
                   </div>
                 </div>
@@ -149,11 +150,11 @@ export const CartPage: React.FC = () => {
 
                   <div className="hidden sm:block text-right min-w-[80px]">
                     <div className="text-sm font-extrabold text-slate-900">
-                      ${(unitPrice * item.quantity).toFixed(2)}
+                      {formatINR(unitPrice * item.quantity)}
                     </div>
                     {med.discountPrice && med.discountPrice < originalPrice && (
                       <div className="text-[11px] text-slate-400 line-through">
-                        ${(originalPrice * item.quantity).toFixed(2)}
+                        {formatINR(originalPrice * item.quantity)}
                       </div>
                     )}
                   </div>
@@ -187,13 +188,13 @@ export const CartPage: React.FC = () => {
           <div className="space-y-3 text-xs">
             <div className="flex justify-between text-slate-600">
               <span>Items Total ({summary.itemCount})</span>
-              <span>${summary.subtotal.toFixed(2)}</span>
+              <span>{formatINR(summary.subtotal)}</span>
             </div>
 
             {summary.discount > 0 && (
               <div className="flex justify-between text-emerald-600 font-semibold">
                 <span>Promotional Discount</span>
-                <span>-${summary.discount.toFixed(2)}</span>
+                <span>-{formatINR(summary.discount)}</span>
               </div>
             )}
 
@@ -206,20 +207,20 @@ export const CartPage: React.FC = () => {
                 {summary.deliveryFee === 0 ? (
                   <strong className="text-emerald-600 font-bold">FREE</strong>
                 ) : (
-                  `$${summary.deliveryFee.toFixed(2)}`
+                  formatINR(summary.deliveryFee)
                 )}
               </span>
             </div>
 
             <div className="flex justify-between text-slate-600">
               <span>Estimated Tax (5%)</span>
-              <span>${summary.tax.toFixed(2)}</span>
+              <span>{formatINR(summary.tax)}</span>
             </div>
 
             <div className="pt-3 border-t border-slate-200 flex justify-between items-baseline">
               <span className="text-sm font-bold text-slate-900">Total Due</span>
               <span className="text-2xl font-black text-slate-900">
-                ${summary.total.toFixed(2)}
+                {formatINR(summary.total)}
               </span>
             </div>
           </div>

@@ -20,6 +20,7 @@ import { useCartStore } from '../../store/cartStore';
 import { LoadingState } from '../../components/common/LoadingState';
 import { HealthcareDisclaimer } from '../../components/common/HealthcareDisclaimer';
 import { GRID_MEDICINES, TRENDING_PRODUCTS } from '../../components/medicines/medicineData';
+import { formatINR } from '../../utils/currency';
 
 export const MedicineDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -104,7 +105,7 @@ export const MedicineDetailPage: React.FC = () => {
           )}
           {medicine.discountPrice && (
             <div className="absolute top-4 right-4 z-10 px-3 py-1 rounded-full bg-rose-500 text-white text-xs font-bold shadow-sm">
-              Save ${(medicine.price - medicine.discountPrice).toFixed(2)}
+              Save {formatINR(medicine.price - medicine.discountPrice, 0)}
             </div>
           )}
 
@@ -140,15 +141,15 @@ export const MedicineDetailPage: React.FC = () => {
           </div>
 
           {/* Pricing & Stock status */}
-          <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/80 flex items-center justify-between">
+          <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/80 flex flex-wrap items-center justify-between gap-2">
             <div>
               <div className="flex items-baseline gap-2">
                 <span className="text-3xl font-black text-slate-900">
-                  ${unitPrice.toFixed(2)}
+                  {formatINR(unitPrice)}
                 </span>
                 {medicine.discountPrice && (
                   <span className="text-sm text-slate-400 line-through">
-                    ${medicine.price.toFixed(2)}
+                    {formatINR(medicine.price)}
                   </span>
                 )}
               </div>
@@ -196,7 +197,7 @@ export const MedicineDetailPage: React.FC = () => {
 
           {/* Quantity Stepper & Buttons */}
           <div className="space-y-3 pt-2">
-            <div className="flex items-center gap-4">
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4">
               <div className="flex items-center border border-slate-300 rounded-xl overflow-hidden bg-white shadow-sm">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -217,7 +218,7 @@ export const MedicineDetailPage: React.FC = () => {
                 id="med-detail-add-cart-btn"
                 onClick={handleAddToCart}
                 disabled={medicine.stock === 0}
-                className="flex-1 py-3 px-6 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl transition shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2 disabled:opacity-50"
+                className="flex-1 min-w-[160px] py-3 px-4 sm:px-6 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl transition shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 {addedSuccess ? (
                   <>
@@ -225,7 +226,7 @@ export const MedicineDetailPage: React.FC = () => {
                   </>
                 ) : (
                   <>
-                    <ShoppingBag className="w-4 h-4" /> Add to Cart • ${(unitPrice * quantity).toFixed(2)}
+                    <ShoppingBag className="w-4 h-4" /> Add to Cart • {formatINR(unitPrice * quantity)}
                   </>
                 )}
               </button>
@@ -234,7 +235,7 @@ export const MedicineDetailPage: React.FC = () => {
                 id="med-detail-buy-now-btn"
                 onClick={handleBuyNow}
                 disabled={medicine.stock === 0}
-                className="py-3 px-6 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition shadow-sm disabled:opacity-50"
+                className="w-full sm:w-auto py-3 px-6 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition shadow-sm disabled:opacity-50"
               >
                 Buy Now
               </button>
@@ -304,7 +305,7 @@ export const MedicineDetailPage: React.FC = () => {
                 </div>
                 <div className="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between">
                   <span className="text-sm font-bold text-slate-900">
-                    ${(rel.discountPrice || rel.price).toFixed(2)}
+                    {formatINR(rel.discountPrice || rel.price)}
                   </span>
                   <span className="text-[11px] font-bold text-emerald-600 group-hover:translate-x-0.5 transition">
                     View →

@@ -5,7 +5,6 @@ import {
   Activity,
   Search,
   CheckCircle2,
-  DollarSign,
   Clock,
   FlaskConical,
   Eye,
@@ -26,6 +25,7 @@ import {
 import { api } from '../../api/client';
 import { HealthCheckupPackage, LabTest } from '../../types';
 import { LoadingState } from '../../components/common/LoadingState';
+import { formatINR } from '../../utils/currency';
 
 const CLINICAL_IMAGE_PRESETS = [
   { label: 'Operating Theatre', url: 'https://images.unsplash.com/photo-1551076805-e1869033e561?auto=format&fit=crop&w=800&q=80' },
@@ -370,21 +370,19 @@ export const AdminPackagesPage: React.FC = () => {
         <div className="flex gap-2">
           <button
             onClick={() => setActiveTab('packages')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
-              activeTab === 'packages'
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${activeTab === 'packages'
                 ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-950/40'
                 : 'bg-slate-900 text-slate-400 hover:text-white'
-            }`}
+              }`}
           >
             <Package className="w-4 h-4" /> Checkup Packages ({packageList.length})
           </button>
           <button
             onClick={() => setActiveTab('tests')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
-              activeTab === 'tests'
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${activeTab === 'tests'
                 ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-950/40'
                 : 'bg-slate-900 text-slate-400 hover:text-white'
-            }`}
+              }`}
           >
             <FlaskConical className="w-4 h-4" /> Laboratory Tests ({testList.length})
           </button>
@@ -444,10 +442,10 @@ export const AdminPackagesPage: React.FC = () => {
 
                   <div className="flex items-baseline gap-2 pt-2">
                     <span className="text-2xl font-black text-emerald-400">
-                      ${pkg.discountPrice || pkg.price}
+                      {formatINR(pkg.discountPrice || pkg.price, 0)}
                     </span>
                     {pkg.discountPrice && (
-                      <span className="text-xs text-slate-500 line-through">${pkg.price}</span>
+                      <span className="text-xs text-slate-500 line-through">{formatINR(pkg.price, 0)}</span>
                     )}
                   </div>
                 </div>
@@ -521,7 +519,7 @@ export const AdminPackagesPage: React.FC = () => {
                       )}
                     </td>
                     <td className="py-4 px-5 font-mono font-bold text-emerald-400">
-                      ${t.price?.toFixed(2) || '25.00'}
+                      {formatINR(t.price ?? 2125)}
                     </td>
                     <td className="py-4 px-5 text-right">
                       <button
@@ -580,18 +578,17 @@ export const AdminPackagesPage: React.FC = () => {
             </div>
 
             {/* Mode Switcher Tabs */}
-            <div className="flex p-1 bg-slate-950 rounded-xl border border-slate-800 text-xs font-bold">
+            <div className="flex flex-col xs:flex-row p-1 bg-slate-950 rounded-xl border border-slate-800 text-xs font-bold gap-1 xs:gap-0">
               <button
                 type="button"
                 onClick={() => {
                   setModalMode('package');
                   setModalError(null);
                 }}
-                className={`flex-1 py-2 rounded-lg transition flex items-center justify-center gap-2 ${
-                  modalMode === 'package'
+                className={`flex-1 py-2 rounded-lg transition flex items-center justify-center gap-2 ${modalMode === 'package'
                     ? 'bg-emerald-600 text-white shadow-sm'
                     : 'text-slate-400 hover:text-white'
-                }`}
+                  }`}
               >
                 <Package className="w-3.5 h-3.5" /> Checkup Package Bundle
               </button>
@@ -604,11 +601,10 @@ export const AdminPackagesPage: React.FC = () => {
                     setTestCode(`LAB-${Math.random().toString(36).substring(2, 7).toUpperCase()}`);
                   }
                 }}
-                className={`flex-1 py-2 rounded-lg transition flex items-center justify-center gap-2 ${
-                  modalMode === 'test'
+                className={`flex-1 py-2 rounded-lg transition flex items-center justify-center gap-2 ${modalMode === 'test'
                     ? 'bg-indigo-600 text-white shadow-sm'
                     : 'text-slate-400 hover:text-white'
-                }`}
+                  }`}
               >
                 <FlaskConical className="w-3.5 h-3.5" /> Laboratory Biomarker Test
               </button>
@@ -665,28 +661,28 @@ export const AdminPackagesPage: React.FC = () => {
                   <div className="grid grid-cols-2 gap-2">
                     <div>
                       <label className="block text-slate-400 font-bold mb-1">
-                        Price ($ USD) <span className="text-emerald-400">*</span>
+                        Price (₹ INR) <span className="text-emerald-400">*</span>
                       </label>
                       <input
                         type="number"
-                        step="0.01"
+                        step="1"
                         min="0"
                         required
                         value={pkgPrice}
                         onChange={(e) => setPkgPrice(e.target.value)}
-                        placeholder="199.00"
+                        placeholder="16915"
                         className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-emerald-500"
                       />
                     </div>
                     <div>
-                      <label className="block text-slate-400 font-bold mb-1">Discount Price ($)</label>
+                      <label className="block text-slate-400 font-bold mb-1">Discount Price (₹)</label>
                       <input
                         type="number"
-                        step="0.01"
+                        step="1"
                         min="0"
                         value={pkgDiscountPrice}
                         onChange={(e) => setPkgDiscountPrice(e.target.value)}
-                        placeholder="149.00"
+                        placeholder="12665"
                         className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-emerald-500"
                       />
                     </div>
@@ -715,22 +711,20 @@ export const AdminPackagesPage: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => setPkgImageMode('upload')}
-                        className={`px-2.5 py-1 rounded-md transition font-medium ${
-                          pkgImageMode === 'upload'
+                        className={`px-2.5 py-1 rounded-md transition font-medium ${pkgImageMode === 'upload'
                             ? 'bg-emerald-600 text-white font-bold'
                             : 'text-slate-400 hover:text-white'
-                        }`}
+                          }`}
                       >
                         Upload File
                       </button>
                       <button
                         type="button"
                         onClick={() => setPkgImageMode('url')}
-                        className={`px-2.5 py-1 rounded-md transition font-medium ${
-                          pkgImageMode === 'url'
+                        className={`px-2.5 py-1 rounded-md transition font-medium ${pkgImageMode === 'url'
                             ? 'bg-emerald-600 text-white font-bold'
                             : 'text-slate-400 hover:text-white'
-                        }`}
+                          }`}
                       >
                         Image URL
                       </button>
@@ -753,11 +747,10 @@ export const AdminPackagesPage: React.FC = () => {
                             if (file) handlePackageFileProcess(file);
                           }}
                           onClick={() => fileInputRef.current?.click()}
-                          className={`border-2 border-dashed rounded-2xl p-4 text-center cursor-pointer flex flex-col items-center justify-center gap-1.5 transition ${
-                            isDraggingImage
+                          className={`border-2 border-dashed rounded-2xl p-4 text-center cursor-pointer flex flex-col items-center justify-center gap-1.5 transition ${isDraggingImage
                               ? 'border-emerald-400 bg-emerald-500/10'
                               : 'border-slate-800 bg-slate-950/70 hover:border-emerald-500/50 hover:bg-slate-950'
-                          }`}
+                            }`}
                         >
                           <input
                             ref={fileInputRef}
@@ -927,19 +920,17 @@ export const AdminPackagesPage: React.FC = () => {
                           <div
                             key={t._id}
                             onClick={() => toggleTestSelection(t._id)}
-                            className={`flex items-center justify-between p-2 rounded-xl border text-xs cursor-pointer transition select-none ${
-                              isSelected
+                            className={`flex items-center justify-between p-2 rounded-xl border text-xs cursor-pointer transition select-none ${isSelected
                                 ? 'bg-emerald-950/40 border-emerald-500/60 text-white'
                                 : 'bg-slate-900/60 border-slate-800 text-slate-300 hover:border-slate-700'
-                            }`}
+                              }`}
                           >
                             <div className="flex items-center gap-2 min-w-0">
                               <div
-                                className={`w-4 h-4 rounded flex items-center justify-center border flex-shrink-0 ${
-                                  isSelected
+                                className={`w-4 h-4 rounded flex items-center justify-center border flex-shrink-0 ${isSelected
                                     ? 'bg-emerald-600 border-emerald-500 text-white'
                                     : 'border-slate-700'
-                                }`}
+                                  }`}
                               >
                                 {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
                               </div>
@@ -951,7 +942,7 @@ export const AdminPackagesPage: React.FC = () => {
                               </div>
                             </div>
                             <span className="font-mono text-[11px] font-bold text-emerald-400 flex-shrink-0 ml-1">
-                              ${t.price}
+                              {formatINR(t.price, 0)}
                             </span>
                           </div>
                         );
@@ -1062,16 +1053,16 @@ export const AdminPackagesPage: React.FC = () => {
 
                   <div>
                     <label className="block text-slate-400 font-bold mb-1">
-                      Standard Diagnostic Fee ($ USD) <span className="text-indigo-400">*</span>
+                      Standard Diagnostic Fee (₹ INR) <span className="text-indigo-400">*</span>
                     </label>
                     <input
                       type="number"
-                      step="0.01"
+                      step="1"
                       min="0"
                       required
                       value={testPrice}
                       onChange={(e) => setTestPrice(e.target.value)}
-                      placeholder="35.00"
+                      placeholder="2975"
                       className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-indigo-500"
                     />
                   </div>

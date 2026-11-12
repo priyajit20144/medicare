@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, ShoppingBag, Trash2, ArrowRight, AlertTriangle, ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useCartStore } from '../../store/cartStore';
+import { formatINR } from '../../utils/currency';
 
 export const CartDrawer: React.FC = () => {
   const { items, summary, isOpen, setIsOpen, updateQuantity, removeItem } = useCartStore();
@@ -21,13 +22,13 @@ export const CartDrawer: React.FC = () => {
           className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm transition-opacity"
         />
 
-        <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
+        <div className="fixed inset-y-0 right-0 max-w-full flex pl-4 sm:pl-10">
           <motion.div
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 250 }}
-            className="w-screen max-w-md bg-white shadow-2xl flex flex-col"
+            className="w-[92vw] sm:w-screen max-w-md bg-white shadow-2xl flex flex-col"
           >
             {/* Header */}
             <div className="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
@@ -145,11 +146,11 @@ export const CartDrawer: React.FC = () => {
 
                           <div className="text-right">
                             <span className="text-xs font-bold text-slate-900">
-                              ${(unitPrice * item.quantity).toFixed(2)}
+                              {formatINR(unitPrice * item.quantity)}
                             </span>
                             {med.discountPrice && med.discountPrice < originalPrice && (
                               <span className="block text-[10px] text-slate-400 line-through">
-                                ${(originalPrice * item.quantity).toFixed(2)}
+                                {formatINR(originalPrice * item.quantity)}
                               </span>
                             )}
                           </div>
@@ -167,21 +168,21 @@ export const CartDrawer: React.FC = () => {
                 <div className="space-y-1.5 text-xs">
                   <div className="flex justify-between text-slate-500">
                     <span>Subtotal</span>
-                    <span>${summary.subtotal.toFixed(2)}</span>
+                    <span>{formatINR(summary.subtotal)}</span>
                   </div>
                   {summary.discount > 0 && (
                     <div className="flex justify-between text-emerald-600 font-medium">
                       <span>Discount</span>
-                      <span>-${summary.discount.toFixed(2)}</span>
+                      <span>-{formatINR(summary.discount)}</span>
                     </div>
                   )}
                   <div className="flex justify-between text-slate-500">
                     <span>Delivery</span>
-                    <span>{summary.deliveryFee === 0 ? 'FREE' : `$${summary.deliveryFee.toFixed(2)}`}</span>
+                    <span>{summary.deliveryFee === 0 ? 'FREE' : formatINR(summary.deliveryFee)}</span>
                   </div>
                   <div className="flex justify-between text-slate-800 font-bold text-sm pt-2 border-t border-slate-200">
                     <span>Estimated Total</span>
-                    <span>${summary.total.toFixed(2)}</span>
+                    <span>{formatINR(summary.total)}</span>
                   </div>
                 </div>
 

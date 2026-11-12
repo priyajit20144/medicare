@@ -47,16 +47,16 @@ export const FacilityDetailPage: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
-      <nav className="flex items-center gap-2 text-xs text-slate-500">
+      <nav className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs text-slate-500">
         <Link to="/" className="hover:text-emerald-600">Home</Link>
         <span>/</span>
         <Link to="/facilities" className="hover:text-emerald-600">Facilities</Link>
         <span>/</span>
-        <span className="text-slate-900 font-semibold">{facility.name}</span>
+        <span className="text-slate-900 font-semibold truncate max-w-[200px] sm:max-w-none">{facility.name}</span>
       </nav>
 
       {/* Main Showcase */}
-      <div className="bg-white rounded-3xl p-8 border border-slate-200/80 shadow-sm grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+      <div className="bg-white rounded-3xl p-5 sm:p-8 border border-slate-200/80 shadow-sm grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 items-center">
         <div className="space-y-4">
           <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold inline-block">
             {facility.type.replace(/_/g, ' ')}

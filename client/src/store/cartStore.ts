@@ -1,6 +1,12 @@
 import { create } from 'zustand';
 import { CartResponse, CartSummary, CartItem, Medicine } from '../types';
 import { api } from '../api/client';
+import {
+  CURRENCY_CODE,
+  FREE_DELIVERY_THRESHOLD_INR,
+  STANDARD_DELIVERY_FEE_INR,
+  GST_TAX_RATE,
+} from '../utils/currency';
 
 interface CartState {
   items: CartItem[];
@@ -49,9 +55,9 @@ export function computeCartSummary(items: CartItem[]): CartSummary {
     }
   });
 
-  const deliveryFee = subtotal > 50 || subtotal === 0 ? 0 : 5.99;
+  const deliveryFee = subtotal > FREE_DELIVERY_THRESHOLD_INR || subtotal === 0 ? 0 : STANDARD_DELIVERY_FEE_INR;
   const taxableAmount = Math.max(0, subtotal - totalDiscount);
-  const estimatedTax = Number((taxableAmount * 0.05).toFixed(2));
+  const estimatedTax = Number((taxableAmount * GST_TAX_RATE).toFixed(2));
   const total = Number((taxableAmount + deliveryFee + estimatedTax).toFixed(2));
 
   return {
@@ -72,6 +78,11 @@ function loadFromStorage(): { items: CartItem[]; summary: CartSummary } {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
       const parsed = JSON.parse(saved);
+      // Discard legacy USD guest carts so old dollar values don't persist under INR display
+      if (parsed.currency !== CURRENCY_CODE) {
+        localStorage.removeItem(STORAGE_KEY);
+        return { items: [], summary: initialSummary };
+      }
       if (Array.isArray(parsed.items) && parsed.items.length > 0) {
         return {
           items: parsed.items,
@@ -88,7 +99,7 @@ function loadFromStorage(): { items: CartItem[]; summary: CartSummary } {
 function saveToStorage(items: CartItem[]): CartSummary {
   const summary = computeCartSummary(items);
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ items, summary }));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ currency: CURRENCY_CODE, items, summary }));
   } catch (e) {
     console.warn('[CartStore] Failed to persist to localStorage:', e);
   }

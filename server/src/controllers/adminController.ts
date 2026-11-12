@@ -8,7 +8,6 @@ import { Prescription } from '../models/Prescription';
 import { Appointment } from '../models/Appointment';
 import { UserMembership } from '../models/Membership';
 import { HealthCheckupBooking } from '../models/HealthCheckup';
-import { AuditLog } from '../models/AuditLog';
 import { sendSuccess, sendError } from '../utils/response';
 import { logAudit } from '../utils/audit';
 
@@ -152,37 +151,6 @@ export async function updateUserStatus(req: Request, res: Response, next: NextFu
     });
 
     sendSuccess(res, user, 'User updated successfully');
-  } catch (error) {
-    next(error);
-  }
-}
-
-export async function getAuditLogs(req: Request, res: Response, next: NextFunction): Promise<void> {
-  try {
-    const { action, resourceType, page = 1, limit = 25 } = req.query;
-    const query: any = {};
-
-    if (action) query.action = action;
-    if (resourceType) query.resourceType = resourceType;
-
-    const pageNum = Math.max(1, parseInt(String(page), 10) || 1);
-    const limitNum = Math.min(100, Math.max(1, parseInt(String(limit), 10) || 25));
-    const skip = (pageNum - 1) * limitNum;
-
-    const [logs, total] = await Promise.all([
-      AuditLog.find(query).sort({ createdAt: -1 }).skip(skip).limit(limitNum),
-      AuditLog.countDocuments(query),
-    ]);
-
-    sendSuccess(res, {
-      logs,
-      pagination: {
-        page: pageNum,
-        limit: limitNum,
-        total,
-        totalPages: Math.ceil(total / limitNum),
-      },
-    });
   } catch (error) {
     next(error);
   }

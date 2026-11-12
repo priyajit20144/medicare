@@ -8,7 +8,7 @@ import {
   AlertCircle,
   Video,
   User,
-  DollarSign,
+  IndianRupee,
   Palmtree,
   Save,
   ShieldCheck,
@@ -38,7 +38,7 @@ export const AvailabilityView: React.FC = () => {
     '04:00 PM',
   ]);
 
-  const [consultationFee, setConsultationFee] = useState<number>(120);
+  const [consultationFee, setConsultationFee] = useState<number>(10200);
   const [allowVideo, setAllowVideo] = useState(true);
   const [allowInPerson, setAllowInPerson] = useState(true);
   const [isVacation, setIsVacation] = useState(false);
@@ -228,19 +228,19 @@ export const AvailabilityView: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div className="bg-white border border-slate-200/90 rounded-3xl p-5 sm:p-6 shadow-xs space-y-4">
           <h3 className="font-extrabold text-slate-900 text-base flex items-center gap-2">
-            <DollarSign className="w-4 h-4 text-teal-600" /> Rates & Consultation Fee
+            <IndianRupee className="w-4 h-4 text-teal-600" /> Rates & Consultation Fee
           </h3>
 
           <div>
             <label className="block text-xs font-bold text-slate-700 mb-1">
-              Standard Consultation Fee ($ USD)
+              Standard Consultation Fee (₹ INR)
             </label>
             <div className="relative">
-              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 font-bold text-slate-400">$</span>
+              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 font-bold text-slate-400">₹</span>
               <input
                 type="number"
                 min={0}
-                step={5}
+                step={50}
                 value={consultationFee}
                 onChange={(e) => setConsultationFee(Number(e.target.value))}
                 className="w-full pl-8 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:border-teal-500"

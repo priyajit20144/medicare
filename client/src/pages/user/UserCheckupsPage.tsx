@@ -16,6 +16,7 @@ import { HealthCheckupBooking, HealthCheckupResult } from '../../types';
 import { StatusBadge } from '../../components/common/StatusBadge';
 import { LoadingState } from '../../components/common/LoadingState';
 import { EmptyState } from '../../components/common/EmptyState';
+import { formatINR } from '../../utils/currency';
 
 export const UserCheckupsPage: React.FC = () => {
   const { data: bookings, isLoading: bookingsLoading } = useQuery({
@@ -69,7 +70,7 @@ export const UserCheckupsPage: React.FC = () => {
                 {results.map((res) => (
                   <div
                     key={res._id}
-                    className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4"
+                    className="bg-white rounded-3xl p-4 sm:p-6 border border-slate-200 shadow-sm space-y-4"
                   >
                     <div className="flex flex-wrap items-center justify-between pb-3 border-b border-slate-100 gap-2">
                       <div>
@@ -155,7 +156,7 @@ export const UserCheckupsPage: React.FC = () => {
 
                     <div className="flex items-center gap-3">
                       <StatusBadge status={b.status} />
-                      <span className="font-bold text-slate-900">${b.payment?.amount}</span>
+                      <span className="font-bold text-slate-900">{formatINR(b.payment?.amount ?? 0, 0)}</span>
                     </div>
                   </div>
                 ))}

@@ -17,6 +17,7 @@ import { api } from '../../api/client';
 import { Doctor } from '../../types';
 import { LoadingState } from '../../components/common/LoadingState';
 import { EmptyState } from '../../components/common/EmptyState';
+import { formatINR } from '../../utils/currency';
 
 export const DoctorsPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -54,12 +55,12 @@ export const DoctorsPage: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       {/* Top Banner */}
-      <div className="bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 rounded-3xl p-8 sm:p-10 text-white shadow-md">
+      <div className="bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 rounded-3xl p-6 sm:p-10 text-white shadow-md">
         <div className="max-w-2xl space-y-3">
           <span className="text-xs font-bold uppercase tracking-wider text-blue-300">
             Certified Specialist Physicians
           </span>
-          <h1 className="text-3xl sm:text-4xl font-black tracking-tight">
+          <h1 className="text-2xl sm:text-4xl font-black tracking-tight">
             Consult With Board-Certified Doctors
           </h1>
           <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
@@ -69,7 +70,7 @@ export const DoctorsPage: React.FC = () => {
       </div>
 
       {/* Filter toolbar */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200 shadow-sm">
         <div className="relative w-full sm:w-80">
           <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
@@ -82,13 +83,13 @@ export const DoctorsPage: React.FC = () => {
           />
         </div>
 
-        <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+        <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 w-full sm:w-auto">
           {/* Specialty Dropdown */}
           <select
             id="doctors-specialty-select"
             value={specialization}
             onChange={(e) => updateParam('specialization', e.target.value || null)}
-            className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            className="flex-1 xs:flex-initial min-w-[140px] px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500"
           >
             <option value="">All Specialties</option>
             {specialties?.map((s) => (
@@ -101,7 +102,7 @@ export const DoctorsPage: React.FC = () => {
             id="doctors-consult-type-select"
             value={consultationType}
             onChange={(e) => updateParam('consultationType', e.target.value || null)}
-            className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            className="flex-1 xs:flex-initial min-w-[130px] px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500"
           >
             <option value="">All Visit Types</option>
             <option value="VIDEO">Video Telehealth</option>
@@ -190,11 +191,11 @@ export const DoctorsPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="mt-5 pt-3 flex items-center justify-between">
+              <div className="mt-5 pt-3 flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <span className="text-xs text-slate-400 block">Consultation Fee</span>
                   <span className="text-xl font-black text-slate-900">
-                    ${doc.consultationFee}
+                    {formatINR(doc.consultationFee, 0)}
                   </span>
                 </div>
 

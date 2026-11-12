@@ -7,7 +7,6 @@ import {
   Stethoscope,
   Building2,
   Award,
-  DollarSign,
   Globe,
   Save,
   CheckCircle2,
@@ -26,7 +25,7 @@ export const ProfileView: React.FC = () => {
   const [experience, setExperience] = useState('14');
   const [hospital, setHospital] = useState('Medicare Central Medical Hospital');
   const [languages, setLanguages] = useState('English, Spanish, French');
-  const [consultationFee, setConsultationFee] = useState('120');
+  const [consultationFee, setConsultationFee] = useState('10200');
   const [biography, setBiography] = useState(
     'Board-certified cardiologist specializing in preventive cardiovascular wellness, non-invasive imaging, and hypertension management with over 14 years of dedicated clinical practice.'
   );

@@ -177,7 +177,7 @@ router.post('/templates/send', async (req: Request, res: Response) => {
         result = await emailService.sendSecurityAlertEmail(to, data.fullName || 'Patient', { ip: data.ip || '127.0.0.1', userAgent: data.userAgent || 'Chrome/macOS' });
         break;
       case 'ORDER_CONFIRMATION':
-        result = await emailService.sendOrderConfirmation(to, data.orderId || 'ORD-2026-98124', data.totalAmount || 49.99, data.itemCount || 3, data.shippingAddress);
+        result = await emailService.sendOrderConfirmation(to, data.orderId || 'ORD-2026-98124', data.totalAmount || 4249, data.itemCount || 3, data.shippingAddress);
         break;
       case 'ORDER_STATUS':
         result = await emailService.sendOrderStatusEmail(to, data.orderId || 'ORD-2026-98124', data.status || 'SHIPPED', data.trackingNumber || 'TRK-98214');

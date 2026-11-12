@@ -7,6 +7,7 @@ import { Order } from '../../types';
 import { StatusBadge } from '../../components/common/StatusBadge';
 import { LoadingState } from '../../components/common/LoadingState';
 import { EmptyState } from '../../components/common/EmptyState';
+import { formatINR } from '../../utils/currency';
 
 export const UserOrdersPage: React.FC = () => {
   const [statusFilter, setStatusFilter] = useState('');
@@ -58,7 +59,7 @@ export const UserOrdersPage: React.FC = () => {
           {orders.map((ord) => (
             <div
               key={ord._id}
-              className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm space-y-4 hover:border-slate-300 transition"
+              className="bg-white rounded-3xl p-4 sm:p-6 border border-slate-200/80 shadow-sm space-y-4 hover:border-slate-300 transition"
             >
               <div className="flex flex-wrap items-center justify-between pb-3 border-b border-slate-100 gap-2">
                 <div className="flex items-center gap-3">
@@ -76,7 +77,7 @@ export const UserOrdersPage: React.FC = () => {
                 <div className="flex items-center gap-3">
                   <StatusBadge status={ord.status} />
                   <span className="font-black text-sm text-slate-900">
-                    ${ord.total.toFixed(2)}
+                    {formatINR(ord.total)}
                   </span>
                 </div>
               </div>
@@ -84,16 +85,16 @@ export const UserOrdersPage: React.FC = () => {
               {/* Items preview */}
               <div className="space-y-2">
                 {ord.items.map((item, idx) => (
-                  <div key={idx} className="flex items-center justify-between text-xs text-slate-600">
-                    <span className="font-medium text-slate-800 truncate max-w-sm">
+                  <div key={idx} className="flex items-center justify-between gap-2 text-xs text-slate-600">
+                    <span className="font-medium text-slate-800 truncate flex-1 min-w-0">
                       {item.name} <span className="text-slate-400">× {item.quantity}</span>
                     </span>
-                    <span>${((item.discountPrice || item.price) * item.quantity).toFixed(2)}</span>
+                    <span className="flex-shrink-0 font-semibold">{formatINR((item.discountPrice || item.price) * item.quantity)}</span>
                   </div>
                 ))}
               </div>
 
-              <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+              <div className="pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2 text-xs">
                 <div className="flex items-center gap-1.5 text-slate-500 text-[11px]">
                   <Truck className="w-3.5 h-3.5 text-slate-400" />
                   <span>Tracking: {ord.trackingNumber || 'Pending Dispatch'}</span>

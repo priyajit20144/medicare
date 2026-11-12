@@ -7,6 +7,7 @@ import { paymentService } from '../services/paymentService';
 import { sendSuccess, sendError } from '../utils/response';
 import { logAudit } from '../utils/audit';
 import { emailService } from '../services/emailService';
+import { CURRENCY_CODE } from '../utils/pricing';
 
 export async function getMembershipPlans(_req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
@@ -64,6 +65,7 @@ export async function subscribeMembership(req: Request, res: Response, next: Nex
 
     const paymentResult = await paymentService.createPayment({
       amount: price,
+      currency: CURRENCY_CODE,
       description: `Medicare Premium Membership: ${plan.name} (${membershipId})`,
       customer: {
         name: user.fullName,
@@ -299,7 +301,7 @@ export async function adjustMembershipCheckupBenefit(
       // If benefit record does not exist yet, initialize it
       benefit = {
         benefitKey,
-        name: 'Annual Comprehensive Executive Checkup ($229 value)',
+        name: 'Annual Comprehensive Executive Checkup (₹19,465 value)',
         usedCount: Number(usedCount ?? 0),
         maxLimit: Number(maxLimit ?? 1),
       };

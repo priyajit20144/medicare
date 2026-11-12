@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import {
-  DollarSign,
+  IndianRupee,
   ShoppingBag,
   Users,
   Pill,
@@ -19,6 +19,7 @@ import {
 import { api } from '../../api/client';
 import { StatusBadge } from '../../components/common/StatusBadge';
 import { LoadingState } from '../../components/common/LoadingState';
+import { formatINR } from '../../utils/currency';
 
 export const AdminDashboardPage: React.FC = () => {
   const { data: analyticsData, isLoading } = useQuery({
@@ -43,10 +44,10 @@ export const AdminDashboardPage: React.FC = () => {
         <div className="p-4 sm:p-6 bg-slate-950 rounded-3xl border border-slate-800 shadow-sm space-y-2">
           <div className="flex items-center justify-between text-slate-400">
             <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider">Gross Pharmacy Revenue</span>
-            <DollarSign className="w-4 sm:w-5 h-4 sm:h-5 text-emerald-400" />
+            <IndianRupee className="w-4 sm:w-5 h-4 sm:h-5 text-emerald-400" />
           </div>
           <div className="text-2xl sm:text-3xl font-black text-white">
-            ${metrics.totalRevenue?.toFixed(2) || '0.00'}
+            {formatINR(metrics.totalRevenue || 0)}
           </div>
           <p className="text-[11px] sm:text-xs text-emerald-400 font-semibold flex items-center gap-1">
             <TrendingUp className="w-3.5 h-3.5" /> 100% Verified Ledger
@@ -120,7 +121,7 @@ export const AdminDashboardPage: React.FC = () => {
                   <h4 className="font-bold text-white truncate">{m.name}</h4>
                   <span className="text-slate-400 text-[11px] truncate block">{m.brand} • Stock: {m.stock}</span>
                 </div>
-                <span className="font-black text-emerald-400 text-sm flex-shrink-0">${m.price}</span>
+                <span className="font-black text-emerald-400 text-sm flex-shrink-0">{formatINR(m.price, 0)}</span>
               </div>
             ))}
           </div>
@@ -150,7 +151,7 @@ export const AdminDashboardPage: React.FC = () => {
 
               <div className="flex items-center justify-between sm:justify-end gap-3 pt-1 sm:pt-0 border-t border-slate-800/40 sm:border-none">
                 <StatusBadge status={ord.status} size="sm" />
-                <span className="font-bold text-white text-sm">${ord.total?.toFixed(2)}</span>
+                <span className="font-bold text-white text-sm">{formatINR(ord.total)}</span>
               </div>
             </div>
           ))}

@@ -19,6 +19,7 @@ import { useAuthStore } from '../../store/authStore';
 import { StatusBadge } from '../../components/common/StatusBadge';
 import { LoadingState } from '../../components/common/LoadingState';
 import { QUICK_HEALTH_SERVICES } from '../../constants/quickServices';
+import { formatINR } from '../../utils/currency';
 
 export const UserDashboardPage: React.FC = () => {
   const { user } = useAuthStore();
@@ -150,10 +151,10 @@ export const UserDashboardPage: React.FC = () => {
       {/* Grid: Upcoming Appointments & Active Orders */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Upcoming Appointments Card */}
-        <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div className="bg-white rounded-3xl p-4 sm:p-6 border border-slate-200/80 shadow-sm space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-100">
             <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-emerald-600" /> Upcoming Consultations
+              <Calendar className="w-4 h-4 text-emerald-600 flex-shrink-0" /> Upcoming Consultations
             </h2>
             <Link to="/user/appointments" className="text-xs font-semibold text-emerald-600 hover:underline">
               View All
@@ -169,24 +170,24 @@ export const UserDashboardPage: React.FC = () => {
               {upcomingAppointments.map((apt: any) => (
                 <div
                   key={apt._id}
-                  className="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-between gap-3 text-xs"
+                  className="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-wrap sm:flex-nowrap items-center justify-between gap-3 text-xs"
                 >
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3 min-w-0">
                     <img
                       src={apt.doctorId?.avatar || 'https://images.unsplash.com/photo-1594824813511-19d452093e9a?auto=format&fit=crop&q=80&w=150'}
                       alt=""
-                      className="w-10 h-10 rounded-xl object-cover"
+                      className="w-10 h-10 rounded-xl object-cover flex-shrink-0"
                     />
-                    <div>
-                      <h4 className="font-bold text-slate-900">{apt.doctorId?.name}</h4>
-                      <p className="text-[11px] text-slate-500">{apt.doctorId?.specialization}</p>
+                    <div className="min-w-0">
+                      <h4 className="font-bold text-slate-900 truncate">{apt.doctorId?.name}</h4>
+                      <p className="text-[11px] text-slate-500 truncate">{apt.doctorId?.specialization}</p>
                       <span className="text-[10px] text-slate-400 block mt-0.5">
                         {apt.date} at {apt.timeSlot} ({apt.consultationType})
                       </span>
                     </div>
                   </div>
 
-                  <div className="text-right space-y-1">
+                  <div className="sm:text-right space-y-1 flex-shrink-0">
                     <StatusBadge status={apt.status} size="sm" />
                     {apt.meetingLink && apt.consultationType === 'VIDEO' && (
                       <a
@@ -231,7 +232,7 @@ export const UserDashboardPage: React.FC = () => {
                   <div>
                     <span className="font-bold text-slate-900 block">{ord.orderNumber}</span>
                     <span className="text-[11px] text-slate-400">
-                      {ord.items?.length || 0} items • ${ord.total?.toFixed(2)}
+                      {ord.items?.length || 0} items • {formatINR(ord.total)}
                     </span>
                   </div>
 

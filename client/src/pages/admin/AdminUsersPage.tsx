@@ -219,8 +219,8 @@ export const AdminUsersPage: React.FC = () => {
 
       {/* Edit Role / Status Modal */}
       {selectedUser && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 space-y-6 shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in overflow-y-auto">
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-5 sm:p-6 space-y-6 shadow-2xl max-h-[90vh] overflow-y-auto my-auto">
             <div className="flex items-center justify-between border-b border-slate-800 pb-4">
               <div>
                 <h3 className="text-lg font-bold text-white flex items-center gap-2">

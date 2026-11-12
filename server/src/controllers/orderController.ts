@@ -10,6 +10,7 @@ import { paymentService } from '../services/paymentService';
 import { emailService } from '../services/emailService';
 import { sendSuccess, sendError } from '../utils/response';
 import { logAudit } from '../utils/audit';
+import { calculateOrderBreakdownINR, CURRENCY_CODE, formatINR } from '../utils/pricing';
 
 export async function createOrder(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
@@ -119,15 +120,20 @@ export async function createOrder(req: Request, res: Response, next: NextFunctio
       }
     }
 
-    const deliveryFee = subtotal > 50 ? 0 : 5.99;
-    const tax = Number(((subtotal - totalDiscount) * 0.05).toFixed(2));
-    const total = Number(((subtotal - totalDiscount) + deliveryFee + tax).toFixed(2));
+    const {
+      subtotal: cleanSubtotal,
+      discount: cleanDiscount,
+      deliveryFee,
+      tax,
+      total,
+    } = calculateOrderBreakdownINR(subtotal, totalDiscount);
 
     const orderNumber = `ORD-${new Date().getFullYear()}-${Math.floor(100000 + Math.random() * 900000)}`;
 
     // Process payment through abstraction layer
     const paymentResult = await paymentService.createPayment({
       amount: total,
+      currency: CURRENCY_CODE,
       description: `Medicare Order ${orderNumber}`,
       customer: {
         name: user.fullName,
@@ -146,8 +152,8 @@ export async function createOrder(req: Request, res: Response, next: NextFunctio
       orderNumber,
       userId: user._id,
       items: orderItems,
-      subtotal: Number(subtotal.toFixed(2)),
-      discount: Number(totalDiscount.toFixed(2)),
+      subtotal: cleanSubtotal,
+      discount: cleanDiscount,
       tax,
       deliveryFee,
       total,
@@ -181,7 +187,7 @@ export async function createOrder(req: Request, res: Response, next: NextFunctio
       userId: user._id,
       type: 'ORDER',
       title: 'Order Placed Successfully! 📦',
-      message: `Your order #${orderNumber} for $${total} has been confirmed. Tracking ID: ${order.trackingNumber}`,
+      message: `Your order #${orderNumber} for ${formatINR(total)} has been confirmed. Tracking ID: ${order.trackingNumber}`,
       link: `/user/orders/${order._id}`,
     });
 

@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { Medicine } from '../../types';
 import { MedicineShowcaseItem } from './medicineData';
+import { formatINR } from '../../utils/currency';
 
 interface MedicineCardProps {
   product: MedicineShowcaseItem | Medicine;
@@ -165,11 +166,11 @@ export const MedicineCard: React.FC<MedicineCardProps> = ({
             <div className="flex items-baseline gap-1.5">
               {originalPrice > unitPrice && (
                 <span className="text-xs text-slate-400 line-through">
-                  ${originalPrice.toFixed(0)}
+                  {formatINR(originalPrice, 0)}
                 </span>
               )}
               <span className="text-base sm:text-lg font-black text-slate-900">
-                ${unitPrice.toFixed(0)}
+                {formatINR(unitPrice, 0)}
               </span>
             </div>
             <span className="text-[10px] text-slate-400 font-medium">

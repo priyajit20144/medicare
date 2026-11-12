@@ -94,6 +94,7 @@ const QUICK_REPLIES = [
 export const MessagesView: React.FC<MessagesViewProps> = ({ onViewEHR }) => {
   const [threads, setThreads] = useState(CHAT_THREADS);
   const [selectedThreadId, setSelectedThreadId] = useState<string>('t-1');
+  const [showMobileThread, setShowMobileThread] = useState(false);
   const [inputText, setInputText] = useState('');
   const [search, setSearch] = useState('');
 
@@ -151,9 +152,9 @@ export const MessagesView: React.FC<MessagesViewProps> = ({ onViewEHR }) => {
       </div>
 
       {/* Main Two-Column Messenger */}
-      <div className="bg-white border border-slate-200/90 rounded-3xl shadow-xs overflow-hidden h-[calc(100vh-220px)] min-h-[580px] flex flex-col md:flex-row">
+      <div className="bg-white border border-slate-200/90 rounded-3xl shadow-xs overflow-hidden h-[calc(100vh-210px)] min-h-[460px] flex flex-col md:flex-row">
         {/* Left Column: Threads List */}
-        <div className="w-full md:w-80 lg:w-96 border-r border-slate-200/80 flex flex-col h-full bg-slate-50/50">
+        <div className={`${showMobileThread ? 'hidden md:flex' : 'flex'} w-full md:w-80 lg:w-96 md:border-r border-slate-200/80 flex-col h-full bg-slate-50/50`}>
           <div className="p-3.5 border-b border-slate-200/80 bg-white">
             <div className="relative">
               <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
@@ -173,7 +174,10 @@ export const MessagesView: React.FC<MessagesViewProps> = ({ onViewEHR }) => {
               return (
                 <button
                   key={thread.id}
-                  onClick={() => setSelectedThreadId(thread.id)}
+                  onClick={() => {
+                    setSelectedThreadId(thread.id);
+                    setShowMobileThread(true);
+                  }}
                   className={`w-full p-3.5 flex items-start gap-3 transition text-left ${
                     isSelected ? 'bg-white shadow-xs' : 'hover:bg-slate-100/60'
                   }`}
@@ -190,11 +194,11 @@ export const MessagesView: React.FC<MessagesViewProps> = ({ onViewEHR }) => {
                   </div>
 
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between gap-2">
                       <h4 className="font-bold text-xs sm:text-sm text-slate-900 truncate">
                         {thread.patientName}
                       </h4>
-                      <span className="text-[10px] text-slate-400 font-medium">{thread.time}</span>
+                      <span className="text-[10px] text-slate-400 font-medium flex-shrink-0">{thread.time}</span>
                     </div>
 
                     <p className="text-[11px] text-teal-700 font-semibold truncate mt-0.5">
@@ -218,14 +222,22 @@ export const MessagesView: React.FC<MessagesViewProps> = ({ onViewEHR }) => {
         </div>
 
         {/* Right Column: Chat Conversation Stream */}
-        <div className="flex-1 flex flex-col h-full bg-white min-w-0">
+        <div className={`${showMobileThread ? 'flex' : 'hidden md:flex'} flex-1 flex-col h-full bg-white min-w-0`}>
           {/* Chat Header */}
-          <div className="px-5 py-3.5 border-b border-slate-200/80 flex items-center justify-between gap-3 bg-white">
-            <div className="flex items-center gap-3 min-w-0">
+          <div className="px-3 sm:px-5 py-3.5 border-b border-slate-200/80 flex items-center justify-between gap-2 sm:gap-3 bg-white">
+            <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+              <button
+                type="button"
+                onClick={() => setShowMobileThread(false)}
+                className="md:hidden p-1.5 -ml-1 rounded-xl text-slate-600 hover:bg-slate-100 flex-shrink-0"
+                aria-label="Back to conversations"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
               <img
                 src={activeThread.avatar}
                 alt={activeThread.patientName}
-                className="w-10 h-10 rounded-2xl object-cover border border-slate-200 flex-shrink-0"
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl object-cover border border-slate-200 flex-shrink-0"
               />
               <div className="min-w-0">
                 <h3 className="font-extrabold text-slate-900 text-sm truncate">

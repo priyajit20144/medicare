@@ -38,6 +38,7 @@ import { HealthcareDisclaimer } from '../components/common/HealthcareDisclaimer'
 import { MedicineSection } from '../components/medicines/MedicineSection';
 import { GRID_MEDICINES, TRENDING_PRODUCTS } from '../components/medicines/medicineData';
 import { ScrollReveal, ScrollTimelineNav } from '../components/scroll';
+import { formatINR } from '../utils/currency';
 
 // Curated static fallback data ensuring 100% visual uptime on all devices
 const STATIC_MEDICINES: Medicine[] = [
@@ -51,8 +52,8 @@ const STATIC_MEDICINES: Medicine[] = [
     shortDescription: 'Dual-action fast and sustained natural circadian sleep support.',
     category: 'Vitamins & Dietary Supplements',
     images: ['https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&q=80&w=400'],
-    price: 14.99,
-    discountPrice: 11.99,
+    price: 1274,
+    discountPrice: 1019,
     stock: 260,
     sku: 'MED-MELA-005',
     manufacturer: 'HealthGuard Consumer',
@@ -74,8 +75,8 @@ const STATIC_MEDICINES: Medicine[] = [
     shortDescription: 'Leukotriene inhibitor for asthma prevention and seasonal rhinitis.',
     category: 'Respiratory & Allergy',
     images: ['https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&q=80&w=400'],
-    price: 29.00,
-    discountPrice: 22.00,
+    price: 2465,
+    discountPrice: 1870,
     stock: 80,
     sku: 'MED-MONT-010',
     manufacturer: 'PulmoMed Technologies',
@@ -97,8 +98,8 @@ const STATIC_MEDICINES: Medicine[] = [
     shortDescription: 'Fast acting fever reducer and pain relief.',
     category: 'Pain Relief & Fever',
     images: ['https://images.unsplash.com/photo-1550572017-edd951aa8f72?auto=format&fit=crop&q=80&w=400'],
-    price: 9.99,
-    discountPrice: 7.99,
+    price: 849,
+    discountPrice: 679,
     stock: 150,
     sku: 'MED-PARA-500',
     manufacturer: 'GSK Consumer Health',
@@ -120,8 +121,8 @@ const STATIC_MEDICINES: Medicine[] = [
     shortDescription: 'Broad-spectrum antibiotic for bacterial infections.',
     category: 'Antibiotics & Anti-Infectives',
     images: ['https://images.unsplash.com/photo-1576073719676-aa955fc1bda9?auto=format&fit=crop&q=80&w=400'],
-    price: 24.50,
-    discountPrice: 19.99,
+    price: 2082,
+    discountPrice: 1699,
     stock: 95,
     sku: 'MED-AMOX-500',
     manufacturer: 'Sandoz Pharma',
@@ -146,7 +147,7 @@ const STATIC_DOCTORS: Doctor[] = [
     specialization: 'Pediatrics',
     qualifications: ['MD Pediatrics', 'FAAP'],
     experienceYears: 12,
-    consultationFee: 95,
+    consultationFee: 8075,
     biography: 'Caring, compassionate child healthcare from infancy through adolescence, growth milestones, vaccinations, and nutrition.',
     avatar: 'https://images.unsplash.com/photo-1594824813511-19d452093e9a?auto=format&fit=crop&q=80&w=400',
     languages: ['English', 'German'],
@@ -165,7 +166,7 @@ const STATIC_DOCTORS: Doctor[] = [
     specialization: 'Psychiatry',
     qualifications: ['MD Psychiatry', 'Board Certified in Adult Psychiatry'],
     experienceYears: 13,
-    consultationFee: 150,
+    consultationFee: 12750,
     biography: 'Empathetic, evidence-informed mental wellness, anxiety, depression therapy management, and cognitive behavioral consultations.',
     avatar: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=400',
     languages: ['English', 'Arabic'],
@@ -184,7 +185,7 @@ const STATIC_DOCTORS: Doctor[] = [
     specialization: 'Cardiology',
     qualifications: ['MD Cardiology', 'FACC'],
     experienceYears: 16,
-    consultationFee: 140,
+    consultationFee: 11900,
     biography: 'Preventative cardiovascular care, hypertension management, lipid disorders, and non-invasive diagnostic evaluations.',
     avatar: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400',
     languages: ['English', 'Spanish'],
@@ -203,7 +204,7 @@ const STATIC_DOCTORS: Doctor[] = [
     specialization: 'Dermatology',
     qualifications: ['MD Dermatology', 'FAAD'],
     experienceYears: 14,
-    consultationFee: 125,
+    consultationFee: 10625,
     biography: 'Specializing in inflammatory skin disorders, eczema, acne therapies, mole surveillance, and clinical dermatosurgery.',
     avatar: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&q=80&w=400',
     languages: ['English'],
@@ -222,8 +223,8 @@ const STATIC_PACKAGES: HealthCheckupPackage[] = [
     name: 'Executive Comprehensive Health Checkup',
     slug: 'executive-health-checkup',
     description: 'Comprehensive full-body preventative diagnostic panel including CBC, Lipid Profile, Liver and Renal Function, and HbA1c.',
-    price: 249,
-    discountPrice: 189,
+    price: 21165,
+    discountPrice: 16065,
     duration: '1 - 2 hours',
     testCount: 24,
     recommendedFor: 'Adults aged 25+ seeking thorough yearly baseline screening.',
@@ -234,8 +235,8 @@ const STATIC_PACKAGES: HealthCheckupPackage[] = [
     name: 'Cardiac Wellness & Lipid Risk Panel',
     slug: 'cardiac-wellness-screening',
     description: 'Advanced biomarker profiling for cardiovascular risk, high-sensitivity Troponin, CRP, Homocysteine, and full lipid subfractions.',
-    price: 199,
-    discountPrice: 149,
+    price: 16915,
+    discountPrice: 12665,
     duration: '45 mins',
     testCount: 18,
     recommendedFor: 'Individuals with hypertension, family history, or high stress levels.',
@@ -246,8 +247,8 @@ const STATIC_PACKAGES: HealthCheckupPackage[] = [
     name: 'Advanced Diabetes & Metabolic Care Panel',
     slug: 'diabetes-advanced-care-panel',
     description: 'Complete glycemic evaluation including Fasting Glucose, HbA1c, Insulin resistance index, and microalbuminuria screening.',
-    price: 159,
-    discountPrice: 119,
+    price: 13515,
+    discountPrice: 10115,
     duration: '30 mins',
     testCount: 14,
     recommendedFor: 'Routine diabetic monitoring or preventative metabolic screening.',
@@ -389,7 +390,7 @@ export const HomePage: React.FC = () => {
       icon: Crown,
       link: '/premium',
       accent: 'from-rose-500 to-pink-600',
-      badge: 'Save $450/Yr',
+      badge: 'Save ₹38,250/Yr',
     },
   ];
 
@@ -438,7 +439,7 @@ export const HomePage: React.FC = () => {
     },
     {
       q: 'What is included in the 1-Year VIP Healthcare Membership?',
-      a: 'VIP members enjoy a complimentary annual executive full-body health checkup ($229 value), unlimited free express delivery on all orders, two free specialist video visits, and 10% instant discounts on all medications.',
+      a: 'VIP members enjoy a complimentary annual executive full-body health checkup (₹19,465 value), unlimited free express delivery on all orders, two free specialist video visits, and 10% instant discounts on all medications.',
     },
     {
       q: 'What should I do in case of a medical emergency?',
@@ -471,7 +472,7 @@ export const HomePage: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-16 sm:space-y-24 pb-20 sm:pb-24 w-full overflow-x-hidden relative">
+    <div className="space-y-16 sm:space-y-24 pb-20 sm:pb-24 w-full overflow-x-clip relative">
       {/* Floating Section Timeline HUD Navigation (Interactive Quick Scroll Navigator) */}
       <ScrollTimelineNav />
 
@@ -486,10 +487,10 @@ export const HomePage: React.FC = () => {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
-            
+
             {/* Left Column: Headline, Description & Tabbed Search Hub */}
             <div className="lg:col-span-7 space-y-5 sm:space-y-7">
-              
+
               {/* Trust Badge */}
               <div className="flex flex-wrap items-center gap-2">
                 <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-100/90 border border-emerald-300/70 text-emerald-900 text-xs font-bold shadow-sm backdrop-blur-sm">
@@ -522,11 +523,10 @@ export const HomePage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setActiveTab('medicines')}
-                    className={`min-h-[40px] flex items-center justify-center gap-1.5 sm:gap-2 px-2 py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold transition-all ${
-                      activeTab === 'medicines'
+                    className={`min-h-[40px] flex items-center justify-center gap-1.5 sm:gap-2 px-2 py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold transition-all ${activeTab === 'medicines'
                         ? 'bg-white text-emerald-800 shadow-sm'
                         : 'text-slate-600 hover:text-slate-900'
-                    }`}
+                      }`}
                   >
                     <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600 flex-shrink-0" />
                     <span className="truncate">Medicines</span>
@@ -535,11 +535,10 @@ export const HomePage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setActiveTab('doctors')}
-                    className={`min-h-[40px] flex items-center justify-center gap-1.5 sm:gap-2 px-2 py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold transition-all ${
-                      activeTab === 'doctors'
+                    className={`min-h-[40px] flex items-center justify-center gap-1.5 sm:gap-2 px-2 py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold transition-all ${activeTab === 'doctors'
                         ? 'bg-white text-emerald-800 shadow-sm'
                         : 'text-slate-600 hover:text-slate-900'
-                    }`}
+                      }`}
                   >
                     <Stethoscope className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-600 flex-shrink-0" />
                     <span className="truncate">Doctors</span>
@@ -548,11 +547,10 @@ export const HomePage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setActiveTab('checkups')}
-                    className={`min-h-[40px] flex items-center justify-center gap-1.5 sm:gap-2 px-2 py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold transition-all ${
-                      activeTab === 'checkups'
+                    className={`min-h-[40px] flex items-center justify-center gap-1.5 sm:gap-2 px-2 py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold transition-all ${activeTab === 'checkups'
                         ? 'bg-white text-emerald-800 shadow-sm'
                         : 'text-slate-600 hover:text-slate-900'
-                    }`}
+                      }`}
                   >
                     <Activity className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyan-600 flex-shrink-0" />
                     <span className="truncate">Checkups</span>
@@ -757,11 +755,11 @@ export const HomePage: React.FC = () => {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 sm:-mt-14 relative z-20 w-full">
         <ScrollReveal effect="fade-up" duration={0.5}>
           <div className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-xl shadow-slate-200/60 border border-slate-200/80">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8 divide-y sm:divide-y-0 sm:divide-x divide-slate-100">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-5 sm:gap-8 md:divide-x divide-slate-100">
               {trustMetrics.map((item, idx) => {
                 const Icon = item.icon;
                 return (
-                  <div key={idx} className="pt-3 sm:pt-0 sm:px-6 first:pt-0 first:pl-0 space-y-1">
+                  <div key={idx} className="md:px-6 md:first:pl-0 space-y-1">
                     <div className="flex items-center gap-2 mb-1">
                       <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center flex-shrink-0">
                         <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
@@ -785,42 +783,42 @@ export const HomePage: React.FC = () => {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <ScrollReveal effect="fade-up" delay={0.1}>
           <div className="bg-gradient-to-r from-slate-950 via-slate-900 to-emerald-950 rounded-2xl sm:rounded-3xl p-5 sm:p-8 text-white shadow-xl relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-5 border border-slate-800">
-          <div className="flex items-center gap-3.5 sm:gap-4">
-            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-rose-500/20 border border-rose-500/30 text-rose-400 flex items-center justify-center flex-shrink-0 animate-pulse">
-              <PhoneCall className="w-5 h-5 sm:w-6 sm:h-6 text-rose-400" />
-            </div>
-            <div className="space-y-1">
-              <div className="flex items-center gap-2">
-                <span className="px-2 py-0.5 rounded-full bg-rose-500 text-white text-[9px] sm:text-[10px] font-black uppercase tracking-wider">
-                  24/7 Hotline
-                </span>
-                <span className="text-xs text-emerald-400 font-bold hidden sm:inline">On-Duty Doctors Available</span>
+            <div className="flex items-center gap-3.5 sm:gap-4">
+              <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-rose-500/20 border border-rose-500/30 text-rose-400 flex items-center justify-center flex-shrink-0 animate-pulse">
+                <PhoneCall className="w-5 h-5 sm:w-6 sm:h-6 text-rose-400" />
               </div>
-              <h3 className="text-sm sm:text-lg font-black text-white">
-                Urgent Medical Consultation or Prescription Refill Needed?
-              </h3>
-              <p className="text-xs text-slate-300">
-                Call toll-free <strong className="text-white">1-800-MEDICARE</strong> or start an expedited tele-triage session.
-              </p>
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <span className="px-2 py-0.5 rounded-full bg-rose-500 text-white text-[9px] sm:text-[10px] font-black uppercase tracking-wider">
+                    24/7 Hotline
+                  </span>
+                  <span className="text-xs text-emerald-400 font-bold hidden sm:inline">On-Duty Doctors Available</span>
+                </div>
+                <h3 className="text-sm sm:text-lg font-black text-white">
+                  Urgent Medical Consultation or Prescription Refill Needed?
+                </h3>
+                <p className="text-xs text-slate-300">
+                  Call toll-free <strong className="text-white">1-800-MEDICARE</strong> or start an expedited tele-triage session.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2.5 sm:gap-3 w-full md:w-auto flex-shrink-0">
+              <a
+                href="tel:18006334227"
+                className="min-h-[44px] flex-1 md:flex-initial px-4 sm:px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs text-center transition shadow-md shadow-rose-600/30 flex items-center justify-center gap-2"
+              >
+                <PhoneCall className="w-3.5 h-3.5" />
+                <span>Call Helpline</span>
+              </a>
+              <Link
+                to="/doctors"
+                className="min-h-[44px] flex-1 md:flex-initial px-4 sm:px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs text-center transition border border-white/20 flex items-center justify-center"
+              >
+                Start Video Visit
+              </Link>
             </div>
           </div>
-
-          <div className="flex items-center gap-2.5 sm:gap-3 w-full md:w-auto flex-shrink-0">
-            <a
-              href="tel:18006334227"
-              className="min-h-[44px] flex-1 md:flex-initial px-4 sm:px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs text-center transition shadow-md shadow-rose-600/30 flex items-center justify-center gap-2"
-            >
-              <PhoneCall className="w-3.5 h-3.5" />
-              <span>Call Helpline</span>
-            </a>
-            <Link
-              to="/doctors"
-              className="min-h-[44px] flex-1 md:flex-initial px-4 sm:px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs text-center transition border border-white/20 flex items-center justify-center"
-            >
-              Start Video Visit
-            </Link>
-          </div>
-        </div>
         </ScrollReveal>
       </section>
 
@@ -1032,7 +1030,7 @@ export const HomePage: React.FC = () => {
                     </div>
                     <div className="flex justify-between">
                       <span>Consultation:</span>
-                      <span className="font-black text-slate-900">${doc.consultationFee}</span>
+                      <span className="font-black text-slate-900">{formatINR(doc.consultationFee, 0)}</span>
                     </div>
                   </div>
                 </div>
@@ -1089,11 +1087,11 @@ export const HomePage: React.FC = () => {
                 <div className="pt-3.5 border-t border-slate-100 flex items-center justify-between">
                   <div>
                     <span className="text-xl sm:text-2xl font-black text-slate-900">
-                      ${pkg.discountPrice || pkg.price}
+                      {formatINR(pkg.discountPrice || pkg.price, 0)}
                     </span>
                     {pkg.discountPrice && (
                       <span className="ml-1.5 text-xs text-slate-400 line-through">
-                        ${pkg.price}
+                        {formatINR(pkg.price, 0)}
                       </span>
                     )}
                   </div>
@@ -1122,7 +1120,7 @@ export const HomePage: React.FC = () => {
                 One Full Year of Total Healthcare Peace of Mind.
               </h2>
               <p className="text-xs sm:text-sm text-amber-50 leading-relaxed">
-                Includes an annual executive health checkup ($229 value), unlimited free cold-chain medicine delivery, two complimentary specialist video visits, and 10% instant discounts.
+                Includes an annual executive health checkup (₹19,465 value), unlimited free cold-chain medicine delivery, two complimentary specialist video visits, and 10% instant discounts.
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 text-xs text-amber-50">
@@ -1141,15 +1139,15 @@ export const HomePage: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-white/10 backdrop-blur-md p-6 sm:p-7 rounded-2xl sm:rounded-3xl border border-white/20 text-center w-full sm:w-auto min-w-[260px] sm:min-w-[280px] space-y-3">
+            <div className="bg-white/10 backdrop-blur-md p-6 sm:p-7 rounded-2xl sm:rounded-3xl border border-white/20 text-center w-full sm:w-auto min-w-0 sm:min-w-[280px] space-y-3">
               <span className="text-xs uppercase font-extrabold text-amber-100 tracking-wider">
                 1-Year All-Inclusive Membership
               </span>
               <div className="text-3xl sm:text-5xl font-black text-white">
-                $149 <span className="text-xs font-normal text-amber-100">/ 1 Year</span>
+                ₹12,665 <span className="text-xs font-normal text-amber-100">/ 1 Year</span>
               </div>
               <p className="text-xs text-amber-100 font-medium">
-                Saves over $450 in direct annual healthcare expenses
+                Saves over ₹38,250 in direct annual healthcare expenses
               </p>
               <Link
                 to="/premium"
@@ -1163,18 +1161,26 @@ export const HomePage: React.FC = () => {
         </ScrollReveal>
       </section>
 
-      {/* 10. WHY PATIENTS TRUST MEDICARE (SECURITY & CLINICAL QUALITY) */}
+      {/* 10. WHY PATIENTS TRUST MEDICARE (ABOUT & CLINICAL QUALITY) */}
       <section id="trust-hub" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <ScrollReveal effect="fade-up">
-          <div className="text-center max-w-xl mx-auto mb-10 sm:mb-12 space-y-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-emerald-600">
-              Uncompromising Standards
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-              Why Patients Trust Medicare
-            </h2>
-          </div>
-        </ScrollReveal>
+        <div id="about" className="scroll-mt-24">
+          <ScrollReveal effect="fade-up">
+            <div className="text-center max-w-xl mx-auto mb-10 sm:mb-12 space-y-2">
+              <span className="text-xs font-bold uppercase tracking-wider text-emerald-600">
+                About Medicare & Standards
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+                Why Patients Trust Medicare
+              </h2>
+              <p className="text-xs text-slate-500">
+                Learn more about our licensed clinical network &amp; pharmacy standards on our{' '}
+                <Link to="/about" className="text-emerald-600 font-bold hover:underline">
+                  About Us page →
+                </Link>
+              </p>
+            </div>
+          </ScrollReveal>
+        </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {whyChooseUs.map((w, idx) => {
@@ -1265,9 +1271,8 @@ export const HomePage: React.FC = () => {
                   >
                     <span>{f.q}</span>
                     <ChevronDown
-                      className={`w-4 h-4 text-slate-400 flex-shrink-0 transition-transform duration-200 ${
-                        isOpen ? 'rotate-180 text-emerald-600' : ''
-                      }`}
+                      className={`w-4 h-4 text-slate-400 flex-shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180 text-emerald-600' : ''
+                        }`}
                     />
                   </button>
 
@@ -1288,6 +1293,35 @@ export const HomePage: React.FC = () => {
               </ScrollReveal>
             );
           })}
+        </div>
+      </section>
+
+      {/* 12. PATIENT SUPPORT & CONTACT HUB */}
+      <section id="contact" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full scroll-mt-24">
+        <div className="bg-gradient-to-br from-[#0f2d42] to-[#0d766e] rounded-2xl sm:rounded-3xl p-6 sm:p-10 text-white shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div className="space-y-2 max-w-xl">
+            <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-emerald-300">
+              <PhoneCall className="w-3.5 h-3.5" /> 24/7 Clinical &amp; Patient Support
+            </span>
+            <h2 className="text-xl sm:text-3xl font-black tracking-tight">
+              Need Assistance With Orders or Appointments?
+            </h2>
+            <p className="text-xs sm:text-sm text-teal-100 leading-relaxed">
+              Our care coordination team and licensed pharmacists are available 24/7 at{' '}
+              <strong className="text-white">+1 (800) 555-CARE</strong> or{' '}
+              <strong className="text-white">support@medicare.health</strong>.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
+            <Link
+              to="/contact"
+              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-white hover:bg-emerald-50 text-slate-900 font-extrabold text-xs sm:text-sm transition shadow-md flex items-center justify-center gap-2"
+            >
+              <span>Open Contact &amp; Support</span>
+              <ArrowRight className="w-4 h-4 text-emerald-600" />
+            </Link>
+          </div>
         </div>
       </section>
 

@@ -26,6 +26,7 @@ import userRoutes from './routes/userRoutes';
 import adminRoutes from './routes/adminRoutes';
 import reviewRoutes from './routes/reviewRoutes';
 import emailRoutes from './routes/emailRoutes';
+import contactRoutes from './routes/contactRoutes';
 
 export const app = express();
 
@@ -113,6 +114,7 @@ app.use('/api/user', userRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/email', emailRoutes);
+app.use('/api/contact', contactRoutes);
 
 // 404 handler for undefined routes
 app.use('*', (req, res) => {

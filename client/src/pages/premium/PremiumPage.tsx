@@ -23,6 +23,7 @@ import { api } from '../../api/client';
 import { MembershipPlan, UserMembership } from '../../types';
 import { useAuthStore } from '../../store/authStore';
 import { LoadingState } from '../../components/common/LoadingState';
+import { formatINR } from '../../utils/currency';
 
 export const PremiumPage: React.FC = () => {
   const { user, isAuthenticated } = useAuthStore();
@@ -78,7 +79,7 @@ export const PremiumPage: React.FC = () => {
   };
 
   const comparison = [
-    { feature: 'Annual Comprehensive Executive Checkup ($229 value)', free: false, vip: true },
+    { feature: 'Annual Comprehensive Executive Checkup (₹19,465 value)', free: false, vip: true },
     { feature: 'Unlimited Free Express Delivery (No minimum)', free: false, vip: true },
     { feature: 'Complimentary Specialist Video Consultations', free: '0 visits', vip: '2 included' },
     { feature: 'Storewide Medication & Lab Test Discount', free: 'Standard', vip: '10% Extra Discount' },
@@ -91,7 +92,7 @@ export const PremiumPage: React.FC = () => {
     {
       icon: HeartPulse,
       title: 'Free Annual Checkup',
-      tag: '$229 Value Included',
+      tag: '₹19,465 Value Included',
       desc: 'Complete metabolic profile, cardiovascular risk, complete blood count, and physician review with zero out-of-pocket costs.',
       color: 'emerald',
     },
@@ -122,7 +123,7 @@ export const PremiumPage: React.FC = () => {
     {
       question: 'How do I claim my Free Annual Comprehensive Health Checkup?',
       answer:
-        'Immediately after your VIP membership is active, a voucher for the Annual Comprehensive Health Checkup ($229 value) is added to your account. You can book it at any of our partner diagnostic centers or schedule a home blood draw at your convenience.',
+        'Immediately after your VIP membership is active, a voucher for the Annual Comprehensive Health Checkup (₹19,465 value) is added to your account. You can book it at any of our partner diagnostic centers or schedule a home blood draw at your convenience.',
     },
     {
       question: 'Does the 10% instant discount apply to all medicines and lab tests?',
@@ -171,7 +172,7 @@ export const PremiumPage: React.FC = () => {
             <Zap className="w-3.5 h-3.5 text-indigo-600" /> Instant VIP Activation
           </span>
           <span className="px-3 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200/80 flex items-center gap-1">
-            <Sparkles className="w-3.5 h-3.5 text-amber-600" /> $450+ Annual Savings
+            <Sparkles className="w-3.5 h-3.5 text-amber-600" /> ₹38,250+ Annual Savings
           </span>
         </div>
       </div>
@@ -226,11 +227,11 @@ export const PremiumPage: React.FC = () => {
               <div className="text-left sm:text-right bg-white/5 sm:bg-transparent p-3 sm:p-0 rounded-2xl border border-white/5 sm:border-none flex sm:block items-baseline justify-between sm:justify-end gap-2">
                 <div>
                   <span className="text-3xl sm:text-4xl font-black text-amber-400">
-                    ${primaryPlan.discountPrice || primaryPlan.price}
+                    {formatINR(primaryPlan.discountPrice || primaryPlan.price, 0)}
                   </span>
                   {primaryPlan.discountPrice && (
                     <span className="text-xs text-slate-400 line-through ml-2">
-                      ${primaryPlan.price}
+                      {formatINR(primaryPlan.price, 0)}
                     </span>
                   )}
                 </div>
@@ -262,7 +263,7 @@ export const PremiumPage: React.FC = () => {
             <div className="pt-4 border-t border-white/10 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
               <div className="flex items-center justify-center sm:justify-start gap-2 text-xs text-amber-300 bg-amber-400/10 px-3.5 py-2 rounded-xl border border-amber-400/20">
                 <Sparkles className="w-4 h-4 text-amber-400 flex-shrink-0" />
-                <span className="font-semibold">Estimated annual patient savings: $450+</span>
+                <span className="font-semibold">Estimated annual patient savings: ₹38,250+</span>
               </div>
 
               {!currentMemData?.hasActiveMembership ? (

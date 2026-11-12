@@ -9,7 +9,16 @@ import { Doctor } from '../models/Doctor';
 import { AuditLog } from '../models/AuditLog';
 import { HealthCheckupPackage, HealthCheckupBooking, Test } from '../models/HealthCheckup';
 import { UserMembership } from '../models/Membership';
+import { ContactMessage } from '../models/ContactMessage';
 import { emailService } from '../services/emailService';
+import {
+  CURRENCY_CODE,
+  FREE_DELIVERY_THRESHOLD_INR,
+  STANDARD_DELIVERY_FEE_INR,
+  calculateDeliveryFeeINR,
+  calculateOrderBreakdownINR,
+  formatINR,
+} from '../utils/pricing';
 
 describe('Medicare Backend Core Tests', () => {
   it('GET /api/health returns ONLINE status', async () => {
@@ -444,5 +453,88 @@ describe('Medicare Backend Core Tests', () => {
     expect(res.status).toBe(200);
     expect(res.body.success).toBe(true);
     expect(res.body.data.valid).toBe(true);
+  });
+
+  it('POST /api/contact creates support inquiry ticket and dispatches confirmation', async () => {
+    vi.spyOn(ContactMessage, 'create').mockResolvedValueOnce({
+      ticketId: 'MC-SUP-123456',
+      fullName: 'Sarah Patient',
+      email: 'sarah@medicare.health',
+      topic: 'GENERAL',
+      subject: 'Prescription Delivery Question',
+      message: 'When does express cold-chain delivery arrive?',
+      status: 'OPEN',
+    } as any);
+
+    vi.spyOn(emailService, 'sendContactSupportConfirmationEmail').mockResolvedValueOnce({
+      success: true,
+      delivered: true,
+      messageId: 'contact-msg-id',
+    } as any);
+
+    const res = await request(app)
+      .post('/api/contact')
+      .send({
+        fullName: 'Sarah Patient',
+        email: 'sarah@medicare.health',
+        topic: 'GENERAL',
+        subject: 'Prescription Delivery Question',
+        message: 'When does express cold-chain delivery arrive?',
+      });
+
+    expect(res.status).toBe(201);
+    expect(res.body.success).toBe(true);
+    expect(res.body.data.ticketId).toBe('MC-SUP-123456');
+  });
+
+  it('POST /api/contact rejects incomplete support inquiries with 422', async () => {
+    const res = await request(app)
+      .post('/api/contact')
+      .send({ fullName: 'A', email: 'bad-email', subject: 'Hi', message: 'short' });
+
+    expect(res.status).toBe(422);
+    expect(res.body.success).toBe(false);
+  });
+
+  it('computes INR pricing breakdown, delivery threshold, and en-IN formatting correctly', () => {
+    expect(CURRENCY_CODE).toBe('INR');
+    expect(calculateDeliveryFeeINR(0)).toBe(0);
+    expect(calculateDeliveryFeeINR(FREE_DELIVERY_THRESHOLD_INR)).toBe(STANDARD_DELIVERY_FEE_INR);
+    expect(calculateDeliveryFeeINR(FREE_DELIVERY_THRESHOLD_INR + 1)).toBe(0);
+
+    const lowOrder = calculateOrderBreakdownINR(500, 50);
+    expect(lowOrder.deliveryFee).toBe(STANDARD_DELIVERY_FEE_INR);
+    expect(lowOrder.tax).toBe(22.5);
+    expect(lowOrder.total).toBe(521.5);
+
+    const freeShippingOrder = calculateOrderBreakdownINR(1500, 100);
+    expect(freeShippingOrder.deliveryFee).toBe(0);
+    expect(freeShippingOrder.tax).toBe(70);
+    expect(freeShippingOrder.total).toBe(1470);
+
+    expect(formatINR(125000, 0)).toBe('₹1,25,000');
+    expect(formatINR(1499)).toBe('₹1,499.00');
+  });
+
+  it('removed GET /api/admin/audit-logs endpoint returns 404 for authenticated admin', async () => {
+    vi.spyOn(User, 'findById').mockResolvedValueOnce({
+      _id: '60f7b1b2f1a2b3c4d5e6f799',
+      role: 'ADMIN',
+      email: 'admin@medicare.health',
+      isActive: true,
+    } as any);
+
+    const adminToken = generateToken({
+      userId: '60f7b1b2f1a2b3c4d5e6f799',
+      role: 'ADMIN',
+      email: 'admin@medicare.health',
+    });
+
+    const res = await request(app)
+      .get('/api/admin/audit-logs')
+      .set('Authorization', `Bearer ${adminToken}`);
+
+    expect(res.status).toBe(404);
+    expect(res.body.success).toBe(false);
   });
 });

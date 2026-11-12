@@ -325,910 +325,907 @@ export const DoctorDashboardPage: React.FC = () => {
       {/* 2. Default Clinical Dashboard Overview */}
       {(currentTab === 'dashboard' ||
         !['appointments', 'patients', 'prescriptions', 'availability', 'messages', 'reports', 'profile', 'settings'].includes(currentTab)) && (
-        <>
-          {/* ========================================================= */}
-          {/* 1. TOP HERO WELCOME BANNER (POLISHED CLINICAL WORKSTATION) */}
-          {/* ========================================================= */}
-          <motion.section
-        initial={{ opacity: 0, y: 15 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="bg-gradient-to-r from-[#dcfce7]/70 via-[#ecfdf5] to-[#cffafe]/60 border border-teal-200/70 rounded-3xl p-6 sm:p-7 shadow-sm relative overflow-hidden"
-      >
-        {/* Subtle Ambient Halos */}
-        <div className="absolute top-0 right-1/3 w-64 h-64 rounded-full bg-teal-300/15 blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-10 right-10 w-48 h-48 rounded-full bg-emerald-400/15 blur-2xl pointer-events-none" />
+          <>
+            {/* ========================================================= */}
+            {/* 1. TOP HERO WELCOME BANNER (POLISHED CLINICAL WORKSTATION) */}
+            {/* ========================================================= */}
+            <motion.section
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              className="bg-gradient-to-r from-[#dcfce7]/70 via-[#ecfdf5] to-[#cffafe]/60 border border-teal-200/70 rounded-3xl p-6 sm:p-7 shadow-sm relative overflow-hidden"
+            >
+              {/* Subtle Ambient Halos */}
+              <div className="absolute top-0 right-1/3 w-64 h-64 rounded-full bg-teal-300/15 blur-3xl pointer-events-none" />
+              <div className="absolute -bottom-10 right-10 w-48 h-48 rounded-full bg-emerald-400/15 blur-2xl pointer-events-none" />
 
-        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-          {/* Left: Doctor Avatar, Name & Specialization */}
-          <div className="flex items-center gap-4 sm:gap-5">
-            <div className="relative flex-shrink-0">
-              <img
-                src={getValidDoctorAvatar(doctor?.avatar)}
-                alt={doctor?.name || 'Dr. Sophia Reyes'}
-                onError={(e) => {
-                  e.currentTarget.onerror = null;
-                  e.currentTarget.src =
-                    'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=300';
-                }}
-                className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border-4 border-white shadow-md"
-              />
-              <span className="absolute bottom-0 right-0 w-5 h-5 rounded-full bg-emerald-500 border-2 border-white shadow-sm flex items-center justify-center">
-                <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
-              </span>
-            </div>
+              <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                {/* Left: Doctor Avatar, Name & Specialization */}
+                <div className="flex flex-col xs:flex-row xs:items-center gap-4 sm:gap-5 min-w-0">
+                  <div className="relative flex-shrink-0 self-start xs:self-auto">
+                    <img
+                      src={getValidDoctorAvatar(doctor?.avatar)}
+                      alt={doctor?.name || 'Dr. Sophia Reyes'}
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src =
+                          'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=300';
+                      }}
+                      className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border-4 border-white shadow-md"
+                    />
+                    <span className="absolute bottom-0 right-0 w-5 h-5 rounded-full bg-emerald-500 border-2 border-white shadow-sm flex items-center justify-center">
+                      <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                    </span>
+                  </div>
 
-            <div className="space-y-1">
-              {/* Credentials Chip (Replacing redundant online badge, which is already in top bar) */}
-              <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-teal-900/10 border border-teal-600/30 text-teal-900 text-[11px] font-bold tracking-wide shadow-sm">
-                <ShieldCheck className="w-3.5 h-3.5 text-teal-700" />
-                <span>Fellow in Cardiovascular Medicine (FACC) • NPI #84920418</span>
-              </div>
+                  <div className="space-y-1 min-w-0">
+                    {/* Credentials Chip (Replacing redundant online badge, which is already in top bar) */}
+                    <div className="inline-flex flex-wrap items-center gap-1.5 px-3 py-1 rounded-2xl sm:rounded-full bg-teal-900/10 border border-teal-600/30 text-teal-900 text-[10px] sm:text-[11px] font-bold tracking-wide shadow-sm max-w-full">
+                      <ShieldCheck className="w-3.5 h-3.5 text-teal-700 flex-shrink-0" />
+                      <span>Fellow in Cardiovascular Medicine (FACC) • NPI #84920418</span>
+                    </div>
 
-              <h1 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight">
-                Good Morning, {doctor?.name || 'Dr. Sophia Reyes'}
-              </h1>
+                    <h1 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight">
+                      Good Morning, {doctor?.name || 'Dr. Sophia Reyes'}
+                    </h1>
 
-              <p className="text-xs sm:text-sm text-slate-600 font-medium">
-                Make a difference in your patients' lives today.
-              </p>
+                    <p className="text-xs sm:text-sm text-slate-600 font-medium">
+                      Make a difference in your patients' lives today.
+                    </p>
 
-              <div className="flex flex-wrap items-center gap-3 pt-1 text-xs text-slate-500 font-medium">
-                <div className="flex items-center gap-1.5">
-                  <Stethoscope className="w-3.5 h-3.5 text-teal-600" />
-                  <span>{doctor?.specialization || 'Cardiologist'}</span>
+                    <div className="flex flex-wrap items-center gap-3 pt-1 text-xs text-slate-500 font-medium">
+                      <div className="flex items-center gap-1.5">
+                        <Stethoscope className="w-3.5 h-3.5 text-teal-600" />
+                        <span>{doctor?.specialization || 'Cardiologist'}</span>
+                      </div>
+                      <span className="text-slate-300">•</span>
+                      <div className="flex items-center gap-1.5">
+                        <Building2 className="w-3.5 h-3.5 text-teal-600" />
+                        <span>{doctor?.hospitalAffiliation || 'Medicare Heart & Vascular Institute'}</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <span className="text-slate-300">•</span>
-                <div className="flex items-center gap-1.5">
-                  <Building2 className="w-3.5 h-3.5 text-teal-600" />
-                  <span>{doctor?.hospitalAffiliation || 'Medicare Heart & Vascular Institute'}</span>
+
+                {/* Right: Live Animated ECG Rhythm Monitor & Clinical Affirmation */}
+                <div className="hidden lg:flex flex-col gap-2 bg-white/70 backdrop-blur-md p-4 rounded-2xl border border-white/80 max-w-sm shadow-sm">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-teal-500 to-cyan-500 text-white flex items-center justify-center shadow-sm">
+                        <HeartPulse className="w-4 h-4 animate-pulse text-white" />
+                      </div>
+                      <div>
+                        <p className="text-xs font-black text-slate-800 leading-none">Vital Rhythm Protocol</p>
+                        <p className="text-[10px] text-teal-700 font-bold">Sinus Rhythm • 72 BPM</p>
+                      </div>
+                    </div>
+                    <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
+                      Active
+                    </span>
+                  </div>
+
+                  {/* Animated ECG Waveform */}
+                  <div className="h-7 w-full overflow-hidden relative rounded-lg bg-teal-950/5 flex items-center px-1">
+                    <svg className="w-full h-full" viewBox="0 0 200 40" fill="none" preserveAspectRatio="none">
+                      <path
+                        d="M0,20 L30,20 L38,20 L44,8 L50,32 L56,12 L62,24 L68,20 L95,20 L103,20 L109,8 L115,32 L121,12 L127,24 L133,20 L160,20 L168,20 L174,8 L180,32 L186,12 L192,24 L200,20"
+                        stroke="#0d9488"
+                        strokeWidth="2.2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="animate-pulse"
+                      />
+                    </svg>
+                  </div>
+
+                  <p className="text-[11px] italic text-slate-600 line-clamp-1 leading-tight">
+                    “Health is not just the absence of disease, but a state of complete well-being.”
+                  </p>
                 </div>
               </div>
-            </div>
-          </div>
+            </motion.section>
 
-          {/* Right: Live Animated ECG Rhythm Monitor & Clinical Affirmation */}
-          <div className="hidden lg:flex flex-col gap-2 bg-white/70 backdrop-blur-md p-4 rounded-2xl border border-white/80 max-w-sm shadow-sm">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-teal-500 to-cyan-500 text-white flex items-center justify-center shadow-sm">
-                  <HeartPulse className="w-4 h-4 animate-pulse text-white" />
+            {/* ========================================================= */}
+            {/* 2. ROW OF 4 METRIC STAT CARDS (ALIGNED & ANIMATED)        */}
+            {/* ========================================================= */}
+            <section className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              {/* Card 1: Today's Visits */}
+              <motion.div
+                whileHover={{ y: -3 }}
+                transition={{ duration: 0.2 }}
+                className="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-sm hover:shadow-md hover:border-blue-200 transition group flex flex-col justify-between"
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-bold text-slate-500">Today's Visits</span>
+                  <div className="w-9 h-9 rounded-2xl bg-blue-500 text-white flex items-center justify-center shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
+                    <CalendarIcon className="w-4 h-4" />
+                  </div>
                 </div>
                 <div>
-                  <p className="text-xs font-black text-slate-800 leading-none">Vital Rhythm Protocol</p>
-                  <p className="text-[10px] text-teal-700 font-bold">Sinus Rhythm • 72 BPM</p>
-                </div>
-              </div>
-              <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
-                Active
-              </span>
-            </div>
-
-            {/* Animated ECG Waveform */}
-            <div className="h-7 w-full overflow-hidden relative rounded-lg bg-teal-950/5 flex items-center px-1">
-              <svg className="w-full h-full" viewBox="0 0 200 40" fill="none" preserveAspectRatio="none">
-                <path
-                  d="M0,20 L30,20 L38,20 L44,8 L50,32 L56,12 L62,24 L68,20 L95,20 L103,20 L109,8 L115,32 L121,12 L127,24 L133,20 L160,20 L168,20 L174,8 L180,32 L186,12 L192,24 L200,20"
-                  stroke="#0d9488"
-                  strokeWidth="2.2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="animate-pulse"
-                />
-              </svg>
-            </div>
-
-            <p className="text-[11px] italic text-slate-600 line-clamp-1 leading-tight">
-              “Health is not just the absence of disease, but a state of complete well-being.”
-            </p>
-          </div>
-        </div>
-      </motion.section>
-
-      {/* ========================================================= */}
-      {/* 2. ROW OF 4 METRIC STAT CARDS (ALIGNED & ANIMATED)        */}
-      {/* ========================================================= */}
-      <section className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Card 1: Today's Visits */}
-        <motion.div
-          whileHover={{ y: -3 }}
-          transition={{ duration: 0.2 }}
-          className="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-sm hover:shadow-md hover:border-blue-200 transition group flex flex-col justify-between"
-        >
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-bold text-slate-500">Today's Visits</span>
-            <div className="w-9 h-9 rounded-2xl bg-blue-500 text-white flex items-center justify-center shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
-              <CalendarIcon className="w-4 h-4" />
-            </div>
-          </div>
-          <div>
-            <div className="flex items-baseline justify-between">
-              <span className="text-3xl font-black text-slate-900 tracking-tight">4</span>
-              <button
-                type="button"
-                onClick={() => setScheduleFilter('today')}
-                className="w-7 h-7 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 flex items-center justify-center transition"
-                title="View today visits"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
-            <p className="text-[11px] text-slate-400 font-medium mt-1">
-              1 completed • 3 remaining
-            </p>
-          </div>
-        </motion.div>
-
-        {/* Card 2: Upcoming Appointments */}
-        <motion.div
-          whileHover={{ y: -3 }}
-          transition={{ duration: 0.2 }}
-          className="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-sm hover:shadow-md hover:border-teal-200 transition group flex flex-col justify-between"
-        >
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-bold text-slate-500">Upcoming Appointments</span>
-            <div className="w-9 h-9 rounded-2xl bg-teal-500 text-white flex items-center justify-center shadow-md shadow-teal-500/20 group-hover:scale-105 transition-transform">
-              <Clock className="w-4 h-4" />
-            </div>
-          </div>
-          <div>
-            <div className="flex items-baseline justify-between">
-              <span className="text-3xl font-black text-slate-900 tracking-tight">2</span>
-              <button
-                type="button"
-                onClick={() => setScheduleFilter('week')}
-                className="w-7 h-7 rounded-full bg-teal-50 text-teal-600 hover:bg-teal-100 flex items-center justify-center transition"
-                title="View upcoming"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
-            <p className="text-[11px] text-slate-400 font-medium mt-1">
-              2 scheduled for afternoon
-            </p>
-          </div>
-        </motion.div>
-
-        {/* Card 3: Pending Requests */}
-        <motion.div
-          whileHover={{ y: -3 }}
-          transition={{ duration: 0.2 }}
-          className="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-sm hover:shadow-md hover:border-amber-200 transition group flex flex-col justify-between"
-        >
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-bold text-slate-500">Pending Requests</span>
-            <div className="w-9 h-9 rounded-2xl bg-amber-500 text-white flex items-center justify-center shadow-md shadow-amber-500/20 group-hover:scale-105 transition-transform">
-              <User className="w-4 h-4" />
-            </div>
-          </div>
-          <div>
-            <div className="flex items-baseline justify-between">
-              <span className="text-3xl font-black text-slate-900 tracking-tight">1</span>
-              <button
-                type="button"
-                onClick={() => openPatientEHR(STATIC_FALLBACK_APPOINTMENTS[2])}
-                className="w-7 h-7 rounded-full bg-amber-50 text-amber-600 hover:bg-amber-100 flex items-center justify-center transition"
-                title="Review pending triage"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
-            <p className="text-[11px] text-slate-400 font-medium mt-1">
-              1 awaiting clinical approval
-            </p>
-          </div>
-        </motion.div>
-
-        {/* Card 4: Completed Consultations */}
-        <motion.div
-          whileHover={{ y: -3 }}
-          transition={{ duration: 0.2 }}
-          className="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-sm hover:shadow-md hover:border-purple-200 transition group flex flex-col justify-between"
-        >
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-bold text-slate-500">Completed Consultations</span>
-            <div className="w-9 h-9 rounded-2xl bg-purple-500 text-white flex items-center justify-center shadow-md shadow-purple-500/20 group-hover:scale-105 transition-transform">
-              <CheckCircle2 className="w-4 h-4" />
-            </div>
-          </div>
-          <div>
-            <div className="flex items-baseline justify-between">
-              <span className="text-3xl font-black text-slate-900 tracking-tight">1</span>
-              <button
-                type="button"
-                onClick={() => openPatientEHR(STATIC_FALLBACK_APPOINTMENTS[0])}
-                className="w-7 h-7 rounded-full bg-purple-50 text-purple-600 hover:bg-purple-100 flex items-center justify-center transition"
-                title="View completed chart"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
-            <p className="text-[11px] text-slate-400 font-medium mt-1">
-              Sarah Jenkins charted
-            </p>
-          </div>
-        </motion.div>
-      </section>
-
-      {/* ========================================================= */}
-      {/* 3. MAIN DASHBOARD CONTENT GRID (SCHEDULE + RIGHT PANELS)  */}
-      {/* ========================================================= */}
-      <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
-        {/* ======================================================= */}
-        {/* LEFT COLUMN: TODAY'S SCHEDULE & SUMMARY CARDS (8 COLS)  */}
-        {/* ======================================================= */}
-        <div className="xl:col-span-8 space-y-6">
-          {/* Main Today's Schedule Card */}
-          <div className="bg-white rounded-3xl p-5 sm:p-7 border border-slate-200/90 shadow-sm">
-            {/* Header: Title + Filter Tabs */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-5 border-b border-slate-100 gap-4">
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center">
-                  <CalendarIcon className="w-4 h-4" />
-                </div>
-                <h2 className="text-lg font-black text-slate-900 tracking-tight">
-                  Today's Schedule
-                </h2>
-              </div>
-
-              {/* View filter tabs with sliding layoutId indicator */}
-              <div className="inline-flex p-1 bg-slate-100/90 rounded-2xl text-xs font-bold text-slate-600 relative">
-                {(['today', 'week', 'month'] as const).map((tab) => {
-                  const label = tab === 'today' ? 'Today' : tab === 'week' ? 'This Week' : 'This Month';
-                  const isCurrent = scheduleFilter === tab;
-                  return (
+                  <div className="flex items-baseline justify-between">
+                    <span className="text-3xl font-black text-slate-900 tracking-tight">4</span>
                     <button
-                      key={tab}
                       type="button"
-                      onClick={() => setScheduleFilter(tab)}
-                      className={`relative px-3.5 py-1.5 rounded-xl transition font-bold z-10 ${
-                        isCurrent ? 'text-teal-900' : 'text-slate-600 hover:text-slate-900'
-                      }`}
+                      onClick={() => setScheduleFilter('today')}
+                      className="w-7 h-7 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 flex items-center justify-center transition"
+                      title="View today visits"
                     >
-                      {isCurrent && (
-                        <motion.span
-                          layoutId="scheduleTabIndicator"
-                          className="absolute inset-0 bg-white rounded-xl shadow-sm -z-10"
-                          transition={{ type: 'spring', stiffness: 350, damping: 30 }}
-                        />
-                      )}
-                      <span>{label}</span>
+                      <ChevronRight className="w-4 h-4" />
                     </button>
-                  );
-                })}
-              </div>
-            </div>
+                  </div>
+                  <p className="text-[11px] text-slate-400 font-medium mt-1">
+                    1 completed • 3 remaining
+                  </p>
+                </div>
+              </motion.div>
 
-            {/* Timeline Schedule Items */}
-            <div className="mt-5 space-y-4 relative">
-              {/* Continuous vertical timeline connector line */}
-              <div className="hidden sm:block absolute left-[26px] top-6 bottom-6 w-0.5 bg-slate-200 -z-0" />
-
-              {filteredAppointments.map((apt, idx) => {
-                const isVideo = apt.consultationType === 'VIDEO';
-                const isConfirmed = apt.status === 'CONFIRMED';
-                const isCurrentLiveSlot = idx === 0;
-                const dotColor =
-                  idx === 0
-                    ? 'bg-emerald-500'
-                    : idx === 1
-                    ? 'bg-emerald-500'
-                    : idx === 2
-                    ? 'bg-amber-500'
-                    : 'bg-teal-500';
-
-                return (
-                  <motion.div
-                    key={apt._id}
-                    whileHover={{ y: -2 }}
-                    transition={{ duration: 0.15 }}
-                    className={`relative flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 rounded-2xl bg-white border transition-all gap-4 z-10 ${
-                      isCurrentLiveSlot
-                        ? 'border-teal-400 ring-2 ring-teal-500/15 shadow-md bg-gradient-to-r from-teal-50/20 via-white to-white'
-                        : 'border-slate-200/80 hover:border-teal-300 hover:shadow-md'
-                    }`}
-                  >
-                    {/* Left: Dot & Time + Patient Avatar & Info (Clickable for EHR) */}
-                    <div
-                      onClick={() => openPatientEHR(apt)}
-                      className="flex items-start sm:items-center gap-3 sm:gap-4 flex-1 cursor-pointer group"
-                      title="Click to inspect Patient EHR Medical Record"
+              {/* Card 2: Upcoming Appointments */}
+              <motion.div
+                whileHover={{ y: -3 }}
+                transition={{ duration: 0.2 }}
+                className="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-sm hover:shadow-md hover:border-teal-200 transition group flex flex-col justify-between"
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-bold text-slate-500">Upcoming Appointments</span>
+                  <div className="w-9 h-9 rounded-2xl bg-teal-500 text-white flex items-center justify-center shadow-md shadow-teal-500/20 group-hover:scale-105 transition-transform">
+                    <Clock className="w-4 h-4" />
+                  </div>
+                </div>
+                <div>
+                  <div className="flex items-baseline justify-between">
+                    <span className="text-3xl font-black text-slate-900 tracking-tight">2</span>
+                    <button
+                      type="button"
+                      onClick={() => setScheduleFilter('week')}
+                      className="w-7 h-7 rounded-full bg-teal-50 text-teal-600 hover:bg-teal-100 flex items-center justify-center transition"
+                      title="View upcoming"
                     >
-                      {/* Timeline Dot */}
-                      <div className="hidden sm:flex flex-col items-center flex-shrink-0">
-                        <span className={`w-3.5 h-3.5 rounded-full ${dotColor} ring-4 ring-white shadow-sm`} />
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                  <p className="text-[11px] text-slate-400 font-medium mt-1">
+                    2 scheduled for afternoon
+                  </p>
+                </div>
+              </motion.div>
+
+              {/* Card 3: Pending Requests */}
+              <motion.div
+                whileHover={{ y: -3 }}
+                transition={{ duration: 0.2 }}
+                className="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-sm hover:shadow-md hover:border-amber-200 transition group flex flex-col justify-between"
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-bold text-slate-500">Pending Requests</span>
+                  <div className="w-9 h-9 rounded-2xl bg-amber-500 text-white flex items-center justify-center shadow-md shadow-amber-500/20 group-hover:scale-105 transition-transform">
+                    <User className="w-4 h-4" />
+                  </div>
+                </div>
+                <div>
+                  <div className="flex items-baseline justify-between">
+                    <span className="text-3xl font-black text-slate-900 tracking-tight">1</span>
+                    <button
+                      type="button"
+                      onClick={() => openPatientEHR(STATIC_FALLBACK_APPOINTMENTS[2])}
+                      className="w-7 h-7 rounded-full bg-amber-50 text-amber-600 hover:bg-amber-100 flex items-center justify-center transition"
+                      title="Review pending triage"
+                    >
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                  <p className="text-[11px] text-slate-400 font-medium mt-1">
+                    1 awaiting clinical approval
+                  </p>
+                </div>
+              </motion.div>
+
+              {/* Card 4: Completed Consultations */}
+              <motion.div
+                whileHover={{ y: -3 }}
+                transition={{ duration: 0.2 }}
+                className="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-sm hover:shadow-md hover:border-purple-200 transition group flex flex-col justify-between"
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-bold text-slate-500">Completed Consultations</span>
+                  <div className="w-9 h-9 rounded-2xl bg-purple-500 text-white flex items-center justify-center shadow-md shadow-purple-500/20 group-hover:scale-105 transition-transform">
+                    <CheckCircle2 className="w-4 h-4" />
+                  </div>
+                </div>
+                <div>
+                  <div className="flex items-baseline justify-between">
+                    <span className="text-3xl font-black text-slate-900 tracking-tight">1</span>
+                    <button
+                      type="button"
+                      onClick={() => openPatientEHR(STATIC_FALLBACK_APPOINTMENTS[0])}
+                      className="w-7 h-7 rounded-full bg-purple-50 text-purple-600 hover:bg-purple-100 flex items-center justify-center transition"
+                      title="View completed chart"
+                    >
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                  <p className="text-[11px] text-slate-400 font-medium mt-1">
+                    Sarah Jenkins charted
+                  </p>
+                </div>
+              </motion.div>
+            </section>
+
+            {/* ========================================================= */}
+            {/* 3. MAIN DASHBOARD CONTENT GRID (SCHEDULE + RIGHT PANELS)  */}
+            {/* ========================================================= */}
+            <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
+              {/* ======================================================= */}
+              {/* LEFT COLUMN: TODAY'S SCHEDULE & SUMMARY CARDS (8 COLS)  */}
+              {/* ======================================================= */}
+              <div className="xl:col-span-8 space-y-6">
+                {/* Main Today's Schedule Card */}
+                <div className="bg-white rounded-3xl p-5 sm:p-7 border border-slate-200/90 shadow-sm">
+                  {/* Header: Title + Filter Tabs */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-5 border-b border-slate-100 gap-4">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center">
+                        <CalendarIcon className="w-4 h-4" />
                       </div>
-
-                      {/* Time Slot Tag */}
-                      <div className="min-w-[125px] flex-shrink-0">
-                        <span className="text-xs font-black text-slate-800 tracking-tight block">
-                          {apt.timeRange}
-                        </span>
-                        {isCurrentLiveSlot && (
-                          <span className="inline-flex items-center gap-1 text-[10px] font-black text-emerald-600 mt-0.5 animate-pulse">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                            Active Slot
-                          </span>
-                        )}
-                      </div>
-
-                      {/* Patient Avatar */}
-                      <div className="relative flex-shrink-0">
-                        <img
-                          src={apt.avatar}
-                          alt={apt.patientName}
-                          onError={(e) => {
-                            e.currentTarget.onerror = null;
-                            e.currentTarget.src =
-                              'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200';
-                          }}
-                          className="w-11 h-11 rounded-full object-cover border-2 border-slate-100 shadow-sm group-hover:border-teal-500 transition-colors"
-                        />
-                        {isCurrentLiveSlot && (
-                          <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-white shadow-sm" />
-                        )}
-                      </div>
-
-                      {/* Patient Name, Age/Gender, Type & Concern */}
-                      <div className="min-w-0 flex-1 space-y-1">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <h3 className="text-sm font-black text-slate-900 truncate group-hover:text-teal-700 transition-colors">
-                            {apt.patientName}
-                          </h3>
-                          <span className="text-xs text-slate-500 font-medium">
-                            Age: {apt.patientAge} • {apt.patientGender}
-                          </span>
-
-                          {/* Consultation Type Badge */}
-                          <span
-                            className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
-                              isVideo
-                                ? 'bg-cyan-50 text-cyan-800 border border-cyan-200'
-                                : 'bg-blue-50 text-blue-800 border border-blue-200'
-                            }`}
-                          >
-                            {isVideo ? <Video className="w-3 h-3" /> : <Building2 className="w-3 h-3" />}
-                            <span>{apt.typeLabel}</span>
-                          </span>
-
-                          {/* Status Badge */}
-                          <span
-                            className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                              isConfirmed
-                                ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                                : 'bg-amber-50 text-amber-700 border border-amber-200'
-                            }`}
-                          >
-                            {apt.status}
-                          </span>
-                        </div>
-
-                        {/* Reported Symptoms / Concern */}
-                        <p className="text-xs text-slate-600 line-clamp-1 leading-relaxed">
-                          <strong className="text-slate-700">Concern:</strong> {apt.symptoms}
-                        </p>
-                      </div>
+                      <h2 className="text-lg font-black text-slate-900 tracking-tight">
+                        Today's Schedule
+                      </h2>
                     </div>
 
-                    {/* Right: Distinct Contextual Clinical Actions (Duplicate [View Patient] removed) */}
-                    <div className="flex items-center gap-2 flex-shrink-0 self-end sm:self-center">
-                      {/* Row 1: Active Telehealth Session -> Start Visit + EHR Chart */}
-                      {idx === 0 && (
-                        <>
-                          <motion.button
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                            type="button"
-                            onClick={() => openVideoVisit(apt)}
-                            className="min-h-[38px] px-4 py-2 rounded-xl bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white font-extrabold text-xs shadow-md shadow-teal-600/30 flex items-center gap-2 transition group"
-                          >
-                            <span className="w-2 h-2 rounded-full bg-white animate-ping" />
-                            <Video className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
-                            <span>Start Telehealth Visit</span>
-                          </motion.button>
-
+                    {/* View filter tabs with sliding layoutId indicator */}
+                    <div className="inline-flex p-1 bg-slate-100/90 rounded-2xl text-xs font-bold text-slate-600 relative">
+                      {(['today', 'week', 'month'] as const).map((tab) => {
+                        const label = tab === 'today' ? 'Today' : tab === 'week' ? 'This Week' : 'This Month';
+                        const isCurrent = scheduleFilter === tab;
+                        return (
                           <button
+                            key={tab}
                             type="button"
+                            onClick={() => setScheduleFilter(tab)}
+                            className={`relative px-3.5 py-1.5 rounded-xl transition font-bold z-10 ${isCurrent ? 'text-teal-900' : 'text-slate-600 hover:text-slate-900'
+                              }`}
+                          >
+                            {isCurrent && (
+                              <motion.span
+                                layoutId="scheduleTabIndicator"
+                                className="absolute inset-0 bg-white rounded-xl shadow-sm -z-10"
+                                transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+                              />
+                            )}
+                            <span>{label}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Timeline Schedule Items */}
+                  <div className="mt-5 space-y-4 relative">
+                    {/* Continuous vertical timeline connector line */}
+                    <div className="hidden sm:block absolute left-[26px] top-6 bottom-6 w-0.5 bg-slate-200 -z-0" />
+
+                    {filteredAppointments.map((apt, idx) => {
+                      const isVideo = apt.consultationType === 'VIDEO';
+                      const isConfirmed = apt.status === 'CONFIRMED';
+                      const isCurrentLiveSlot = idx === 0;
+                      const dotColor =
+                        idx === 0
+                          ? 'bg-emerald-500'
+                          : idx === 1
+                            ? 'bg-emerald-500'
+                            : idx === 2
+                              ? 'bg-amber-500'
+                              : 'bg-teal-500';
+
+                      return (
+                        <motion.div
+                          key={apt._id}
+                          whileHover={{ y: -2 }}
+                          transition={{ duration: 0.15 }}
+                          className={`relative flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 rounded-2xl bg-white border transition-all gap-4 z-10 ${isCurrentLiveSlot
+                              ? 'border-teal-400 ring-2 ring-teal-500/15 shadow-md bg-gradient-to-r from-teal-50/20 via-white to-white'
+                              : 'border-slate-200/80 hover:border-teal-300 hover:shadow-md'
+                            }`}
+                        >
+                          {/* Left: Dot & Time + Patient Avatar & Info (Clickable for EHR) */}
+                          <div
                             onClick={() => openPatientEHR(apt)}
-                            className="min-h-[38px] px-3.5 py-2 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1.5 transition"
-                            title="Inspect patient electronic health record"
+                            className="flex flex-col sm:flex-row sm:items-center gap-2.5 sm:gap-4 flex-1 min-w-0 cursor-pointer group"
+                            title="Click to inspect Patient EHR Medical Record"
                           >
-                            <FileText className="w-3.5 h-3.5 text-teal-600" />
-                            <span>Review EHR</span>
-                          </button>
-                        </>
-                      )}
+                            {/* Timeline Dot */}
+                            <div className="hidden sm:flex flex-col items-center flex-shrink-0">
+                              <span className={`w-3.5 h-3.5 rounded-full ${dotColor} ring-4 ring-white shadow-sm`} />
+                            </div>
 
-                      {/* Row 2: In-Person Appointment -> Reception Check-In + Reschedule */}
-                      {idx === 1 && (
-                        <>
-                          <button
-                            type="button"
-                            onClick={() => openPatientEHR(apt)}
-                            className="min-h-[38px] px-3.5 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-800 font-bold text-xs flex items-center gap-1.5 transition"
-                          >
-                            <UserCheck className="w-3.5 h-3.5 text-emerald-600" />
-                            <span>Check-In / Arrived</span>
-                          </button>
+                            {/* Time Slot Tag */}
+                            <div className="min-w-0 sm:min-w-[125px] flex-shrink-0">
+                              <span className="text-xs font-black text-slate-800 tracking-tight block">
+                                {apt.timeRange}
+                              </span>
+                              {isCurrentLiveSlot && (
+                                <span className="inline-flex items-center gap-1 text-[10px] font-black text-emerald-600 mt-0.5 animate-pulse">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                                  Active Slot
+                                </span>
+                              )}
+                            </div>
 
-                          <button
-                            type="button"
-                            onClick={() => openReschedule(apt)}
-                            className="min-h-[38px] px-3 py-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1 transition"
-                          >
-                            <RefreshCw className="w-3 h-3 text-slate-400" />
-                            <span>Reschedule</span>
-                          </button>
-                        </>
-                      )}
+                            {/* Patient Avatar + Info Row */}
+                            <div className="flex items-start sm:items-center gap-3 flex-1 min-w-0">
+                              {/* Patient Avatar */}
+                              <div className="relative flex-shrink-0">
+                                <img
+                                  src={apt.avatar}
+                                  alt={apt.patientName}
+                                  onError={(e) => {
+                                    e.currentTarget.onerror = null;
+                                    e.currentTarget.src =
+                                      'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200';
+                                  }}
+                                  className="w-11 h-11 rounded-full object-cover border-2 border-slate-100 shadow-sm group-hover:border-teal-500 transition-colors"
+                                />
+                                {isCurrentLiveSlot && (
+                                  <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-white shadow-sm" />
+                                )}
+                              </div>
 
-                      {/* Row 3: Pending Consultation -> Accept & Triage + Decline */}
-                      {idx === 2 && (
-                        <>
-                          <button
-                            type="button"
-                            onClick={() => openPrescriptionWriter(apt)}
-                            className="min-h-[38px] px-3.5 py-2 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm transition"
-                          >
-                            <CheckCircle2 className="w-3.5 h-3.5" />
-                            <span>Accept Visit</span>
-                          </button>
+                              {/* Patient Name, Age/Gender, Type & Concern */}
+                              <div className="min-w-0 flex-1 space-y-1">
+                                <div className="flex flex-wrap items-center gap-2">
+                                  <h3 className="text-sm font-black text-slate-900 truncate group-hover:text-teal-700 transition-colors">
+                                    {apt.patientName}
+                                  </h3>
+                                  <span className="text-xs text-slate-500 font-medium">
+                                    Age: {apt.patientAge} • {apt.patientGender}
+                                  </span>
 
-                          <button
-                            type="button"
-                            onClick={() => openReschedule(apt)}
-                            className="min-h-[38px] px-3 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 font-bold text-xs flex items-center gap-1 transition"
-                          >
-                            <X className="w-3.5 h-3.5 text-rose-500" />
-                            <span>Decline</span>
-                          </button>
-                        </>
-                      )}
+                                  {/* Consultation Type Badge */}
+                                  <span
+                                    className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold ${isVideo
+                                        ? 'bg-cyan-50 text-cyan-800 border border-cyan-200'
+                                        : 'bg-blue-50 text-blue-800 border border-blue-200'
+                                      }`}
+                                  >
+                                    {isVideo ? <Video className="w-3 h-3" /> : <Building2 className="w-3 h-3" />}
+                                    <span>{apt.typeLabel}</span>
+                                  </span>
 
-                      {/* Row 4: Confirmed Follow-up -> Complete & Prescribe + Reschedule */}
-                      {idx === 3 && (
-                        <>
-                          <button
-                            type="button"
-                            onClick={() => openPrescriptionWriter(apt)}
-                            className="min-h-[38px] px-3.5 py-2 rounded-xl bg-teal-50 hover:bg-teal-100 border border-teal-200 text-teal-800 font-bold text-xs flex items-center gap-1.5 transition"
-                          >
-                            <FileCheck className="w-3.5 h-3.5 text-teal-600" />
-                            <span>Prescribe & Chart</span>
-                          </button>
+                                  {/* Status Badge */}
+                                  <span
+                                    className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${isConfirmed
+                                        ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                                        : 'bg-amber-50 text-amber-700 border border-amber-200'
+                                      }`}
+                                  >
+                                    {apt.status}
+                                  </span>
+                                </div>
 
-                          <button
-                            type="button"
-                            onClick={() => openReschedule(apt)}
-                            className="min-h-[38px] px-3 py-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1 transition"
-                          >
-                            <RefreshCw className="w-3 h-3 text-slate-400" />
-                            <span>Reschedule</span>
-                          </button>
-                        </>
-                      )}
+                                {/* Reported Symptoms / Concern */}
+                                <p className="text-xs text-slate-600 line-clamp-1 leading-relaxed">
+                                  <strong className="text-slate-700">Concern:</strong> {apt.symptoms}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
 
-                      {/* 3-Dots Dropdown Trigger */}
+                          {/* Right: Distinct Contextual Clinical Actions (Duplicate [View Patient] removed) */}
+                          <div className="flex flex-wrap items-center gap-2 flex-shrink-0 w-full sm:w-auto justify-end">
+                            {/* Row 1: Active Telehealth Session -> Start Visit + EHR Chart */}
+                            {idx === 0 && (
+                              <>
+                                <motion.button
+                                  whileHover={{ scale: 1.02 }}
+                                  whileTap={{ scale: 0.98 }}
+                                  type="button"
+                                  onClick={() => openVideoVisit(apt)}
+                                  className="min-h-[38px] px-4 py-2 rounded-xl bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white font-extrabold text-xs shadow-md shadow-teal-600/30 flex items-center gap-2 transition group"
+                                >
+                                  <span className="w-2 h-2 rounded-full bg-white animate-ping" />
+                                  <Video className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
+                                  <span>Start Telehealth Visit</span>
+                                </motion.button>
+
+                                <button
+                                  type="button"
+                                  onClick={() => openPatientEHR(apt)}
+                                  className="min-h-[38px] px-3.5 py-2 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1.5 transition"
+                                  title="Inspect patient electronic health record"
+                                >
+                                  <FileText className="w-3.5 h-3.5 text-teal-600" />
+                                  <span>Review EHR</span>
+                                </button>
+                              </>
+                            )}
+
+                            {/* Row 2: In-Person Appointment -> Reception Check-In + Reschedule */}
+                            {idx === 1 && (
+                              <>
+                                <button
+                                  type="button"
+                                  onClick={() => openPatientEHR(apt)}
+                                  className="min-h-[38px] px-3.5 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-800 font-bold text-xs flex items-center gap-1.5 transition"
+                                >
+                                  <UserCheck className="w-3.5 h-3.5 text-emerald-600" />
+                                  <span>Check-In / Arrived</span>
+                                </button>
+
+                                <button
+                                  type="button"
+                                  onClick={() => openReschedule(apt)}
+                                  className="min-h-[38px] px-3 py-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1 transition"
+                                >
+                                  <RefreshCw className="w-3 h-3 text-slate-400" />
+                                  <span>Reschedule</span>
+                                </button>
+                              </>
+                            )}
+
+                            {/* Row 3: Pending Consultation -> Accept & Triage + Decline */}
+                            {idx === 2 && (
+                              <>
+                                <button
+                                  type="button"
+                                  onClick={() => openPrescriptionWriter(apt)}
+                                  className="min-h-[38px] px-3.5 py-2 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm transition"
+                                >
+                                  <CheckCircle2 className="w-3.5 h-3.5" />
+                                  <span>Accept Visit</span>
+                                </button>
+
+                                <button
+                                  type="button"
+                                  onClick={() => openReschedule(apt)}
+                                  className="min-h-[38px] px-3 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 font-bold text-xs flex items-center gap-1 transition"
+                                >
+                                  <X className="w-3.5 h-3.5 text-rose-500" />
+                                  <span>Decline</span>
+                                </button>
+                              </>
+                            )}
+
+                            {/* Row 4: Confirmed Follow-up -> Complete & Prescribe + Reschedule */}
+                            {idx === 3 && (
+                              <>
+                                <button
+                                  type="button"
+                                  onClick={() => openPrescriptionWriter(apt)}
+                                  className="min-h-[38px] px-3.5 py-2 rounded-xl bg-teal-50 hover:bg-teal-100 border border-teal-200 text-teal-800 font-bold text-xs flex items-center gap-1.5 transition"
+                                >
+                                  <FileCheck className="w-3.5 h-3.5 text-teal-600" />
+                                  <span>Prescribe & Chart</span>
+                                </button>
+
+                                <button
+                                  type="button"
+                                  onClick={() => openReschedule(apt)}
+                                  className="min-h-[38px] px-3 py-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1 transition"
+                                >
+                                  <RefreshCw className="w-3 h-3 text-slate-400" />
+                                  <span>Reschedule</span>
+                                </button>
+                              </>
+                            )}
+
+                            {/* 3-Dots Dropdown Trigger */}
+                            <button
+                              type="button"
+                              onClick={() => openPatientEHR(apt)}
+                              className="w-8 h-8 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 flex items-center justify-center transition"
+                              title="Open comprehensive medical history"
+                            >
+                              <MoreVertical className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* ======================================================= */}
+                {/* BOTTOM ROW: 3 SUMMARY WIDGETS                           */}
+                {/* ======================================================= */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {/* Widget 1: Today's Timeline */}
+                  <div className="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-sm space-y-3.5">
+                    <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+                      <div className="flex items-center gap-2">
+                        <Activity className="w-4 h-4 text-teal-600" />
+                        <h3 className="font-extrabold text-xs sm:text-sm text-slate-900">
+                          Today's Timeline
+                        </h3>
+                      </div>
                       <button
                         type="button"
-                        onClick={() => openPatientEHR(apt)}
-                        className="w-8 h-8 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 flex items-center justify-center transition"
-                        title="Open comprehensive medical history"
+                        onClick={() => setScheduleFilter('today')}
+                        className="text-[11px] font-bold text-teal-600 hover:text-teal-800 flex items-center gap-0.5"
                       >
-                        <MoreVertical className="w-4 h-4" />
+                        View All <ArrowRight className="w-3 h-3" />
                       </button>
                     </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
 
-          {/* ======================================================= */}
-          {/* BOTTOM ROW: 3 SUMMARY WIDGETS                           */}
-          {/* ======================================================= */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {/* Widget 1: Today's Timeline */}
-            <div className="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-sm space-y-3.5">
-              <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-                <div className="flex items-center gap-2">
-                  <Activity className="w-4 h-4 text-teal-600" />
-                  <h3 className="font-extrabold text-xs sm:text-sm text-slate-900">
-                    Today's Timeline
-                  </h3>
+                    <div className="space-y-2.5">
+                      {STATIC_FALLBACK_APPOINTMENTS.map((apt, i) => (
+                        <div key={i} className="flex items-center justify-between text-xs">
+                          <div className="min-w-0 pr-2">
+                            <span className="font-bold text-slate-800 block text-[11px]">
+                              {apt.timeRange.split(' - ')[0]} • {apt.patientName}
+                            </span>
+                            <span className="text-[10px] text-slate-400 block truncate">
+                              {apt.typeLabel}
+                            </span>
+                          </div>
+                          <span
+                            className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${apt.timelineStatus === 'Completed'
+                                ? 'bg-emerald-50 text-emerald-700'
+                                : apt.timelineStatus === 'Pending'
+                                  ? 'bg-amber-50 text-amber-700'
+                                  : 'bg-blue-50 text-blue-700'
+                              }`}
+                          >
+                            {apt.timelineStatus === 'Completed' ? '✓ ' : '● '}
+                            {apt.timelineStatus}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Widget 2: Recent Patients */}
+                  <div className="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-sm space-y-3.5">
+                    <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+                      <div className="flex items-center gap-2">
+                        <Users className="w-4 h-4 text-teal-600" />
+                        <h3 className="font-extrabold text-xs sm:text-sm text-slate-900">
+                          Recent Patients
+                        </h3>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => openPatientEHR(STATIC_FALLBACK_APPOINTMENTS[0])}
+                        className="text-[11px] font-bold text-teal-600 hover:text-teal-800 flex items-center gap-0.5"
+                      >
+                        View All <ArrowRight className="w-3 h-3" />
+                      </button>
+                    </div>
+
+                    <div className="space-y-2.5">
+                      {STATIC_FALLBACK_APPOINTMENTS.map((apt, i) => (
+                        <div
+                          key={i}
+                          onClick={() => openPatientEHR(apt)}
+                          className="flex items-center justify-between hover:bg-slate-50 p-1.5 rounded-xl transition cursor-pointer"
+                        >
+                          <div className="flex items-center gap-2.5 min-w-0">
+                            <img
+                              src={apt.avatar}
+                              alt=""
+                              className="w-7 h-7 rounded-full object-cover flex-shrink-0"
+                            />
+                            <div className="min-w-0">
+                              <span className="font-bold text-slate-800 block text-xs truncate">
+                                {apt.patientName}
+                              </span>
+                              <span className="text-[10px] text-slate-400 block">
+                                {apt.patientAge} • {apt.patientGender}
+                              </span>
+                            </div>
+                          </div>
+                          <span className="text-[11px] font-mono font-semibold text-slate-500">
+                            {apt.timeRange.split(' - ')[0]}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Widget 3: Prescription Tasks */}
+                  <div className="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-sm space-y-3.5">
+                    <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+                      <div className="flex items-center gap-2">
+                        <FileText className="w-4 h-4 text-teal-600" />
+                        <h3 className="font-extrabold text-xs sm:text-sm text-slate-900">
+                          Prescription Tasks
+                        </h3>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => openPrescriptionWriter()}
+                        className="text-[11px] font-bold text-teal-600 hover:text-teal-800 flex items-center gap-0.5"
+                      >
+                        View All <ArrowRight className="w-3 h-3" />
+                      </button>
+                    </div>
+
+                    <div className="space-y-2.5">
+                      {PRESCRIPTION_TASKS.map((task) => (
+                        <div
+                          key={task.id}
+                          onClick={() => openPrescriptionWriter({ patientName: task.patientName })}
+                          className="flex items-center justify-between hover:bg-slate-50 p-1.5 rounded-xl transition cursor-pointer"
+                        >
+                          <div className="flex items-center gap-2.5 min-w-0">
+                            <div className={`w-6 h-6 rounded-lg ${task.iconColor} flex items-center justify-center text-[10px] font-black flex-shrink-0`}>
+                              Rx
+                            </div>
+                            <div className="min-w-0">
+                              <span className="font-bold text-slate-800 block text-xs truncate">
+                                {task.patientName}
+                              </span>
+                              <span className="text-[10px] text-slate-400 block truncate">
+                                {task.rxCode} • {task.status}
+                              </span>
+                            </div>
+                          </div>
+                          <span className="text-[10px] text-slate-400 whitespace-nowrap">
+                            {task.timeAgo}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => setScheduleFilter('today')}
-                  className="text-[11px] font-bold text-teal-600 hover:text-teal-800 flex items-center gap-0.5"
-                >
-                  View All <ArrowRight className="w-3 h-3" />
-                </button>
               </div>
 
-              <div className="space-y-2.5">
-                {STATIC_FALLBACK_APPOINTMENTS.map((apt, i) => (
-                  <div key={i} className="flex items-center justify-between text-xs">
-                    <div className="min-w-0 pr-2">
-                      <span className="font-bold text-slate-800 block text-[11px]">
-                        {apt.timeRange.split(' - ')[0]} • {apt.patientName}
-                      </span>
-                      <span className="text-[10px] text-slate-400 block truncate">
-                        {apt.typeLabel}
+              {/* ======================================================= */}
+              {/* RIGHT COLUMN: CALENDAR, LIVE TRIAGE QUEUE & PERFORMANCE */}
+              {/* ======================================================= */}
+              <div className="xl:col-span-4 space-y-6">
+                {/* 1. Interactive Mini Calendar Widget */}
+                <div className="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-sm space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="font-extrabold text-sm text-slate-900">
+                      {calendarMonth}
+                    </span>
+                    <div className="flex items-center gap-1 text-slate-400">
+                      <button
+                        type="button"
+                        onClick={() => setCalendarMonth('September 2025')}
+                        className="p-1 hover:text-slate-800 rounded-lg hover:bg-slate-100"
+                      >
+                        <ChevronLeft className="w-4 h-4" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setCalendarMonth('October 2025')}
+                        className="p-1 hover:text-slate-800 rounded-lg hover:bg-slate-100"
+                      >
+                        <ChevronRight className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Weekdays Row */}
+                  <div className="grid grid-cols-7 gap-1 text-center text-[11px] font-bold text-slate-400">
+                    <span>Sun</span>
+                    <span>Mon</span>
+                    <span>Tue</span>
+                    <span>Wed</span>
+                    <span>Thu</span>
+                    <span>Fri</span>
+                    <span>Sat</span>
+                  </div>
+
+                  {/* Calendar Days Grid */}
+                  <div className="grid grid-cols-7 gap-1 text-center text-xs font-semibold">
+                    {/* Previous month days */}
+                    <span className="py-1.5 text-slate-300">28</span>
+                    <span className="py-1.5 text-slate-300">29</span>
+                    <span className="py-1.5 text-slate-300">30</span>
+                    {/* Current month days */}
+                    {[...Array(31)].map((_, i) => {
+                      const day = i + 1;
+                      const isSelected = selectedCalendarDay === day;
+
+                      return (
+                        <button
+                          key={day}
+                          type="button"
+                          onClick={() => setSelectedCalendarDay(day)}
+                          className={`py-1.5 rounded-full transition-all ${isSelected
+                              ? 'bg-teal-600 text-white font-black shadow-md shadow-teal-600/30 scale-105'
+                              : 'text-slate-700 hover:bg-slate-100'
+                            }`}
+                        >
+                          {day}
+                        </button>
+                      );
+                    })}
+                    {/* Next month days */}
+                    <span className="py-1.5 text-slate-300">1</span>
+                    <span className="py-1.5 text-slate-300">2</span>
+                  </div>
+                </div>
+
+                {/* 2. REPLACED DUPLICATE QUICK ACTIONS WITH LIVE TRIAGE & VITALS MONITOR */}
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-sm space-y-4"
+                >
+                  <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+                    <div className="flex items-center gap-2">
+                      <HeartPulse className="w-4 h-4 text-rose-500 animate-pulse" />
+                      <h3 className="font-extrabold text-sm text-slate-900 tracking-tight">
+                        Live Triage & Vitals Queue
+                      </h3>
+                    </div>
+                    <span className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
+                      Virtual Room 1
+                    </span>
+                  </div>
+
+                  {/* Waiting Room Patient Preview */}
+                  <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/70 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2.5">
+                        <img
+                          src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200"
+                          alt="Sarah Jenkins"
+                          className="w-9 h-9 rounded-full object-cover border-2 border-teal-500"
+                        />
+                        <div>
+                          <h4 className="text-xs font-bold text-slate-900 leading-tight">Sarah Jenkins</h4>
+                          <p className="text-[10px] text-slate-500">Virtual Waiting Room • 8 min</p>
+                        </div>
+                      </div>
+                      <span className="px-2 py-0.5 rounded-full bg-teal-100 text-teal-800 text-[10px] font-black">
+                        Ready
                       </span>
                     </div>
-                    <span
-                      className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                        apt.timelineStatus === 'Completed'
-                          ? 'bg-emerald-50 text-emerald-700'
-                          : apt.timelineStatus === 'Pending'
-                          ? 'bg-amber-50 text-amber-700'
-                          : 'bg-blue-50 text-blue-700'
-                      }`}
+
+                    {/* Vitals Mini-Grid */}
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-center bg-white p-2 rounded-xl border border-slate-200/60">
+                      <div className="p-1">
+                        <span className="text-[9px] text-slate-400 font-bold block uppercase">BP</span>
+                        <span className="text-xs font-black text-slate-800">118/78</span>
+                      </div>
+                      <div className="p-1">
+                        <span className="text-[9px] text-slate-400 font-bold block uppercase">HR</span>
+                        <span className="text-xs font-black text-teal-700">74 bpm</span>
+                      </div>
+                      <div className="p-1">
+                        <span className="text-[9px] text-slate-400 font-bold block uppercase">SpO2</span>
+                        <span className="text-xs font-black text-emerald-700">99%</span>
+                      </div>
+                      <div className="p-1">
+                        <span className="text-[9px] text-slate-400 font-bold block uppercase">Temp</span>
+                        <span className="text-xs font-black text-slate-800">98.4°F</span>
+                      </div>
+                    </div>
+
+                    {/* Quick Launch Consultation */}
+                    <button
+                      type="button"
+                      onClick={() => openVideoVisit(STATIC_FALLBACK_APPOINTMENTS[0])}
+                      className="w-full py-2.5 rounded-xl bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white font-black text-xs shadow-md shadow-teal-600/25 flex items-center justify-center gap-2 transition group"
                     >
-                      {apt.timelineStatus === 'Completed' ? '✓ ' : '● '}
-                      {apt.timelineStatus}
-                    </span>
+                      <Video className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
+                      <span>Enter Video Consultation Room</span>
+                    </button>
                   </div>
-                ))}
-              </div>
-            </div>
 
-            {/* Widget 2: Recent Patients */}
-            <div className="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-sm space-y-3.5">
-              <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-                <div className="flex items-center gap-2">
-                  <Users className="w-4 h-4 text-teal-600" />
-                  <h3 className="font-extrabold text-xs sm:text-sm text-slate-900">
-                    Recent Patients
-                  </h3>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => openPatientEHR(STATIC_FALLBACK_APPOINTMENTS[0])}
-                  className="text-[11px] font-bold text-teal-600 hover:text-teal-800 flex items-center gap-0.5"
-                >
-                  View All <ArrowRight className="w-3 h-3" />
-                </button>
-              </div>
-
-              <div className="space-y-2.5">
-                {STATIC_FALLBACK_APPOINTMENTS.map((apt, i) => (
-                  <div
-                    key={i}
-                    onClick={() => openPatientEHR(apt)}
-                    className="flex items-center justify-between hover:bg-slate-50 p-1.5 rounded-xl transition cursor-pointer"
-                  >
-                    <div className="flex items-center gap-2.5 min-w-0">
-                      <img
-                        src={apt.avatar}
-                        alt=""
-                        className="w-7 h-7 rounded-full object-cover flex-shrink-0"
-                      />
-                      <div className="min-w-0">
-                        <span className="font-bold text-slate-800 block text-xs truncate">
-                          {apt.patientName}
-                        </span>
-                        <span className="text-[10px] text-slate-400 block">
-                          {apt.patientAge} • {apt.patientGender}
-                        </span>
-                      </div>
+                  {/* Clinical Target Metrics */}
+                  <div className="pt-2 border-t border-slate-100 space-y-2">
+                    <div className="flex items-center justify-between text-xs font-bold text-slate-700">
+                      <span>Clinical Schedule Target</span>
+                      <span className="text-teal-700">4 / 4 Patients (100%)</span>
                     </div>
-                    <span className="text-[11px] font-mono font-semibold text-slate-500">
-                      {apt.timeRange.split(' - ')[0]}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Widget 3: Prescription Tasks */}
-            <div className="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-sm space-y-3.5">
-              <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-                <div className="flex items-center gap-2">
-                  <FileText className="w-4 h-4 text-teal-600" />
-                  <h3 className="font-extrabold text-xs sm:text-sm text-slate-900">
-                    Prescription Tasks
-                  </h3>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => openPrescriptionWriter()}
-                  className="text-[11px] font-bold text-teal-600 hover:text-teal-800 flex items-center gap-0.5"
-                >
-                  View All <ArrowRight className="w-3 h-3" />
-                </button>
-              </div>
-
-              <div className="space-y-2.5">
-                {PRESCRIPTION_TASKS.map((task) => (
-                  <div
-                    key={task.id}
-                    onClick={() => openPrescriptionWriter({ patientName: task.patientName })}
-                    className="flex items-center justify-between hover:bg-slate-50 p-1.5 rounded-xl transition cursor-pointer"
-                  >
-                    <div className="flex items-center gap-2.5 min-w-0">
-                      <div className={`w-6 h-6 rounded-lg ${task.iconColor} flex items-center justify-center text-[10px] font-black flex-shrink-0`}>
-                        Rx
-                      </div>
-                      <div className="min-w-0">
-                        <span className="font-bold text-slate-800 block text-xs truncate">
-                          {task.patientName}
-                        </span>
-                        <span className="text-[10px] text-slate-400 block truncate">
-                          {task.rxCode} • {task.status}
-                        </span>
-                      </div>
+                    <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                      <div className="h-full bg-gradient-to-r from-teal-500 to-emerald-500 rounded-full w-full" />
                     </div>
-                    <span className="text-[10px] text-slate-400 whitespace-nowrap">
-                      {task.timeAgo}
-                    </span>
+                    <div className="flex items-center justify-between text-[11px] text-slate-500 pt-1">
+                      <span>Physician Quality Rating: <strong className="text-slate-800">4.9 ★</strong></span>
+                      <span>Avg Consult: <strong className="text-slate-800">18m</strong></span>
+                    </div>
                   </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+                </motion.div>
 
-        {/* ======================================================= */}
-        {/* RIGHT COLUMN: CALENDAR, LIVE TRIAGE QUEUE & PERFORMANCE */}
-        {/* ======================================================= */}
-        <div className="xl:col-span-4 space-y-6">
-          {/* 1. Interactive Mini Calendar Widget */}
-          <div className="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-sm space-y-4">
-            <div className="flex items-center justify-between">
-              <span className="font-extrabold text-sm text-slate-900">
-                {calendarMonth}
-              </span>
-              <div className="flex items-center gap-1 text-slate-400">
-                <button
-                  type="button"
-                  onClick={() => setCalendarMonth('September 2025')}
-                  className="p-1 hover:text-slate-800 rounded-lg hover:bg-slate-100"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setCalendarMonth('October 2025')}
-                  className="p-1 hover:text-slate-800 rounded-lg hover:bg-slate-100"
-                >
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
+                {/* 3. Notifications Card matching Image 2 */}
+                <div className="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-sm space-y-3.5">
+                  <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+                    <h3 className="font-extrabold text-sm text-slate-900 tracking-tight">
+                      Notifications
+                    </h3>
+                    <button
+                      type="button"
+                      onClick={openMessages}
+                      className="text-[11px] font-bold text-teal-600 hover:text-teal-800 flex items-center gap-0.5"
+                    >
+                      View All <ArrowRight className="w-3 h-3" />
+                    </button>
+                  </div>
 
-            {/* Weekdays Row */}
-            <div className="grid grid-cols-7 gap-1 text-center text-[11px] font-bold text-slate-400">
-              <span>Sun</span>
-              <span>Mon</span>
-              <span>Tue</span>
-              <span>Wed</span>
-              <span>Thu</span>
-              <span>Fri</span>
-              <span>Sat</span>
-            </div>
+                  <div className="space-y-3">
+                    {/* Item 1 */}
+                    <div
+                      onClick={openMessages}
+                      className="flex items-start gap-3 p-1.5 hover:bg-slate-50 rounded-xl transition cursor-pointer"
+                    >
+                      <div className="w-8 h-8 rounded-xl bg-blue-500 text-white flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
+                        <MessageSquare className="w-4 h-4" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <h4 className="text-xs font-bold text-slate-900 leading-tight">
+                          New message from Sarah Jenkins
+                        </h4>
+                        <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-1">
+                          “Thank you for the consultation...”
+                        </p>
+                      </div>
+                      <span className="text-[10px] text-slate-400 whitespace-nowrap">
+                        10:15 AM
+                      </span>
+                    </div>
 
-            {/* Calendar Days Grid */}
-            <div className="grid grid-cols-7 gap-1 text-center text-xs font-semibold">
-              {/* Previous month days */}
-              <span className="py-1.5 text-slate-300">28</span>
-              <span className="py-1.5 text-slate-300">29</span>
-              <span className="py-1.5 text-slate-300">30</span>
-              {/* Current month days */}
-              {[...Array(31)].map((_, i) => {
-                const day = i + 1;
-                const isSelected = selectedCalendarDay === day;
+                    {/* Item 2 */}
+                    <div
+                      onClick={() => openPrescriptionWriter({ patientName: 'Sarah Jenkins' })}
+                      className="flex items-start gap-3 p-1.5 hover:bg-slate-50 rounded-xl transition cursor-pointer"
+                    >
+                      <div className="w-8 h-8 rounded-xl bg-rose-500 text-white flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
+                        <FileText className="w-4 h-4" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <h4 className="text-xs font-bold text-slate-900 leading-tight">
+                          Prescription #PR-1023 needs review
+                        </h4>
+                        <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-1">
+                          Medications require approval
+                        </p>
+                      </div>
+                      <span className="text-[10px] text-slate-400 whitespace-nowrap">
+                        9:42 AM
+                      </span>
+                    </div>
 
-                return (
-                  <button
-                    key={day}
-                    type="button"
-                    onClick={() => setSelectedCalendarDay(day)}
-                    className={`py-1.5 rounded-full transition-all ${
-                      isSelected
-                        ? 'bg-teal-600 text-white font-black shadow-md shadow-teal-600/30 scale-105'
-                        : 'text-slate-700 hover:bg-slate-100'
-                    }`}
-                  >
-                    {day}
-                  </button>
-                );
-              })}
-              {/* Next month days */}
-              <span className="py-1.5 text-slate-300">1</span>
-              <span className="py-1.5 text-slate-300">2</span>
-            </div>
-          </div>
+                    {/* Item 3 */}
+                    <div
+                      onClick={() => openPatientEHR(STATIC_FALLBACK_APPOINTMENTS[1])}
+                      className="flex items-start gap-3 p-1.5 hover:bg-slate-50 rounded-xl transition cursor-pointer"
+                    >
+                      <div className="w-8 h-8 rounded-xl bg-blue-500 text-white flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
+                        <CalendarIcon className="w-4 h-4" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <h4 className="text-xs font-bold text-slate-900 leading-tight">
+                          Appointment reminder
+                        </h4>
+                        <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-1">
+                          James Wilson - 11:30 AM
+                        </p>
+                      </div>
+                      <span className="text-[10px] text-slate-400 whitespace-nowrap">
+                        8:00 AM
+                      </span>
+                    </div>
 
-          {/* 2. REPLACED DUPLICATE QUICK ACTIONS WITH LIVE TRIAGE & VITALS MONITOR */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-sm space-y-4"
-          >
-            <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-              <div className="flex items-center gap-2">
-                <HeartPulse className="w-4 h-4 text-rose-500 animate-pulse" />
-                <h3 className="font-extrabold text-sm text-slate-900 tracking-tight">
-                  Live Triage & Vitals Queue
-                </h3>
-              </div>
-              <span className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
-                Virtual Room 1
-              </span>
-            </div>
-
-            {/* Waiting Room Patient Preview */}
-            <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/70 space-y-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2.5">
-                  <img
-                    src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200"
-                    alt="Sarah Jenkins"
-                    className="w-9 h-9 rounded-full object-cover border-2 border-teal-500"
-                  />
-                  <div>
-                    <h4 className="text-xs font-bold text-slate-900 leading-tight">Sarah Jenkins</h4>
-                    <p className="text-[10px] text-slate-500">Virtual Waiting Room • 8 min</p>
+                    {/* Item 4 */}
+                    <div className="flex items-start gap-3 p-1.5 hover:bg-slate-50 rounded-xl transition">
+                      <div className="w-8 h-8 rounded-xl bg-emerald-500 text-white flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
+                        <ShieldCheck className="w-4 h-4" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <h4 className="text-xs font-bold text-slate-900 leading-tight">
+                          System update
+                        </h4>
+                        <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-1">
+                          New features are now available
+                        </p>
+                      </div>
+                      <span className="text-[10px] text-slate-400 whitespace-nowrap">
+                        Yesterday
+                      </span>
+                    </div>
                   </div>
                 </div>
-                <span className="px-2 py-0.5 rounded-full bg-teal-100 text-teal-800 text-[10px] font-black">
-                  Ready
-                </span>
-              </div>
-
-              {/* Vitals Mini-Grid */}
-              <div className="grid grid-cols-4 gap-1.5 text-center bg-white p-2 rounded-xl border border-slate-200/60">
-                <div className="p-1">
-                  <span className="text-[9px] text-slate-400 font-bold block uppercase">BP</span>
-                  <span className="text-xs font-black text-slate-800">118/78</span>
-                </div>
-                <div className="p-1">
-                  <span className="text-[9px] text-slate-400 font-bold block uppercase">HR</span>
-                  <span className="text-xs font-black text-teal-700">74 bpm</span>
-                </div>
-                <div className="p-1">
-                  <span className="text-[9px] text-slate-400 font-bold block uppercase">SpO2</span>
-                  <span className="text-xs font-black text-emerald-700">99%</span>
-                </div>
-                <div className="p-1">
-                  <span className="text-[9px] text-slate-400 font-bold block uppercase">Temp</span>
-                  <span className="text-xs font-black text-slate-800">98.4°F</span>
-                </div>
-              </div>
-
-              {/* Quick Launch Consultation */}
-              <button
-                type="button"
-                onClick={() => openVideoVisit(STATIC_FALLBACK_APPOINTMENTS[0])}
-                className="w-full py-2.5 rounded-xl bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white font-black text-xs shadow-md shadow-teal-600/25 flex items-center justify-center gap-2 transition group"
-              >
-                <Video className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
-                <span>Enter Video Consultation Room</span>
-              </button>
-            </div>
-
-            {/* Clinical Target Metrics */}
-            <div className="pt-2 border-t border-slate-100 space-y-2">
-              <div className="flex items-center justify-between text-xs font-bold text-slate-700">
-                <span>Clinical Schedule Target</span>
-                <span className="text-teal-700">4 / 4 Patients (100%)</span>
-              </div>
-              <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                <div className="h-full bg-gradient-to-r from-teal-500 to-emerald-500 rounded-full w-full" />
-              </div>
-              <div className="flex items-center justify-between text-[11px] text-slate-500 pt-1">
-                <span>Physician Quality Rating: <strong className="text-slate-800">4.9 ★</strong></span>
-                <span>Avg Consult: <strong className="text-slate-800">18m</strong></span>
               </div>
             </div>
-          </motion.div>
-
-          {/* 3. Notifications Card matching Image 2 */}
-          <div className="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-sm space-y-3.5">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-              <h3 className="font-extrabold text-sm text-slate-900 tracking-tight">
-                Notifications
-              </h3>
-              <button
-                type="button"
-                onClick={openMessages}
-                className="text-[11px] font-bold text-teal-600 hover:text-teal-800 flex items-center gap-0.5"
-              >
-                View All <ArrowRight className="w-3 h-3" />
-              </button>
-            </div>
-
-            <div className="space-y-3">
-              {/* Item 1 */}
-              <div
-                onClick={openMessages}
-                className="flex items-start gap-3 p-1.5 hover:bg-slate-50 rounded-xl transition cursor-pointer"
-              >
-                <div className="w-8 h-8 rounded-xl bg-blue-500 text-white flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
-                  <MessageSquare className="w-4 h-4" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <h4 className="text-xs font-bold text-slate-900 leading-tight">
-                    New message from Sarah Jenkins
-                  </h4>
-                  <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-1">
-                    “Thank you for the consultation...”
-                  </p>
-                </div>
-                <span className="text-[10px] text-slate-400 whitespace-nowrap">
-                  10:15 AM
-                </span>
-              </div>
-
-              {/* Item 2 */}
-              <div
-                onClick={() => openPrescriptionWriter({ patientName: 'Sarah Jenkins' })}
-                className="flex items-start gap-3 p-1.5 hover:bg-slate-50 rounded-xl transition cursor-pointer"
-              >
-                <div className="w-8 h-8 rounded-xl bg-rose-500 text-white flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
-                  <FileText className="w-4 h-4" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <h4 className="text-xs font-bold text-slate-900 leading-tight">
-                    Prescription #PR-1023 needs review
-                  </h4>
-                  <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-1">
-                    Medications require approval
-                  </p>
-                </div>
-                <span className="text-[10px] text-slate-400 whitespace-nowrap">
-                  9:42 AM
-                </span>
-              </div>
-
-              {/* Item 3 */}
-              <div
-                onClick={() => openPatientEHR(STATIC_FALLBACK_APPOINTMENTS[1])}
-                className="flex items-start gap-3 p-1.5 hover:bg-slate-50 rounded-xl transition cursor-pointer"
-              >
-                <div className="w-8 h-8 rounded-xl bg-blue-500 text-white flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
-                  <CalendarIcon className="w-4 h-4" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <h4 className="text-xs font-bold text-slate-900 leading-tight">
-                    Appointment reminder
-                  </h4>
-                  <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-1">
-                    James Wilson - 11:30 AM
-                  </p>
-                </div>
-                <span className="text-[10px] text-slate-400 whitespace-nowrap">
-                  8:00 AM
-                </span>
-              </div>
-
-              {/* Item 4 */}
-              <div className="flex items-start gap-3 p-1.5 hover:bg-slate-50 rounded-xl transition">
-                <div className="w-8 h-8 rounded-xl bg-emerald-500 text-white flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
-                  <ShieldCheck className="w-4 h-4" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <h4 className="text-xs font-bold text-slate-900 leading-tight">
-                    System update
-                  </h4>
-                  <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-1">
-                    New features are now available
-                  </p>
-                </div>
-                <span className="text-[10px] text-slate-400 whitespace-nowrap">
-                  Yesterday
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      </>
-      )}
+          </>
+        )}
 
       {/* ========================================================= */}
       {/* 4. INTERACTIVE CLINICAL MODALS (RESPONSIVE & ANIMATED)     */}
@@ -1237,22 +1234,22 @@ export const DoctorDashboardPage: React.FC = () => {
       {/* MODAL 1: Telehealth Video Consultation Room */}
       <AnimatePresence>
         {activeModal === 'video-visit' && activeAppointmentData && (
-          <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-6">
+          <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
             <motion.div
               initial={{ opacity: 0, scale: 0.94 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.94 }}
-              className="bg-slate-900 text-white rounded-3xl w-full max-w-4xl max-h-[92vh] overflow-hidden flex flex-col shadow-2xl border border-slate-800"
+              className="bg-slate-900 text-white rounded-3xl w-full max-w-4xl max-h-[92vh] overflow-y-auto flex flex-col shadow-2xl border border-slate-800 my-auto"
             >
               {/* Header */}
-              <div className="p-4 sm:p-5 bg-slate-950/80 border-b border-slate-800 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <span className="flex h-3 w-3 relative">
+              <div className="p-4 sm:p-5 bg-slate-950/80 border-b border-slate-800 flex items-center justify-between gap-2">
+                <div className="flex items-center gap-3 min-w-0">
+                  <span className="flex h-3 w-3 relative flex-shrink-0">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                     <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500" />
                   </span>
-                  <div>
-                    <h3 className="font-extrabold text-sm sm:text-base text-white">
+                  <div className="min-w-0">
+                    <h3 className="font-extrabold text-sm sm:text-base text-white truncate">
                       Encrypted Telehealth Consultation • {activeAppointmentData.patientName}
                     </h3>
                     <p className="text-[11px] text-slate-400">
@@ -1262,16 +1259,16 @@ export const DoctorDashboardPage: React.FC = () => {
                 </div>
                 <button
                   onClick={closeModal}
-                  className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800"
+                  className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 flex-shrink-0"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
               {/* Main Video Stream Simulation */}
-              <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 min-h-[380px] bg-slate-950">
+              <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 bg-slate-950">
                 {/* Video Stage */}
-                <div className="lg:col-span-2 relative bg-slate-900 flex items-center justify-center overflow-hidden border-r border-slate-800">
+                <div className="lg:col-span-2 relative bg-slate-900 flex items-center justify-center overflow-hidden border-b lg:border-b-0 lg:border-r border-slate-800 h-52 sm:h-64 lg:h-auto lg:min-h-[380px]">
                   {/* Patient Simulated Feed */}
                   <img
                     src={activeAppointmentData.avatar}
@@ -1341,9 +1338,8 @@ export const DoctorDashboardPage: React.FC = () => {
               <div className="p-3 sm:p-4 bg-slate-950 border-t border-slate-800 flex items-center justify-center gap-3 sm:gap-4">
                 <button
                   onClick={() => setIsMuted(!isMuted)}
-                  className={`p-3 rounded-2xl transition ${
-                    isMuted ? 'bg-rose-500 text-white' : 'bg-slate-800 text-slate-200 hover:bg-slate-700'
-                  }`}
+                  className={`p-3 rounded-2xl transition ${isMuted ? 'bg-rose-500 text-white' : 'bg-slate-800 text-slate-200 hover:bg-slate-700'
+                    }`}
                   title={isMuted ? 'Unmute microphone' : 'Mute microphone'}
                 >
                   {isMuted ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
@@ -1351,9 +1347,8 @@ export const DoctorDashboardPage: React.FC = () => {
 
                 <button
                   onClick={() => setIsVideoOff(!isVideoOff)}
-                  className={`p-3 rounded-2xl transition ${
-                    isVideoOff ? 'bg-rose-500 text-white' : 'bg-slate-800 text-slate-200 hover:bg-slate-700'
-                  }`}
+                  className={`p-3 rounded-2xl transition ${isVideoOff ? 'bg-rose-500 text-white' : 'bg-slate-800 text-slate-200 hover:bg-slate-700'
+                    }`}
                   title={isVideoOff ? 'Turn video on' : 'Turn video off'}
                 >
                   {isVideoOff ? <VideoOff className="w-5 h-5" /> : <Video className="w-5 h-5" />}
@@ -1375,12 +1370,12 @@ export const DoctorDashboardPage: React.FC = () => {
       {/* MODAL 2: Complete & Prescribe / Write Prescription */}
       <AnimatePresence>
         {activeModal === 'prescription' && (
-          <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-slate-200 space-y-4"
+              className="bg-white rounded-3xl max-w-lg w-full p-5 sm:p-8 shadow-2xl border border-slate-200 space-y-4 max-h-[90vh] overflow-y-auto my-auto"
             >
               <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                 <div className="flex items-center gap-2.5">
@@ -1507,7 +1502,7 @@ export const DoctorDashboardPage: React.FC = () => {
               </div>
 
               {/* Vitals Grid */}
-              <div className="grid grid-cols-4 gap-2.5 p-3 rounded-2xl bg-teal-50/70 border border-teal-100 text-center">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 p-3 rounded-2xl bg-teal-50/70 border border-teal-100 text-center">
                 <div>
                   <span className="text-[10px] text-teal-700 font-bold uppercase block">Blood Pressure</span>
                   <span className="text-xs font-black text-slate-900">{activePatientData.vitals?.bp || '118/78'}</span>
@@ -1546,7 +1541,7 @@ export const DoctorDashboardPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
+              <div className="pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
                 <button
                   onClick={() => {
                     closeModal();
@@ -1575,12 +1570,12 @@ export const DoctorDashboardPage: React.FC = () => {
       {/* MODAL 4: Reschedule Appointment Modal */}
       <AnimatePresence>
         {activeModal === 'reschedule' && activeAppointmentData && (
-          <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-200 space-y-4"
+              className="bg-white rounded-3xl max-w-md w-full p-5 sm:p-7 shadow-2xl border border-slate-200 space-y-4 max-h-[90vh] overflow-y-auto my-auto"
             >
               <div className="flex items-center justify-between pb-2 border-b border-slate-100">
                 <div className="flex items-center gap-2">
@@ -1623,11 +1618,10 @@ export const DoctorDashboardPage: React.FC = () => {
                           key={slot}
                           type="button"
                           onClick={() => setRescheduleSlot(slot)}
-                          className={`p-2 rounded-xl text-center font-bold text-xs transition ${
-                            rescheduleSlot === slot
+                          className={`p-2 rounded-xl text-center font-bold text-xs transition ${rescheduleSlot === slot
                               ? 'bg-teal-600 text-white shadow-sm'
                               : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'
-                          }`}
+                            }`}
                         >
                           {slot}
                         </button>
@@ -1665,12 +1659,12 @@ export const DoctorDashboardPage: React.FC = () => {
       {/* MODAL 5: Check Availability / Consultation Hours */}
       <AnimatePresence>
         {activeModal === 'availability' && (
-          <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-200 space-y-4"
+              className="bg-white rounded-3xl max-w-md w-full p-5 sm:p-7 shadow-2xl border border-slate-200 space-y-4 max-h-[90vh] overflow-y-auto my-auto"
             >
               <div className="flex items-center justify-between pb-2 border-b border-slate-100">
                 <div className="flex items-center gap-2">
@@ -1693,7 +1687,7 @@ export const DoctorDashboardPage: React.FC = () => {
                 <div>
                   <span className="font-bold text-slate-700 block mb-1">Standard Telehealth Consultation Fee</span>
                   <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl font-black text-lg text-slate-900">
-                    $120.00 USD
+                    ₹10,200.00 INR
                   </div>
                 </div>
 
@@ -1747,11 +1741,10 @@ export const DoctorDashboardPage: React.FC = () => {
                     className={`flex flex-col ${msg.sender === 'doctor' ? 'items-end' : 'items-start'}`}
                   >
                     <div
-                      className={`p-3 rounded-2xl max-w-[85%] leading-relaxed ${
-                        msg.sender === 'doctor'
+                      className={`p-3 rounded-2xl max-w-[85%] leading-relaxed ${msg.sender === 'doctor'
                           ? 'bg-teal-600 text-white rounded-br-sm'
                           : 'bg-white text-slate-800 border border-slate-200 rounded-bl-sm shadow-sm'
-                      }`}
+                        }`}
                     >
                       {msg.text}
                     </div>

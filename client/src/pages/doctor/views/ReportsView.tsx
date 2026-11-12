@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import {
   TrendingUp,
-  DollarSign,
+  IndianRupee,
   Calendar,
   CheckCircle2,
   Video,
@@ -13,14 +13,15 @@ import {
   Clock,
   FileSpreadsheet,
 } from 'lucide-react';
+import { formatINR } from '../../../utils/currency';
 
 const RECENT_SETTLEMENTS = [
-  { id: 'st-1', patient: 'Sarah Jenkins', date: '2025-10-07', format: 'Telehealth Video', fee: 120, platformFee: 12, net: 108, status: 'Settled' },
-  { id: 'st-2', patient: 'James Wilson', date: '2025-10-07', format: 'In-Person Visit', fee: 90, platformFee: 9, net: 81, status: 'Settled' },
-  { id: 'st-3', patient: 'Priya Sharma', date: '2025-10-06', format: 'Telehealth Video', fee: 120, platformFee: 12, net: 108, status: 'Settled' },
-  { id: 'st-4', patient: 'Robert Davis', date: '2025-10-05', format: 'In-Person Visit', fee: 100, platformFee: 10, net: 90, status: 'Settled' },
-  { id: 'st-5', patient: 'Elena Rostova', date: '2025-10-04', format: 'Telehealth Video', fee: 120, platformFee: 12, net: 108, status: 'Processing' },
-  { id: 'st-6', patient: 'Marcus Brody', date: '2025-10-03', format: 'In-Person Visit', fee: 110, platformFee: 11, net: 99, status: 'Settled' },
+  { id: 'st-1', patient: 'Sarah Jenkins', date: '2025-10-07', format: 'Telehealth Video', fee: 10200, platformFee: 1020, net: 9180, status: 'Settled' },
+  { id: 'st-2', patient: 'James Wilson', date: '2025-10-07', format: 'In-Person Visit', fee: 7650, platformFee: 765, net: 6885, status: 'Settled' },
+  { id: 'st-3', patient: 'Priya Sharma', date: '2025-10-06', format: 'Telehealth Video', fee: 10200, platformFee: 1020, net: 9180, status: 'Settled' },
+  { id: 'st-4', patient: 'Robert Davis', date: '2025-10-05', format: 'In-Person Visit', fee: 8500, platformFee: 850, net: 7650, status: 'Settled' },
+  { id: 'st-5', patient: 'Elena Rostova', date: '2025-10-04', format: 'Telehealth Video', fee: 10200, platformFee: 1020, net: 9180, status: 'Processing' },
+  { id: 'st-6', patient: 'Marcus Brody', date: '2025-10-03', format: 'In-Person Visit', fee: 9350, platformFee: 935, net: 8415, status: 'Settled' },
 ];
 
 export const ReportsView: React.FC = () => {
@@ -59,11 +60,11 @@ export const ReportsView: React.FC = () => {
           <div className="flex items-center justify-between text-slate-400">
             <span className="text-xs font-bold uppercase tracking-wider">Monthly Revenue</span>
             <span className="p-1.5 rounded-lg bg-emerald-50 text-emerald-600">
-              <DollarSign className="w-4 h-4" />
+              <IndianRupee className="w-4 h-4" />
             </span>
           </div>
           <div className="flex items-baseline gap-2 mt-2">
-            <p className="text-3xl font-black text-slate-900">$4,850.00</p>
+            <p className="text-3xl font-black text-slate-900">{formatINR(412250)}</p>
             <span className="text-xs font-bold text-emerald-600 flex items-center">
               <ArrowUpRight className="w-3.5 h-3.5" /> +14%
             </span>
@@ -89,7 +90,7 @@ export const ReportsView: React.FC = () => {
               <Award className="w-4 h-4" />
             </span>
           </div>
-          <p className="text-3xl font-black text-slate-900 mt-2">$101.04</p>
+          <p className="text-3xl font-black text-slate-900 mt-2">{formatINR(8588.54)}</p>
           <span className="text-[11px] text-slate-400">Per 30-min consultation</span>
         </div>
 
@@ -118,7 +119,7 @@ export const ReportsView: React.FC = () => {
                 <span className="flex items-center gap-1.5 text-cyan-800">
                   <Video className="w-3.5 h-3.5 text-cyan-600" /> Telehealth Video (65%)
                 </span>
-                <span className="text-slate-900 font-extrabold">$3,150.00</span>
+                <span className="text-slate-900 font-extrabold">{formatINR(267750)}</span>
               </div>
               <div className="w-full bg-slate-100 rounded-full h-3 overflow-hidden">
                 <div className="bg-gradient-to-r from-teal-500 to-cyan-500 h-3 rounded-full" style={{ width: '65%' }} />
@@ -130,7 +131,7 @@ export const ReportsView: React.FC = () => {
                 <span className="flex items-center gap-1.5 text-slate-800">
                   <User className="w-3.5 h-3.5 text-slate-600" /> In-Clinic Visits (35%)
                 </span>
-                <span className="text-slate-900 font-extrabold">$1,700.00</span>
+                <span className="text-slate-900 font-extrabold">{formatINR(144500)}</span>
               </div>
               <div className="w-full bg-slate-100 rounded-full h-3 overflow-hidden">
                 <div className="bg-gradient-to-r from-slate-600 to-slate-800 h-3 rounded-full" style={{ width: '35%' }} />
@@ -144,12 +145,12 @@ export const ReportsView: React.FC = () => {
           <h3 className="font-extrabold text-slate-900 text-base">Weekly Consultation Volume</h3>
           <p className="text-xs text-slate-500">Weekly patient consultations over the current calendar month.</p>
 
-          <div className="grid grid-cols-4 gap-3 pt-4 text-center">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 text-center">
             {[
-              { label: 'Week 1', sessions: 11, rev: '$1,120' },
-              { label: 'Week 2', sessions: 14, rev: '$1,410' },
-              { label: 'Week 3', sessions: 12, rev: '$1,220' },
-              { label: 'Week 4', sessions: 11, rev: '$1,100' },
+              { label: 'Week 1', sessions: 11, rev: formatINR(95200, 0) },
+              { label: 'Week 2', sessions: 14, rev: formatINR(119850, 0) },
+              { label: 'Week 3', sessions: 12, rev: formatINR(103700, 0) },
+              { label: 'Week 4', sessions: 11, rev: formatINR(93500, 0) },
             ].map((w, idx) => (
               <div key={idx} className="bg-slate-50 p-3 rounded-2xl border border-slate-100 flex flex-col justify-between">
                 <span className="text-[11px] font-bold text-slate-400">{w.label}</span>
@@ -187,15 +188,14 @@ export const ReportsView: React.FC = () => {
                       {st.format}
                     </span>
                   </td>
-                  <td className="py-3 px-4 font-mono font-semibold text-slate-600">${st.fee.toFixed(2)}</td>
-                  <td className="py-3 px-4 font-mono font-bold text-emerald-600">${st.net.toFixed(2)}</td>
+                  <td className="py-3 px-4 font-mono font-semibold text-slate-600">{formatINR(st.fee)}</td>
+                  <td className="py-3 px-4 font-mono font-bold text-emerald-600">{formatINR(st.net)}</td>
                   <td className="py-3 px-4 text-right">
                     <span
-                      className={`px-2.5 py-0.5 rounded-full font-bold text-[10px] ${
-                        st.status === 'Settled'
+                      className={`px-2.5 py-0.5 rounded-full font-bold text-[10px] ${st.status === 'Settled'
                           ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                           : 'bg-amber-50 text-amber-700 border border-amber-200'
-                      }`}
+                        }`}
                     >
                       {st.status}
                     </span>

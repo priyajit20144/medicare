@@ -41,7 +41,7 @@ export const UserMembershipPage: React.FC = () => {
             Upgrade to Medicare VIP 1-Year Care
           </h2>
           <p className="text-xs text-slate-500 max-w-md mx-auto leading-relaxed">
-            You are currently on our Standard Free Tier. Upgrade to receive an annual executive checkup ($229 value), priority zero-wait doctor appointments, and unlimited free medicine delivery.
+            You are currently on our Standard Free Tier. Upgrade to receive an annual executive checkup (₹19,465 value), priority zero-wait doctor appointments, and unlimited free medicine delivery.
           </p>
         </div>
 

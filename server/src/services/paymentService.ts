@@ -1,4 +1,5 @@
 import { ENV } from '../config/env';
+import { CURRENCY_CODE } from '../utils/pricing';
 
 export interface PaymentIntentInput {
   amount: number;
@@ -18,6 +19,7 @@ export interface PaymentResult {
   provider: string;
   transactionId: string;
   amount: number;
+  currency: string;
   status: 'PENDING' | 'COMPLETED' | 'FAILED' | 'REFUNDED';
   paymentUrl?: string;
   clientSecret?: string;
@@ -41,9 +43,11 @@ class SandboxPaymentProvider implements IPaymentProvider {
       provider: 'sandbox',
       transactionId,
       amount: input.amount,
+      currency: input.currency || CURRENCY_CODE,
       status: 'COMPLETED',
       metadata: {
         isSandbox: true,
+        currency: input.currency || CURRENCY_CODE,
         description: input.description,
         orderId: input.orderId,
         bookingId: input.bookingId,
@@ -57,6 +61,7 @@ class SandboxPaymentProvider implements IPaymentProvider {
       provider: 'sandbox',
       transactionId,
       amount: 0,
+      currency: CURRENCY_CODE,
       status: 'COMPLETED',
       metadata: { isSandbox: true },
     };
@@ -67,6 +72,7 @@ class SandboxPaymentProvider implements IPaymentProvider {
       provider: 'sandbox',
       transactionId: `ref_${transactionId}`,
       amount: amount || 0,
+      currency: CURRENCY_CODE,
       status: 'REFUNDED',
       metadata: { isSandbox: true },
     };

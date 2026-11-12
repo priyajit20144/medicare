@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer';
 import type { Transporter } from 'nodemailer';
 import { ENV } from '../config/env';
+import { formatINR } from '../utils/pricing';
 
 export interface SendMailOptions {
   to: string | string[];
@@ -473,7 +474,7 @@ class EmailService {
         <div class="card">
           <p style="margin: 6px 0;"><strong>Order ID:</strong> <span class="highlight">#${orderId}</span></p>
           <p style="margin: 6px 0;"><strong>Medication Items:</strong> ${itemCount} items</p>
-          <p style="margin: 6px 0;"><strong>Total Paid:</strong> $${totalAmount.toFixed(2)}</p>
+          <p style="margin: 6px 0;"><strong>Total Paid:</strong> ${formatINR(totalAmount)}</p>
           ${shippingAddress ? `<p style="margin: 6px 0;"><strong>Delivery Address:</strong> ${shippingAddress}</p>` : ''}
           <p style="margin: 6px 0;"><strong>Status:</strong> <span class="badge badge-teal">Processing</span></p>
         </div>
@@ -1020,6 +1021,59 @@ class EmailService {
     return this.sendMail({
       to: adminEmail,
       subject: `[Medicare Admin Alert] ${subject}`,
+      html,
+    });
+  }
+
+  private escapeHtml(value: string): string {
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  // ===========================================================================
+  // 22. PATIENT SUPPORT / CONTACT CONFIRMATION
+  // ===========================================================================
+  public async sendContactSupportConfirmationEmail(params: {
+    to: string;
+    fullName: string;
+    ticketId: string;
+    topic: string;
+    subject: string;
+    message: string;
+  }): Promise<any> {
+    const safeName = this.escapeHtml(params.fullName);
+    const safeTicketId = this.escapeHtml(params.ticketId);
+    const safeTopic = this.escapeHtml(params.topic);
+    const safeSubject = this.escapeHtml(params.subject);
+    const safeMessage = this.escapeHtml(params.message).replace(/\n/g, '<br />');
+    const frontendUrl = process.env.FRONTEND_URL || ENV.FRONTEND_URL;
+
+    const html = this.wrapTemplate(
+      `Support Ticket Received (#${safeTicketId})`,
+      `
+        <h2>We Received Your Support Request 💬</h2>
+        <p>Hello <strong>${safeName}</strong>,</p>
+        <p>Thank you for contacting Medicare Patient Support. Our clinical & care coordination team has logged your inquiry and will reply shortly.</p>
+        <div class="card">
+          <p style="margin: 6px 0;"><strong>Ticket Reference:</strong> <span class="badge badge-teal">#${safeTicketId}</span></p>
+          <p style="margin: 6px 0;"><strong>Topic:</strong> ${safeTopic}</p>
+          <p style="margin: 6px 0;"><strong>Subject:</strong> ${safeSubject}</p>
+          <p style="margin: 10px 0 4px 0;"><strong>Your Message:</strong></p>
+          <p style="margin: 0; font-size: 13px; color: #475569;">${safeMessage}</p>
+        </div>
+        <div style="text-align: center;">
+          <a href="${frontendUrl}/contact" class="button">Visit Patient Support Center</a>
+        </div>
+      `
+    );
+
+    return this.sendMail({
+      to: params.to,
+      subject: `[#${params.ticketId}] We received your Medicare support inquiry`,
       html,
     });
   }

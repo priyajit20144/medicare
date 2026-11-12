@@ -143,22 +143,22 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-slate-50 selection:bg-emerald-500 selection:text-white relative overflow-x-hidden font-sans">
+    <div className="min-h-screen flex flex-col justify-between bg-slate-50 selection:bg-emerald-500 selection:text-white relative overflow-x-clip font-sans">
       {/* ==================================================================== */}
       {/* 1. TOP NAVIGATION BAR                                                */}
       {/* ==================================================================== */}
       <header className="w-full bg-white/95 backdrop-blur-md border-b border-slate-100 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-2">
           {/* Logo Brand */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-md shadow-emerald-600/20 group-hover:scale-105 transition-transform">
-              <HeartPulse className="w-6 h-6" />
+          <Link to="/" className="flex items-center gap-2 sm:gap-3 group min-w-0">
+            <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-md shadow-emerald-600/20 group-hover:scale-105 transition-transform flex-shrink-0">
+              <HeartPulse className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
-            <div className="flex flex-col">
-              <span className="text-2xl font-black text-slate-900 tracking-tight leading-none">
+            <div className="flex flex-col min-w-0">
+              <span className="text-lg sm:text-2xl font-black text-slate-900 tracking-tight leading-none truncate">
                 Medicare
               </span>
-              <span className="text-[11px] font-semibold text-emerald-600 tracking-wide mt-1">
+              <span className="hidden xs:block text-[10px] sm:text-[11px] font-semibold text-emerald-600 tracking-wide mt-0.5 sm:mt-1 truncate">
                 Your Health, Our Priority
               </span>
             </div>
@@ -208,20 +208,20 @@ export const LoginPage: React.FC = () => {
               <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500/20 flex-shrink-0" />
               <span>Premium</span>
             </Link>
-            <a
-              href="/#about"
+            <Link
+              to="/about"
               className="flex items-center gap-1.5 hover:text-emerald-600 transition-colors py-2 whitespace-nowrap"
             >
               <Info className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
               <span>About</span>
-            </a>
-            <a
-              href="/#contact"
+            </Link>
+            <Link
+              to="/contact"
               className="flex items-center gap-1.5 hover:text-emerald-600 transition-colors py-2 whitespace-nowrap"
             >
               <Mail className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
               <span>Contact</span>
-            </a>
+            </Link>
           </nav>
 
           {/* Right Header Action: Clean Sign Up Action Button */}
@@ -291,6 +291,20 @@ export const LoginPage: React.FC = () => {
                 className="flex items-center gap-2 p-2 rounded-lg hover:bg-emerald-50 hover:text-emerald-600"
               >
                 <Star className="w-4 h-4 text-amber-500" /> Premium
+              </Link>
+              <Link
+                to="/about"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center gap-2 p-2 rounded-lg hover:bg-emerald-50 hover:text-emerald-600"
+              >
+                <Info className="w-4 h-4 text-emerald-600" /> About
+              </Link>
+              <Link
+                to="/contact"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center gap-2 p-2 rounded-lg hover:bg-emerald-50 hover:text-emerald-600"
+              >
+                <Mail className="w-4 h-4 text-emerald-600" /> Contact
               </Link>
             </div>
             <div className="pt-2 border-t border-slate-100">
@@ -404,21 +418,19 @@ export const LoginPage: React.FC = () => {
                         type="button"
                         onClick={() => handleQuickServiceClick(service)}
                         aria-pressed={isSelected}
-                        className={`relative rounded-2xl p-3 sm:p-3.5 border transition-all text-center flex flex-col items-center justify-center gap-2 group cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
-                          isSelected
+                        className={`relative rounded-2xl p-3 sm:p-3.5 border transition-all text-center flex flex-col items-center justify-center gap-2 group cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500 ${isSelected
                             ? 'bg-emerald-50/95 border-emerald-500 ring-2 ring-emerald-500/25 shadow-md -translate-y-0.5'
                             : 'bg-white/95 backdrop-blur-md border-slate-200/80 shadow-sm hover:shadow-md hover:border-emerald-500/80 hover:-translate-y-0.5'
-                        }`}
+                          }`}
                       >
                         {/* Auth Status Corner Micro-Indicator */}
                         <span
-                          className={`absolute top-2 right-2 transition-opacity ${
-                            isAuthenticated
+                          className={`absolute top-2 right-2 transition-opacity ${isAuthenticated
                               ? 'opacity-100'
                               : isSelected
                                 ? 'opacity-100 text-emerald-600'
                                 : 'opacity-35 group-hover:opacity-100 text-slate-400 group-hover:text-emerald-600'
-                          }`}
+                            }`}
                           title={
                             isAuthenticated
                               ? `Open ${service.fullLabel}`
@@ -435,11 +447,10 @@ export const LoginPage: React.FC = () => {
                         </span>
 
                         <div
-                          className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors shadow-sm ${
-                            isSelected
+                          className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors shadow-sm ${isSelected
                               ? 'bg-emerald-600 text-white'
                               : 'bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white'
-                          }`}
+                            }`}
                         >
                           <ServiceIcon className="w-5 h-5" />
                         </div>
@@ -449,13 +460,12 @@ export const LoginPage: React.FC = () => {
                         </span>
 
                         <span
-                          className={`text-[10px] font-semibold leading-none transition-colors ${
-                            isAuthenticated
+                          className={`text-[10px] font-semibold leading-none transition-colors ${isAuthenticated
                               ? 'text-emerald-600 opacity-85 group-hover:opacity-100'
                               : isSelected
                                 ? 'text-emerald-700 font-bold'
                                 : 'text-slate-400 group-hover:text-emerald-600'
-                          }`}
+                            }`}
                         >
                           {isAuthenticated ? 'Open →' : isSelected ? 'Sign in →' : 'Login required'}
                         </span>
@@ -502,7 +512,7 @@ export const LoginPage: React.FC = () => {
               ref={loginCardRef}
               className="lg:col-span-5 xl:col-span-4 flex justify-center lg:justify-end"
             >
-              <div className="w-full max-w-[440px] bg-white rounded-3xl shadow-2xl shadow-slate-300/40 border border-slate-100 p-6 sm:p-8 relative z-20">
+              <div className="w-full max-w-[440px] bg-white rounded-3xl shadow-2xl shadow-slate-300/40 border border-slate-100 p-5 sm:p-8 relative z-20">
                 {/* Card Header Brand Logo */}
                 <div className="flex flex-col items-center text-center">
                   <div className="flex items-center gap-2 justify-center">

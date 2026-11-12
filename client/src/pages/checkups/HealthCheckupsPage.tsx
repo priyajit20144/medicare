@@ -5,6 +5,7 @@ import { Activity, Clock, ShieldCheck, ArrowRight, CheckCircle2, HeartPulse } fr
 import { api } from '../../api/client';
 import { HealthCheckupPackage } from '../../types';
 import { LoadingState } from '../../components/common/LoadingState';
+import { formatINR } from '../../utils/currency';
 
 export const HealthCheckupsPage: React.FC = () => {
   const { data: packages, isLoading } = useQuery({
@@ -15,12 +16,12 @@ export const HealthCheckupsPage: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
       {/* Banner */}
-      <div className="bg-gradient-to-r from-teal-900 via-cyan-900 to-slate-900 rounded-3xl p-8 sm:p-12 text-white shadow-md">
+      <div className="bg-gradient-to-r from-teal-900 via-cyan-900 to-slate-900 rounded-3xl p-6 sm:p-12 text-white shadow-md">
         <div className="max-w-2xl space-y-3">
           <span className="text-xs font-bold uppercase tracking-wider text-cyan-300">
             Preventative Pathology & Diagnostics
           </span>
-          <h1 className="text-3xl sm:text-4xl font-black tracking-tight">
+          <h1 className="text-2xl sm:text-4xl font-black tracking-tight">
             Comprehensive Preventative Health Checkups
           </h1>
           <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
@@ -62,16 +63,16 @@ export const HealthCheckupsPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+              <div className="mt-6 pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <span className="text-xs text-slate-400 block">Package Price</span>
                   <div className="flex items-baseline gap-2">
                     <span className="text-2xl font-black text-slate-900">
-                      ${pkg.discountPrice || pkg.price}
+                      {formatINR(pkg.discountPrice || pkg.price, 0)}
                     </span>
                     {pkg.discountPrice && (
                       <span className="text-xs text-slate-400 line-through">
-                        ${pkg.price}
+                        {formatINR(pkg.price, 0)}
                       </span>
                     )}
                   </div>

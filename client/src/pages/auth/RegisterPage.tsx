@@ -46,7 +46,7 @@ export const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-[85vh] flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-slate-50">
+    <div className="min-h-[85vh] flex flex-col justify-center py-8 sm:py-12 px-4 sm:px-6 lg:px-8 bg-slate-50">
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
         <Link to="/" className="inline-flex items-center gap-2 mb-4">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-md">
@@ -64,8 +64,8 @@ export const RegisterPage: React.FC = () => {
         </p>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-6 shadow-sm border border-slate-200/80 rounded-3xl sm:px-10 space-y-6">
+      <div className="mt-6 sm:mt-8 mx-auto w-full max-w-md">
+        <div className="bg-white py-6 px-5 shadow-sm border border-slate-200/80 rounded-3xl sm:py-8 sm:px-10 space-y-6">
           {error && (
             <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl flex items-start gap-2">
               <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
@@ -153,7 +153,7 @@ export const RegisterPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 xs:grid-cols-2 gap-3">
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">Gender</label>
                 <select

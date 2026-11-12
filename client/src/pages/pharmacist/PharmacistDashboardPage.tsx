@@ -105,7 +105,7 @@ export const PharmacistDashboardPage: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       {/* Top Banner */}
-      <div className="bg-gradient-to-r from-emerald-900 to-teal-950 text-white rounded-3xl p-8 shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-gradient-to-r from-emerald-900 to-teal-950 text-white rounded-3xl p-5 sm:p-8 shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <span className="text-xs font-bold uppercase tracking-wider text-emerald-400">
             Licensed Pharmacy Dispensing Verification
@@ -150,11 +150,10 @@ export const PharmacistDashboardPage: React.FC = () => {
             <button
               key={tab.value}
               onClick={() => setStatusFilter(tab.value)}
-              className={`px-3 py-1.5 rounded-xl font-bold transition whitespace-nowrap ${
-                statusFilter === tab.value
+              className={`px-3 py-1.5 rounded-xl font-bold transition whitespace-nowrap ${statusFilter === tab.value
                   ? 'bg-emerald-600 text-white shadow-sm'
                   : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200'
-              }`}
+                }`}
             >
               {tab.label}
             </button>
@@ -276,37 +275,34 @@ export const PharmacistDashboardPage: React.FC = () => {
               {/* Status Outcome Choice */}
               <div className="space-y-2">
                 <label className="font-bold text-slate-800 block">Review Determination</label>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                   <button
                     type="button"
                     onClick={() => setReviewStatus('APPROVED')}
-                    className={`p-3 rounded-xl border text-center font-bold transition ${
-                      reviewStatus === 'APPROVED'
+                    className={`p-3 rounded-xl border text-center font-bold transition ${reviewStatus === 'APPROVED'
                         ? 'border-emerald-600 bg-emerald-50 text-emerald-800 ring-1 ring-emerald-600'
                         : 'border-slate-200 text-slate-600'
-                    }`}
+                      }`}
                   >
                     ✓ Approve
                   </button>
                   <button
                     type="button"
                     onClick={() => setReviewStatus('CLARIFICATION_REQUIRED')}
-                    className={`p-3 rounded-xl border text-center font-bold transition ${
-                      reviewStatus === 'CLARIFICATION_REQUIRED'
+                    className={`p-3 rounded-xl border text-center font-bold transition ${reviewStatus === 'CLARIFICATION_REQUIRED'
                         ? 'border-purple-600 bg-purple-50 text-purple-800 ring-1 ring-purple-600'
                         : 'border-slate-200 text-slate-600'
-                    }`}
+                      }`}
                   >
                     ? Request Clarification
                   </button>
                   <button
                     type="button"
                     onClick={() => setReviewStatus('REJECTED')}
-                    className={`p-3 rounded-xl border text-center font-bold transition ${
-                      reviewStatus === 'REJECTED'
+                    className={`p-3 rounded-xl border text-center font-bold transition ${reviewStatus === 'REJECTED'
                         ? 'border-rose-600 bg-rose-50 text-rose-800 ring-1 ring-rose-600'
                         : 'border-slate-200 text-slate-600'
-                    }`}
+                      }`}
                   >
                     ✕ Reject
                   </button>
@@ -331,7 +327,7 @@ export const PharmacistDashboardPage: React.FC = () => {
               {/* Medicine Recommendation Builder */}
               {reviewStatus === 'APPROVED' && (
                 <div className="space-y-3 pt-3 border-t border-slate-100">
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
                     <span className="font-bold text-slate-800">
                       Approved Medication Regimen Mapping
                     </span>
@@ -357,7 +353,7 @@ export const PharmacistDashboardPage: React.FC = () => {
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
 
-                      <div className="grid grid-cols-2 gap-2">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-3 sm:pt-0">
                         <div>
                           <label className="text-[10px] font-bold text-slate-500 block mb-0.5">Medicine</label>
                           <select
@@ -404,18 +400,18 @@ export const PharmacistDashboardPage: React.FC = () => {
               )}
 
               {/* Submit Buttons */}
-              <div className="pt-4 border-t border-slate-100 flex items-center justify-end gap-3">
+              <div className="pt-4 border-t border-slate-100 flex flex-col-reverse sm:flex-row sm:items-center justify-end gap-2.5 sm:gap-3">
                 <button
                   type="button"
                   onClick={() => setActivePrescription(null)}
-                  className="px-4 py-2 border border-slate-200 rounded-xl text-slate-600 hover:bg-slate-50"
+                  className="w-full sm:w-auto px-4 py-2 border border-slate-200 rounded-xl text-slate-600 hover:bg-slate-50"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={reviewMutation.isPending}
-                  className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-sm transition disabled:opacity-50"
+                  className="w-full sm:w-auto px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-sm transition disabled:opacity-50"
                 >
                   {reviewMutation.isPending ? 'Submitting Determination...' : 'Record Review & Notify Patient'}
                 </button>

@@ -17,6 +17,7 @@ import { Order } from '../../types';
 import { StatusBadge } from '../../components/common/StatusBadge';
 import { LoadingState } from '../../components/common/LoadingState';
 import { EmptyState } from '../../components/common/EmptyState';
+import { formatINR } from '../../utils/currency';
 
 export const AdminOrdersPage: React.FC = () => {
   const queryClient = useQueryClient();
@@ -165,7 +166,7 @@ export const AdminOrdersPage: React.FC = () => {
                       </span>
                     </td>
                     <td className="py-4 px-6 font-bold text-emerald-400">
-                      ${order.total?.toFixed(2)}
+                      {formatINR(order.total)}
                     </td>
                     <td className="py-4 px-6">
                       {order.prescriptionStatus === 'VERIFIED' ? (
@@ -241,14 +242,14 @@ export const AdminOrdersPage: React.FC = () => {
                       <span className="text-xs text-slate-400 ml-2">Qty: {item.quantity}</span>
                     </div>
                     <span className="font-mono text-emerald-400 font-semibold">
-                      ${(item.price * item.quantity).toFixed(2)}
+                      {formatINR(item.price * item.quantity)}
                     </span>
                   </div>
                 ))}
               </div>
               <div className="pt-2 flex justify-between items-center text-sm font-bold border-t border-slate-800">
                 <span className="text-slate-300">Total Charged</span>
-                <span className="text-emerald-400">${selectedOrder.total?.toFixed(2)}</span>
+                <span className="text-emerald-400">{formatINR(selectedOrder.total)}</span>
               </div>
             </div>
 

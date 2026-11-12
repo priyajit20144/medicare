@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { Medicine } from '../../types';
 import { MedicineShowcaseItem, PromoBentoItem } from './medicineData';
+import { formatINR } from '../../utils/currency';
 
 interface QuickViewModalProps {
   product: MedicineShowcaseItem | PromoBentoItem | Medicine | null;
@@ -51,15 +52,15 @@ export const MedicineQuickViewModal: React.FC<QuickViewModalProps> = ({
   const clinicalIndication = isBento
     ? (product as PromoBentoItem).categoryTag
     : (product as any).clinicalIndication ||
-      (typeof (product as Medicine).category === 'object' && (product as Medicine).category !== null
-        ? ((product as Medicine).category as any).name
-        : (product as Medicine).category) ||
-      'Healthcare Formulation';
+    (typeof (product as Medicine).category === 'object' && (product as Medicine).category !== null
+      ? ((product as Medicine).category as any).name
+      : (product as Medicine).category) ||
+    'Healthcare Formulation';
   const rating = isBento ? 4.8 : (product as Medicine).rating || 4.5;
   const purchasedCount = isBento
     ? '5k Purchased'
     : (product as any).purchasedCount ||
-      `${Math.max(1, Math.round(((product as Medicine).reviewCount || 10) * 14))} Purchased`;
+    `${Math.max(1, Math.round(((product as Medicine).reviewCount || 10) * 14))} Purchased`;
   const requiresPrescription = product.requiresPrescription;
   const ingredients = !isBento ? (product as Medicine).ingredients : undefined;
 
@@ -81,7 +82,7 @@ export const MedicineQuickViewModal: React.FC<QuickViewModalProps> = ({
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
           {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -97,18 +98,18 @@ export const MedicineQuickViewModal: React.FC<QuickViewModalProps> = ({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 15 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="relative bg-white rounded-3xl shadow-2xl max-w-2xl w-full overflow-hidden z-10 border border-slate-100 my-8"
+            className="relative bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto z-10 border border-slate-100 my-auto"
           >
             {/* Close Button */}
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors"
+              className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors"
               aria-label="Close modal"
             >
               <X className="w-5 h-5" />
             </button>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 sm:p-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 p-4 sm:p-8">
               {/* Image Column */}
               <div className="flex flex-col items-center justify-center bg-[#f8faf9] rounded-2xl p-6 relative border border-slate-100">
                 {/* Wishlist Button */}
@@ -118,9 +119,8 @@ export const MedicineQuickViewModal: React.FC<QuickViewModalProps> = ({
                   className="absolute top-3 right-3 p-2 rounded-full bg-white/90 shadow-sm hover:bg-white text-slate-400 hover:text-rose-500 transition-colors"
                 >
                   <Heart
-                    className={`w-4 h-4 transition-colors ${
-                      isWishlisted ? 'fill-rose-500 text-rose-500' : 'text-slate-400'
-                    }`}
+                    className={`w-4 h-4 transition-colors ${isWishlisted ? 'fill-rose-500 text-rose-500' : 'text-slate-400'
+                      }`}
                   />
                 </button>
 
@@ -209,11 +209,11 @@ export const MedicineQuickViewModal: React.FC<QuickViewModalProps> = ({
                 <div className="pt-3 border-t border-slate-100 space-y-3">
                   <div className="flex items-baseline gap-2">
                     <span className="text-2xl font-black text-slate-900">
-                      ${unitPrice.toFixed(2)}
+                      {formatINR(unitPrice)}
                     </span>
                     {originalPrice > unitPrice && (
                       <span className="text-sm text-slate-400 line-through">
-                        ${originalPrice.toFixed(2)}
+                        {formatINR(originalPrice)}
                       </span>
                     )}
                     <span className="text-[11px] text-slate-400 font-normal">
@@ -222,7 +222,7 @@ export const MedicineQuickViewModal: React.FC<QuickViewModalProps> = ({
                   </div>
 
                   {/* Quantity Stepper & Add to Cart */}
-                  <div className="flex items-center gap-3">
+                  <div className="flex flex-wrap items-center gap-3">
                     <div className="flex items-center border border-slate-200 rounded-xl overflow-hidden bg-slate-50">
                       <button
                         type="button"
@@ -247,11 +247,10 @@ export const MedicineQuickViewModal: React.FC<QuickViewModalProps> = ({
                       type="button"
                       onClick={handleAdd}
                       disabled={isAdding}
-                      className={`flex-1 py-2.5 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ${
-                        justAdded
+                      className={`flex-1 py-2.5 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ${justAdded
                           ? 'bg-emerald-600 text-white'
                           : 'bg-[#1a4d46] hover:bg-[#133c36] text-white active:scale-95'
-                      }`}
+                        }`}
                     >
                       {justAdded ? (
                         <>

@@ -7,18 +7,24 @@ import { useLocation } from 'react-router-dom';
  * whenever the user transitions between routes.
  */
 export const ScrollToTopOnNav: React.FC = () => {
-  const { pathname, search } = useLocation();
+  const { pathname, search, hash } = useLocation();
 
   useEffect(() => {
-    // Only scroll to top if there isn't an anchor hash in the URL
-    if (!window.location.hash) {
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: 'instant', // Instant prevents sluggish bounce when changing pages
-      });
+    if (hash) {
+      const targetId = hash.replace('#', '');
+      const element = document.getElementById(targetId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
     }
-  }, [pathname, search]);
+
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'instant', // Instant prevents sluggish bounce when changing pages
+    });
+  }, [pathname, search, hash]);
 
   return null;
 };

@@ -19,6 +19,7 @@ import { api } from '../../api/client';
 import { HealthCheckupPackage, Facility } from '../../types';
 import { useAuthStore } from '../../store/authStore';
 import { LoadingState } from '../../components/common/LoadingState';
+import { formatINR } from '../../utils/currency';
 
 export const HealthCheckupDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -138,18 +139,18 @@ export const HealthCheckupDetailPage: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
       {/* Breadcrumb */}
-      <nav className="flex items-center gap-2 text-xs text-slate-500">
+      <nav className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs text-slate-500">
         <Link to="/" className="hover:text-emerald-600">Home</Link>
         <span>/</span>
         <Link to="/health-checkups" className="hover:text-emerald-600">Health Checkups</Link>
         <span>/</span>
-        <span className="text-slate-900 font-semibold">{pkg.name}</span>
+        <span className="text-slate-900 font-semibold truncate max-w-[200px] sm:max-w-none">{pkg.name}</span>
       </nav>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-10 items-start">
         {/* Left Column: Package Monograph & Included Tests */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-4">
+          <div className="bg-white rounded-3xl p-5 sm:p-8 border border-slate-200/80 shadow-sm space-y-4">
             <div className="flex flex-wrap items-center gap-3">
               <span className="px-3 py-1 rounded-full bg-cyan-50 text-cyan-800 border border-cyan-200 text-xs font-bold">
                 {pkg.testCount} Comprehensive Diagnostic Tests
@@ -240,26 +241,24 @@ export const HealthCheckupDetailPage: React.FC = () => {
             {/* Collection Type */}
             <div>
               <label className="block font-bold text-slate-700 mb-1">Sample Collection Mode</label>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-1 xs:grid-cols-2 gap-2">
                 <button
                   type="button"
                   onClick={() => setSampleCollectionType('AT_CENTER')}
-                  className={`p-2.5 rounded-xl border text-center font-bold transition flex items-center justify-center gap-1.5 ${
-                    sampleCollectionType === 'AT_CENTER'
+                  className={`p-2.5 rounded-xl border text-center font-bold transition flex items-center justify-center gap-1.5 ${sampleCollectionType === 'AT_CENTER'
                       ? 'border-emerald-600 bg-emerald-50 text-emerald-800 ring-1 ring-emerald-500'
                       : 'border-slate-200 text-slate-600'
-                  }`}
+                    }`}
                 >
                   <Building2 className="w-3.5 h-3.5" /> At Diagnostic Center
                 </button>
                 <button
                   type="button"
                   onClick={() => setSampleCollectionType('HOME_COLLECTION')}
-                  className={`p-2.5 rounded-xl border text-center font-bold transition flex items-center justify-center gap-1.5 ${
-                    sampleCollectionType === 'HOME_COLLECTION'
+                  className={`p-2.5 rounded-xl border text-center font-bold transition flex items-center justify-center gap-1.5 ${sampleCollectionType === 'HOME_COLLECTION'
                       ? 'border-emerald-600 bg-emerald-50 text-emerald-800 ring-1 ring-emerald-500'
                       : 'border-slate-200 text-slate-600'
-                  }`}
+                    }`}
                 >
                   <Home className="w-3.5 h-3.5" /> Home Phlebotomy
                 </button>
@@ -376,7 +375,7 @@ export const HealthCheckupDetailPage: React.FC = () => {
                   </span>
                 </div>
                 <p className="text-[11px] text-amber-800 leading-tight">
-                  Your VIP membership includes this comprehensive screening with $0 out-of-pocket charges.
+                  Your VIP membership includes this comprehensive screening with ₹0 out-of-pocket charges.
                 </p>
                 <label className="flex items-center gap-2 pt-1 cursor-pointer font-bold text-amber-950 text-xs select-none">
                   <input
@@ -385,20 +384,20 @@ export const HealthCheckupDetailPage: React.FC = () => {
                     onChange={(e) => setRedeemVipBenefit(e.target.checked)}
                     className="w-4 h-4 rounded text-amber-600 focus:ring-amber-500 accent-amber-600 cursor-pointer"
                   />
-                  <span>Redeem Annual VIP Voucher ($0.00 Total Due)</span>
+                  <span>Redeem Annual VIP Voucher (₹0.00 Total Due)</span>
                 </label>
               </div>
             )}
 
             {/* Total Price & Submit */}
-            <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
+            <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <span className="text-[11px] text-slate-400 block">Total Due</span>
                 {redeemVipBenefit ? (
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-2xl font-black text-emerald-600">$0.00</span>
+                  <div className="flex flex-wrap items-baseline gap-2">
+                    <span className="text-2xl font-black text-emerald-600">₹0.00</span>
                     <span className="text-xs text-slate-400 line-through">
-                      ${pkg.discountPrice || pkg.price}
+                      {formatINR(pkg.discountPrice || pkg.price, 0)}
                     </span>
                     <span className="text-[10px] font-bold text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded">
                       VIP Covered
@@ -406,7 +405,7 @@ export const HealthCheckupDetailPage: React.FC = () => {
                   </div>
                 ) : (
                   <span className="text-2xl font-black text-slate-900">
-                    ${pkg.discountPrice || pkg.price}
+                    {formatINR(pkg.discountPrice || pkg.price, 0)}
                   </span>
                 )}
               </div>
@@ -414,7 +413,7 @@ export const HealthCheckupDetailPage: React.FC = () => {
               <button
                 type="submit"
                 disabled={submitting}
-                className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition shadow-md shadow-emerald-600/20 flex items-center gap-1.5 disabled:opacity-50"
+                className="w-full sm:w-auto px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition shadow-md shadow-emerald-600/20 flex items-center justify-center gap-1.5 disabled:opacity-50"
               >
                 {submitting ? 'Booking...' : redeemVipBenefit ? 'Claim Free Checkup' : 'Confirm Checkup'}{' '}
                 <ArrowRight className="w-4 h-4" />

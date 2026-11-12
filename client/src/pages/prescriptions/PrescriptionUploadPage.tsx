@@ -107,9 +107,9 @@ export const PrescriptionUploadPage: React.FC = () => {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="bg-white p-8 rounded-3xl border border-slate-200/80 shadow-sm space-y-6">
+      <form onSubmit={handleSubmit} className="bg-white p-5 sm:p-8 rounded-3xl border border-slate-200/80 shadow-sm space-y-6">
         {/* Drag and Drop Zone */}
-        <div className="border-2 border-dashed border-slate-300 rounded-2xl p-8 text-center bg-slate-50/50 hover:bg-slate-50 transition cursor-pointer relative">
+        <div className="border-2 border-dashed border-slate-300 rounded-2xl p-5 sm:p-8 text-center bg-slate-50/50 hover:bg-slate-50 transition cursor-pointer relative">
           <input
             id="rx-file-upload-input"
             type="file"

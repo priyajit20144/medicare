@@ -32,7 +32,7 @@ export const UserNotificationsPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between pb-4 border-b border-slate-200">
+      <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-200">
         <div>
           <h1 className="text-xl font-bold text-slate-900 tracking-tight">System Notifications</h1>
           <p className="text-xs text-slate-500 mt-0.5">
@@ -43,7 +43,7 @@ export const UserNotificationsPage: React.FC = () => {
         {notifications.some((n) => !n.isRead) && (
           <button
             onClick={() => markAllMutation.mutate()}
-            className="text-xs font-semibold text-emerald-600 hover:text-emerald-700 flex items-center gap-1.5"
+            className="text-xs font-semibold text-emerald-600 hover:text-emerald-700 flex items-center gap-1.5 whitespace-nowrap"
           >
             <CheckCheck className="w-4 h-4" /> Mark All as Read
           </button>
@@ -66,14 +66,13 @@ export const UserNotificationsPage: React.FC = () => {
               onClick={() => {
                 if (!n.isRead) markReadMutation.mutate(n._id);
               }}
-              className={`p-4 rounded-2xl border transition flex items-start justify-between gap-4 cursor-pointer ${
-                n.isRead
+              className={`p-4 rounded-2xl border transition flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4 cursor-pointer ${n.isRead
                   ? 'bg-white border-slate-200/80 text-slate-600'
                   : 'bg-emerald-50/50 border-emerald-200 text-slate-900 ring-1 ring-emerald-500/20'
-              }`}
+                }`}
             >
-              <div className="space-y-1 text-xs">
-                <div className="flex items-center gap-2">
+              <div className="space-y-1 text-xs min-w-0">
+                <div className="flex flex-wrap items-center gap-2">
                   {!n.isRead && (
                     <span className="w-2 h-2 rounded-full bg-emerald-600 flex-shrink-0" />
                   )}

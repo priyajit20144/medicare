@@ -25,6 +25,7 @@ import { api } from '../../api/client';
 import { useCartStore } from '../../store/cartStore';
 import { useAuthStore } from '../../store/authStore';
 import { Prescription } from '../../types';
+import { formatINR } from '../../utils/currency';
 
 export const CheckoutPage: React.FC = () => {
   const { items, summary, clearCart, fetchCart, isLoading, addToCart } = useCartStore();
@@ -110,8 +111,8 @@ export const CheckoutPage: React.FC = () => {
         name: 'HeartEase Solution',
         dosageForm: 'Botanical Tincture',
         strength: '30ml Dropper',
-        price: 75,
-        discountPrice: 70,
+        price: 6375,
+        discountPrice: 5950,
         images: ['/images/medicines/heartease_herbal.jpg'],
         requiresPrescription: false,
         stock: 94,
@@ -122,8 +123,8 @@ export const CheckoutPage: React.FC = () => {
         name: 'Ibuprofen Extra Strength 400mg',
         dosageForm: 'Softgel',
         strength: '400mg',
-        price: 12.99,
-        discountPrice: 9.99,
+        price: 1104,
+        discountPrice: 849,
         images: ['https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&q=80&w=400'],
         requiresPrescription: false,
         stock: 100,
@@ -134,8 +135,8 @@ export const CheckoutPage: React.FC = () => {
         name: 'Paracetamol & Acetaminophen 500mg',
         dosageForm: 'Tablet',
         strength: '500mg',
-        price: 8.5,
-        discountPrice: 6.99,
+        price: 722,
+        discountPrice: 594,
         images: ['https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&q=80&w=400'],
         requiresPrescription: false,
         stock: 100,
@@ -220,11 +221,11 @@ export const CheckoutPage: React.FC = () => {
                   <div className="pt-3 mt-2 border-t border-slate-100 flex items-center justify-between">
                     <div>
                       <span className="text-xs font-black text-emerald-700">
-                        ${prod.discountPrice.toFixed(2)}
+                        {formatINR(prod.discountPrice)}
                       </span>
                       {prod.price > prod.discountPrice && (
                         <span className="text-[10px] text-slate-400 line-through ml-1.5">
-                          ${prod.price.toFixed(2)}
+                          {formatINR(prod.price)}
                         </span>
                       )}
                     </div>
@@ -349,7 +350,7 @@ export const CheckoutPage: React.FC = () => {
 
             <div className="flex items-center gap-2">
               <span className="text-sm font-black text-slate-900">
-                ${summary.total.toFixed(2)}
+                {formatINR(summary.total)}
               </span>
               {mobileSummaryOpen ? (
                 <ChevronUp className="w-4 h-4 text-slate-500" />
@@ -389,7 +390,7 @@ export const CheckoutPage: React.FC = () => {
                         </div>
                       </div>
                       <span className="font-bold text-slate-900 flex-shrink-0">
-                        ${(unitPrice * item.quantity).toFixed(2)}
+                        {formatINR(unitPrice * item.quantity)}
                       </span>
                     </div>
                   );
@@ -399,25 +400,25 @@ export const CheckoutPage: React.FC = () => {
               <div className="pt-3 border-t border-slate-200 space-y-1.5 text-xs">
                 <div className="flex justify-between text-slate-600">
                   <span>Subtotal</span>
-                  <span>${summary.subtotal.toFixed(2)}</span>
+                  <span>{formatINR(summary.subtotal)}</span>
                 </div>
                 {summary.discount > 0 && (
                   <div className="flex justify-between text-emerald-600 font-semibold">
                     <span>Discount</span>
-                    <span>-${summary.discount.toFixed(2)}</span>
+                    <span>-{formatINR(summary.discount)}</span>
                   </div>
                 )}
                 <div className="flex justify-between text-slate-600">
                   <span>Delivery</span>
-                  <span>{summary.deliveryFee === 0 ? 'FREE' : `$${summary.deliveryFee.toFixed(2)}`}</span>
+                  <span>{summary.deliveryFee === 0 ? 'FREE' : formatINR(summary.deliveryFee)}</span>
                 </div>
                 <div className="flex justify-between text-slate-600">
                   <span>Estimated Tax</span>
-                  <span>${summary.tax.toFixed(2)}</span>
+                  <span>{formatINR(summary.tax)}</span>
                 </div>
                 <div className="flex justify-between font-black text-slate-900 text-sm pt-2 border-t border-slate-200">
                   <span>Total Due</span>
-                  <span className="text-emerald-700">${summary.total.toFixed(2)}</span>
+                  <span className="text-emerald-700">{formatINR(summary.total)}</span>
                 </div>
               </div>
             </div>
@@ -759,7 +760,7 @@ export const CheckoutPage: React.FC = () => {
                       </div>
 
                       <span className="font-black text-slate-900 flex-shrink-0">
-                        ${(unitPrice * item.quantity).toFixed(2)}
+                        {formatINR(unitPrice * item.quantity)}
                       </span>
                     </div>
                   );
@@ -770,32 +771,32 @@ export const CheckoutPage: React.FC = () => {
               <div className="space-y-2 text-xs sm:text-sm pt-4 border-t border-slate-200">
                 <div className="flex justify-between text-slate-600">
                   <span>Items Subtotal</span>
-                  <span className="font-semibold text-slate-800">${summary.subtotal.toFixed(2)}</span>
+                  <span className="font-semibold text-slate-800">{formatINR(summary.subtotal)}</span>
                 </div>
 
                 {summary.discount > 0 && (
                   <div className="flex justify-between text-emerald-700 font-bold">
                     <span>Healthcare Savings</span>
-                    <span>-${summary.discount.toFixed(2)}</span>
+                    <span>-{formatINR(summary.discount)}</span>
                   </div>
                 )}
 
                 <div className="flex justify-between text-slate-600">
                   <span>Cold-Chain Express Delivery</span>
                   <span className="font-bold text-emerald-700">
-                    {summary.deliveryFee === 0 ? 'FREE' : `$${summary.deliveryFee.toFixed(2)}`}
+                    {summary.deliveryFee === 0 ? 'FREE' : formatINR(summary.deliveryFee)}
                   </span>
                 </div>
 
                 <div className="flex justify-between text-slate-600">
                   <span>Estimated Clinical Tax</span>
-                  <span className="font-semibold text-slate-800">${summary.tax.toFixed(2)}</span>
+                  <span className="font-semibold text-slate-800">{formatINR(summary.tax)}</span>
                 </div>
 
                 <div className="pt-3 border-t border-slate-200 flex justify-between items-baseline font-black text-slate-900">
                   <span className="text-sm sm:text-base">Grand Total</span>
                   <span className="text-2xl sm:text-3xl text-emerald-700 tracking-tight">
-                    ${summary.total.toFixed(2)}
+                    {formatINR(summary.total)}
                   </span>
                 </div>
               </div>

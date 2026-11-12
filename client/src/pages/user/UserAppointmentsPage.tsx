@@ -17,6 +17,7 @@ import { Appointment } from '../../types';
 import { StatusBadge } from '../../components/common/StatusBadge';
 import { LoadingState } from '../../components/common/LoadingState';
 import { EmptyState } from '../../components/common/EmptyState';
+import { formatINR } from '../../utils/currency';
 
 export const UserAppointmentsPage: React.FC = () => {
   const queryClient = useQueryClient();
@@ -96,7 +97,7 @@ export const UserAppointmentsPage: React.FC = () => {
 
                   <div className="flex items-center gap-2">
                     <StatusBadge status={apt.status} />
-                    <span className="font-bold text-xs text-slate-900">${apt.fee}</span>
+                    <span className="font-bold text-xs text-slate-900">{formatINR(apt.fee, 0)}</span>
                   </div>
                 </div>
 
@@ -145,7 +146,7 @@ export const UserAppointmentsPage: React.FC = () => {
                   </div>
                 )}
 
-                <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                <div className="pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2 text-xs">
                   <div>
                     {canCancel && (
                       <button

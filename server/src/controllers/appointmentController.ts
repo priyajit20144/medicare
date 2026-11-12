@@ -7,6 +7,7 @@ import { paymentService } from '../services/paymentService';
 import { sendSuccess, sendError } from '../utils/response';
 import { logAudit } from '../utils/audit';
 import { emailService } from '../services/emailService';
+import { CURRENCY_CODE } from '../utils/pricing';
 
 export async function bookAppointment(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
@@ -57,6 +58,7 @@ export async function bookAppointment(req: Request, res: Response, next: NextFun
     // Process payment through abstraction layer
     const paymentResult = await paymentService.createPayment({
       amount: doctor.consultationFee,
+      currency: CURRENCY_CODE,
       description: `Appointment with Dr. ${doctor.name} (${appointmentNumber})`,
       customer: {
         name: patientName,

@@ -11,7 +11,7 @@ import {
   ShieldCheck,
   UserCheck,
   Sparkles,
-  DollarSign,
+  IndianRupee,
   Clock,
   Home,
   Building2,
@@ -35,6 +35,7 @@ import {
 } from '../../types';
 import { LoadingState } from '../../components/common/LoadingState';
 import { EmptyState } from '../../components/common/EmptyState';
+import { formatINR } from '../../utils/currency';
 
 export const AdminPremiumCheckupsPage: React.FC = () => {
   const queryClient = useQueryClient();
@@ -440,15 +441,14 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
             <div
               className="bg-emerald-500 h-full rounded-full transition-all"
               style={{
-                width: `${
-                  stats?.checkupBenefits?.totalAllocated
+                width: `${stats?.checkupBenefits?.totalAllocated
                     ? (
-                        ((stats.checkupBenefits.totalClaimed || 0) /
-                          stats.checkupBenefits.totalAllocated) *
-                        100
-                      ).toFixed(0)
+                      ((stats.checkupBenefits.totalClaimed || 0) /
+                        stats.checkupBenefits.totalAllocated) *
+                      100
+                    ).toFixed(0)
                     : 0
-                }%`,
+                  }%`,
               }}
             />
           </div>
@@ -482,11 +482,11 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
               VIP Subscription Ledger
             </span>
             <div className="w-8 h-8 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center">
-              <DollarSign className="w-4 h-4" />
+              <IndianRupee className="w-4 h-4" />
             </div>
           </div>
           <div className="text-3xl font-black text-white">
-            ${stats?.totalRevenue ? stats.totalRevenue.toFixed(2) : '0.00'}
+            {formatINR(stats?.totalRevenue ?? 0)}
           </div>
           <p className="text-xs text-purple-400 font-semibold flex items-center gap-1">
             <TrendingUp className="w-3.5 h-3.5" /> Annual VIP recurring value
@@ -498,11 +498,10 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
       <div className="flex flex-wrap items-center gap-2 border-b border-slate-800 pb-3">
         <button
           onClick={() => setActiveTab('members')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs transition ${
-            activeTab === 'members'
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs transition ${activeTab === 'members'
               ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20'
               : 'text-slate-400 hover:text-white hover:bg-slate-800'
-          }`}
+            }`}
         >
           <Crown className="w-4 h-4" />
           <span>VIP Members & Checkup Quotas ({memberships?.length || 0})</span>
@@ -510,11 +509,10 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
 
         <button
           onClick={() => setActiveTab('bookings')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs transition ${
-            activeTab === 'bookings'
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs transition ${activeTab === 'bookings'
               ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/20'
               : 'text-slate-400 hover:text-white hover:bg-slate-800'
-          }`}
+            }`}
         >
           <Activity className="w-4 h-4" />
           <span>Health Checkup Bookings & Phlebotomy ({bookings?.length || 0})</span>
@@ -522,11 +520,10 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
 
         <button
           onClick={() => setActiveTab('plans')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs transition ${
-            activeTab === 'plans'
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs transition ${activeTab === 'plans'
               ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20'
               : 'text-slate-400 hover:text-white hover:bg-slate-800'
-          }`}
+            }`}
         >
           <FileText className="w-4 h-4" />
           <span>Membership Plan & Benefit Rules</span>
@@ -692,20 +689,18 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
                                   {used} of {max} Claimed
                                 </span>
                                 <span
-                                  className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold ${
-                                    !isClaimed
+                                  className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold ${!isClaimed
                                       ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
                                       : 'bg-purple-500/10 text-purple-400 border border-purple-500/30'
-                                  }`}
+                                    }`}
                                 >
                                   {!isClaimed ? `${remaining} Available` : 'Redeemed'}
                                 </span>
                               </div>
                               <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
                                 <div
-                                  className={`h-full rounded-full transition-all ${
-                                    isClaimed ? 'bg-purple-400' : 'bg-emerald-400'
-                                  }`}
+                                  className={`h-full rounded-full transition-all ${isClaimed ? 'bg-purple-400' : 'bg-emerald-400'
+                                    }`}
                                   style={{
                                     width: `${Math.min(100, (used / max) * 100)}%`,
                                   }}
@@ -726,9 +721,8 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
                                 Valid to: <strong className="text-white">{new Date(m.endDate).toLocaleDateString()}</strong>
                               </span>
                               <span
-                                className={`text-[10px] font-semibold ${
-                                  isExpired ? 'text-rose-400' : 'text-slate-400'
-                                }`}
+                                className={`text-[10px] font-semibold ${isExpired ? 'text-rose-400' : 'text-slate-400'
+                                  }`}
                               >
                                 {isExpired ? 'Coverage Expired' : `${daysRemaining} days active`}
                               </span>
@@ -738,13 +732,12 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
                           {/* Status Badge */}
                           <td className="p-4 text-center">
                             <span
-                              className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${
-                                m.status === 'ACTIVE' && !isExpired
+                              className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${m.status === 'ACTIVE' && !isExpired
                                   ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
                                   : m.status === 'SUSPENDED'
-                                  ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30'
-                                  : 'bg-rose-500/10 text-rose-400 border border-rose-500/30'
-                              }`}
+                                    ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30'
+                                    : 'bg-rose-500/10 text-rose-400 border border-rose-500/30'
+                                }`}
                             >
                               {isExpired && m.status === 'ACTIVE' ? 'EXPIRED' : m.status}
                             </span>
@@ -820,11 +813,11 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
                             </span>
                             {isVip ? (
                               <span className="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[10px] font-black uppercase">
-                                <Crown className="w-3 h-3" /> VIP Redeemed ($0)
+                                <Crown className="w-3 h-3" /> VIP Redeemed (₹0)
                               </span>
                             ) : (
                               <span className="text-[10px] text-slate-400 block mt-0.5">
-                                Standard Paid (${b.payment?.amount})
+                                Standard Paid ({formatINR(b.payment?.amount ?? 0, 0)})
                               </span>
                             )}
                           </td>
@@ -861,11 +854,10 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
                                 <Calendar className="w-3 h-3 text-slate-400" /> {b.bookingDate} ({b.timeSlot})
                               </span>
                               <span
-                                className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-md ${
-                                  b.sampleCollectionType === 'HOME_COLLECTION'
+                                className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-md ${b.sampleCollectionType === 'HOME_COLLECTION'
                                     ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20'
                                     : 'bg-slate-800 text-slate-300'
-                                }`}
+                                  }`}
                               >
                                 {b.sampleCollectionType === 'HOME_COLLECTION' ? (
                                   <>
@@ -889,15 +881,14 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
                           <td className="p-4">
                             <div className="space-y-1">
                               <span
-                                className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
-                                  b.sampleStatus === 'COMPLETED'
+                                className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${b.sampleStatus === 'COMPLETED'
                                     ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
                                     : b.sampleStatus === 'SAMPLE_COLLECTED'
-                                    ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20'
-                                    : b.sampleStatus === 'IN_LAB_ANALYSIS'
-                                    ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20'
-                                    : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
-                                }`}
+                                      ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20'
+                                      : b.sampleStatus === 'IN_LAB_ANALYSIS'
+                                        ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20'
+                                        : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
+                                  }`}
                               >
                                 {b.sampleStatus?.replace(/_/g, ' ') || 'PENDING COLLECTION'}
                               </span>
@@ -912,15 +903,14 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
                           {/* Booking Status */}
                           <td className="p-4 text-center">
                             <span
-                              className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${
-                                b.status === 'COMPLETED'
+                              className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${b.status === 'COMPLETED'
                                   ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
                                   : b.status === 'CONFIRMED'
-                                  ? 'bg-blue-500/10 text-blue-400 border border-blue-500/30'
-                                  : b.status === 'CANCELLED'
-                                  ? 'bg-rose-500/10 text-rose-400 border border-rose-500/30'
-                                  : 'bg-amber-500/10 text-amber-400 border border-amber-500/30'
-                              }`}
+                                    ? 'bg-blue-500/10 text-blue-400 border border-blue-500/30'
+                                    : b.status === 'CANCELLED'
+                                      ? 'bg-rose-500/10 text-rose-400 border border-rose-500/30'
+                                      : 'bg-amber-500/10 text-amber-400 border border-amber-500/30'
+                                }`}
                             >
                               {b.status}
                             </span>
@@ -973,12 +963,12 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
             <div className="grid grid-cols-2 gap-4">
               <div className="p-4 bg-slate-900 rounded-2xl border border-slate-800">
                 <span className="text-[11px] text-slate-400 block font-semibold">Standard Price</span>
-                <span className="text-2xl font-black text-white">${primaryPlan.price}</span>
+                <span className="text-2xl font-black text-white">{formatINR(primaryPlan.price, 0)}</span>
               </div>
               <div className="p-4 bg-slate-900 rounded-2xl border border-slate-800">
                 <span className="text-[11px] text-slate-400 block font-semibold">Discounted Price</span>
                 <span className="text-2xl font-black text-amber-400">
-                  ${primaryPlan.discountPrice || primaryPlan.price}
+                  {formatINR(primaryPlan.discountPrice || primaryPlan.price, 0)}
                 </span>
               </div>
             </div>
@@ -1007,7 +997,7 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
               VIP Checkup Benefit Allocation Rules
             </h3>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Every patient who subscribes to Medicare VIP is immediately allocated diagnostic checkup vouchers according to these parameters. When redeemed, costs are fully covered at $0.00.
+              Every patient who subscribes to Medicare VIP is immediately allocated diagnostic checkup vouchers according to these parameters. When redeemed, costs are fully covered at ₹0.00.
             </p>
 
             <div className="space-y-3">
@@ -1038,8 +1028,8 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
       {/* MODAL 1: Grant VIP Membership to User                   */}
       {/* ======================================================== */}
       {grantModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs">
-          <div className="bg-slate-950 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-lg w-full space-y-6 text-xs text-slate-200 animate-scaleUp shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-xs overflow-y-auto">
+          <div className="bg-slate-950 border border-slate-800 rounded-3xl p-5 sm:p-8 max-w-lg w-full space-y-6 text-xs text-slate-200 animate-scaleUp shadow-2xl max-h-[90vh] overflow-y-auto my-auto">
             <div className="flex items-center justify-between pb-4 border-b border-slate-800">
               <div className="flex items-center gap-2.5">
                 <Crown className="w-5 h-5 text-amber-400" />
@@ -1086,7 +1076,7 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
                 </select>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-slate-400 font-bold mb-1.5">Membership Plan</label>
                   <select
@@ -1131,10 +1121,10 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
               </div>
 
               <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-[11px] text-amber-300">
-                ⭐ Grants complete VIP privileges including 1 Free Comprehensive Health Checkup ($229 value), priority queues, and free express deliveries.
+                ⭐ Grants complete VIP privileges including 1 Free Comprehensive Health Checkup (₹19,465 value), priority queues, and free express deliveries.
               </div>
 
-              <div className="pt-2 flex items-center justify-end gap-3">
+              <div className="pt-2 flex flex-wrap items-center justify-end gap-3">
                 <button
                   type="button"
                   onClick={() => setGrantModalOpen(false)}
@@ -1159,8 +1149,8 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
       {/* MODAL 2: Adjust Health Checkup Quota & Allowances       */}
       {/* ======================================================== */}
       {quotaModalOpen && targetMember && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs">
-          <div className="bg-slate-950 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-md w-full space-y-6 text-xs text-slate-200 animate-scaleUp shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-xs overflow-y-auto">
+          <div className="bg-slate-950 border border-slate-800 rounded-3xl p-5 sm:p-8 max-w-md w-full space-y-6 text-xs text-slate-200 animate-scaleUp shadow-2xl max-h-[90vh] overflow-y-auto my-auto">
             <div className="flex items-center justify-between pb-4 border-b border-slate-800">
               <div className="flex items-center gap-2.5">
                 <Activity className="w-5 h-5 text-emerald-400" />
@@ -1198,7 +1188,7 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
               }}
               className="space-y-4"
             >
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-slate-400 font-bold mb-1.5">
                     Checkups Used (Count)
@@ -1247,7 +1237,7 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
                 />
               </div>
 
-              <div className="pt-2 flex items-center justify-end gap-3">
+              <div className="pt-2 flex flex-wrap items-center justify-end gap-3">
                 <button
                   type="button"
                   onClick={() => setQuotaModalOpen(false)}
@@ -1272,8 +1262,8 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
       {/* MODAL 3: Update Membership Status & Extend Validity     */}
       {/* ======================================================== */}
       {statusModalOpen && targetMember && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs">
-          <div className="bg-slate-950 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-md w-full space-y-6 text-xs text-slate-200 animate-scaleUp shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-xs overflow-y-auto">
+          <div className="bg-slate-950 border border-slate-800 rounded-3xl p-5 sm:p-8 max-w-md w-full space-y-6 text-xs text-slate-200 animate-scaleUp shadow-2xl max-h-[90vh] overflow-y-auto my-auto">
             <div className="flex items-center justify-between pb-4 border-b border-slate-800">
               <div className="flex items-center gap-2.5">
                 <ShieldCheck className="w-5 h-5 text-amber-400" />
@@ -1343,7 +1333,7 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
                 />
               </div>
 
-              <div className="pt-2 flex items-center justify-end gap-3">
+              <div className="pt-2 flex flex-wrap items-center justify-end gap-3">
                 <button
                   type="button"
                   onClick={() => setStatusModalOpen(false)}
@@ -1368,8 +1358,8 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
       {/* MODAL 4: Update Checkup Booking & Phlebotomy Specimen    */}
       {/* ======================================================== */}
       {bookingModalOpen && targetBooking && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs">
-          <div className="bg-slate-950 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-lg w-full space-y-6 text-xs text-slate-200 animate-scaleUp shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-xs overflow-y-auto">
+          <div className="bg-slate-950 border border-slate-800 rounded-3xl p-5 sm:p-8 max-w-lg w-full space-y-6 text-xs text-slate-200 animate-scaleUp shadow-2xl max-h-[90vh] overflow-y-auto my-auto">
             <div className="flex items-center justify-between pb-4 border-b border-slate-800">
               <div className="flex items-center gap-2.5">
                 <Activity className="w-5 h-5 text-indigo-400" />
@@ -1413,7 +1403,7 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
               }}
               className="space-y-4"
             >
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-slate-400 font-bold mb-1.5">Booking Status</label>
                   <select
@@ -1468,7 +1458,7 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
                 />
               </div>
 
-              <div className="pt-2 flex items-center justify-end gap-3">
+              <div className="pt-2 flex flex-wrap items-center justify-end gap-3">
                 <button
                   type="button"
                   onClick={() => setBookingModalOpen(false)}
@@ -1493,8 +1483,8 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
       {/* MODAL 5: Configure Membership Plan & Pricing            */}
       {/* ======================================================== */}
       {planModalOpen && editingPlan && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs">
-          <div className="bg-slate-950 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-md w-full space-y-6 text-xs text-slate-200 animate-scaleUp shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-xs overflow-y-auto">
+          <div className="bg-slate-950 border border-slate-800 rounded-3xl p-5 sm:p-8 max-w-md w-full space-y-6 text-xs text-slate-200 animate-scaleUp shadow-2xl max-h-[90vh] overflow-y-auto my-auto">
             <div className="flex items-center justify-between pb-4 border-b border-slate-800">
               <div className="flex items-center gap-2.5">
                 <Edit3 className="w-5 h-5 text-amber-400" />
@@ -1510,7 +1500,7 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
 
             <div className="space-y-4">
               <div>
-                <label className="block text-slate-400 font-bold mb-1.5">Standard Price ($)</label>
+                <label className="block text-slate-400 font-bold mb-1.5">Standard Price (₹)</label>
                 <input
                   type="number"
                   min={0}
@@ -1521,7 +1511,7 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-slate-400 font-bold mb-1.5">Discount Price ($)</label>
+                <label className="block text-slate-400 font-bold mb-1.5">Discount Price (₹)</label>
                 <input
                   type="number"
                   min={0}
@@ -1534,7 +1524,7 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-slate-400 font-bold mb-1.5">Duration (Months)</label>
                   <input
@@ -1560,7 +1550,7 @@ export const AdminPremiumCheckupsPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="pt-2 flex items-center justify-end gap-3">
+              <div className="pt-2 flex flex-wrap items-center justify-end gap-3">
                 <button
                   type="button"
                   onClick={() => setPlanModalOpen(false)}

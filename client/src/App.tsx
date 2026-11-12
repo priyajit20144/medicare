@@ -27,6 +27,8 @@ import { HealthCheckupDetailPage } from './pages/checkups/HealthCheckupDetailPag
 import { FacilitiesPage } from './pages/facilities/FacilitiesPage';
 import { FacilityDetailPage } from './pages/facilities/FacilityDetailPage';
 import { PremiumPage } from './pages/premium/PremiumPage';
+import { AboutPage } from './pages/AboutPage';
+import { ContactPage } from './pages/ContactPage';
 
 // Commerce & Upload
 import { CartPage } from './pages/cart/CartPage';
@@ -58,7 +60,6 @@ import { AdminUsersPage } from './pages/admin/AdminUsersPage';
 import { AdminPackagesPage } from './pages/admin/AdminPackagesPage';
 import { AdminPremiumCheckupsPage } from './pages/admin/AdminPremiumCheckupsPage';
 import { AdminFacilitiesPage } from './pages/admin/AdminFacilitiesPage';
-import { AdminAuditLogsPage } from './pages/admin/AdminAuditLogsPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -94,6 +95,8 @@ export const App: React.FC = () => {
             <Route path="/facilities" element={<FacilitiesPage />} />
             <Route path="/facilities/:id" element={<FacilityDetailPage />} />
             <Route path="/premium" element={<PremiumPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/contact" element={<ContactPage />} />
             <Route path="/cart" element={<CartPage />} />
 
             {/* Authenticated Customer Actions */}
@@ -198,7 +201,7 @@ export const App: React.FC = () => {
             <Route path="packages" element={<AdminPackagesPage />} />
             <Route path="premium-checkups" element={<AdminPremiumCheckupsPage />} />
             <Route path="facilities" element={<AdminFacilitiesPage />} />
-            <Route path="audit-logs" element={<AdminAuditLogsPage />} />
+            <Route path="*" element={<Navigate to="/admin" replace />} />
           </Route>
 
           {/* Fallback */}

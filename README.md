@@ -250,7 +250,6 @@ Patient Receives Notification & Can Order Verified Medications
 | `POST` | `/api/appointments` | `USER` | Book appointment with conflict checks |
 | `POST` | `/api/orders` | `USER` | Create order with stock decrement |
 | `GET` | `/api/admin/analytics/overview` | `ADMIN` | Real-time platform business metrics |
-| `GET` | `/api/admin/audit-logs` | `ADMIN` | Query security and compliance logs |
 
 ---
 

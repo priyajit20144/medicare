@@ -19,6 +19,7 @@ import { api } from '../../api/client';
 import { Doctor } from '../../types';
 import { useAuthStore } from '../../store/authStore';
 import { LoadingState } from '../../components/common/LoadingState';
+import { formatINR } from '../../utils/currency';
 
 export const DoctorDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -123,17 +124,17 @@ export const DoctorDetailPage: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
       {/* Breadcrumb */}
-      <nav className="flex items-center gap-2 text-xs text-slate-500">
+      <nav className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs text-slate-500">
         <Link to="/" className="hover:text-emerald-600">Home</Link>
         <span>/</span>
         <Link to="/doctors" className="hover:text-emerald-600">Doctors</Link>
         <span>/</span>
-        <span className="text-slate-900 font-semibold">{doctor.name}</span>
+        <span className="text-slate-900 font-semibold truncate max-w-[200px] sm:max-w-none">{doctor.name}</span>
       </nav>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-10 items-start">
         {/* Left Column: Doctor Profile Monograph */}
-        <div className="lg:col-span-1 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-6">
+        <div className="lg:col-span-1 bg-white rounded-3xl p-5 sm:p-8 border border-slate-200/80 shadow-sm space-y-6">
           <div className="text-center">
             <img
               src={doctor.avatar || 'https://images.unsplash.com/photo-1594824813511-19d452093e9a?auto=format&fit=crop&q=80&w=300'}
@@ -152,23 +153,23 @@ export const DoctorDetailPage: React.FC = () => {
           </div>
 
           <div className="space-y-3 py-4 border-y border-slate-100 text-xs text-slate-600">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-3">
               <span className="text-slate-400">Clinical Experience</span>
               <span className="font-bold text-slate-800">{doctor.experienceYears}+ Years</span>
             </div>
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-3">
               <span className="text-slate-400">Hospital Affiliation</span>
               <span className="font-bold text-slate-800 text-right max-w-[170px] truncate">
                 {doctor.hospitalAffiliation || 'Medicare Medical Center'}
               </span>
             </div>
-            <div className="flex items-center justify-between">
-              <span className="text-slate-400">Languages Spoken</span>
-              <span className="font-bold text-slate-800">{doctor.languages?.join(', ')}</span>
+            <div className="flex items-center justify-between gap-3">
+              <span className="text-slate-400 flex-shrink-0">Languages Spoken</span>
+              <span className="font-bold text-slate-800 text-right">{doctor.languages?.join(', ')}</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-slate-400">Consultation Fee</span>
-              <span className="text-base font-extrabold text-slate-900">${doctor.consultationFee}</span>
+              <span className="text-base font-extrabold text-slate-900">{formatINR(doctor.consultationFee, 0)}</span>
             </div>
           </div>
 
@@ -210,15 +211,14 @@ export const DoctorDetailPage: React.FC = () => {
             {/* Consultation Mode */}
             <div className="space-y-2">
               <label className="text-xs font-bold text-slate-700 block">Select Consultation Mode</label>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 xs:grid-cols-2 gap-3">
                 <button
                   type="button"
                   onClick={() => setConsultationType('VIDEO')}
-                  className={`p-3.5 rounded-2xl border text-xs font-semibold flex items-center justify-center gap-2 transition ${
-                    consultationType === 'VIDEO'
+                  className={`p-3.5 rounded-2xl border text-xs font-semibold flex items-center justify-center gap-2 transition ${consultationType === 'VIDEO'
                       ? 'border-emerald-500 bg-emerald-50/70 text-emerald-800 ring-1 ring-emerald-500'
                       : 'border-slate-200 hover:bg-slate-50 text-slate-700'
-                  }`}
+                    }`}
                 >
                   <Video className="w-4 h-4 text-emerald-600" />
                   <span>Video Telehealth</span>
@@ -226,11 +226,10 @@ export const DoctorDetailPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setConsultationType('IN_PERSON')}
-                  className={`p-3.5 rounded-2xl border text-xs font-semibold flex items-center justify-center gap-2 transition ${
-                    consultationType === 'IN_PERSON'
+                  className={`p-3.5 rounded-2xl border text-xs font-semibold flex items-center justify-center gap-2 transition ${consultationType === 'IN_PERSON'
                       ? 'border-emerald-500 bg-emerald-50/70 text-emerald-800 ring-1 ring-emerald-500'
                       : 'border-slate-200 hover:bg-slate-50 text-slate-700'
-                  }`}
+                    }`}
                 >
                   <MapPin className="w-4 h-4 text-emerald-600" />
                   <span>In-Person Visit</span>
@@ -250,11 +249,10 @@ export const DoctorDetailPage: React.FC = () => {
                       setSelectedDate(d.dateStr);
                       setSelectedSlot('');
                     }}
-                    className={`p-2.5 rounded-2xl border text-center transition ${
-                      selectedDate === d.dateStr
+                    className={`p-2.5 rounded-2xl border text-center transition ${selectedDate === d.dateStr
                         ? 'border-emerald-600 bg-emerald-600 text-white shadow-sm'
                         : 'border-slate-200 hover:bg-slate-50 text-slate-700'
-                    }`}
+                      }`}
                   >
                     <span className="block text-[10px] uppercase font-bold">{d.dayName}</span>
                     <span className="block text-base font-black my-0.5">{d.dayNumber}</span>
@@ -284,13 +282,12 @@ export const DoctorDetailPage: React.FC = () => {
                       type="button"
                       disabled={s.isBooked}
                       onClick={() => setSelectedSlot(s.slot)}
-                      className={`p-2.5 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-1.5 ${
-                        s.isBooked
+                      className={`p-2.5 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-1.5 ${s.isBooked
                           ? 'border-slate-100 bg-slate-100 text-slate-400 cursor-not-allowed line-through'
                           : selectedSlot === s.slot
-                          ? 'border-emerald-600 bg-emerald-600 text-white shadow-sm'
-                          : 'border-slate-200 hover:bg-emerald-50 text-slate-800'
-                      }`}
+                            ? 'border-emerald-600 bg-emerald-600 text-white shadow-sm'
+                            : 'border-slate-200 hover:bg-emerald-50 text-slate-800'
+                        }`}
                     >
                       <Clock className="w-3.5 h-3.5" />
                       <span>{s.slot}</span>
@@ -387,7 +384,7 @@ export const DoctorDetailPage: React.FC = () => {
               <div>
                 <span className="text-xs text-slate-400 block">Total Consultation Fee</span>
                 <span className="text-2xl font-black text-slate-900">
-                  ${doctor.consultationFee}
+                  {formatINR(doctor.consultationFee, 0)}
                 </span>
               </div>
 
